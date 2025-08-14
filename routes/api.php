@@ -1,9 +1,23 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Services\CorreiosTokenService;
+use App\Http\Controllers\Api\SenderApiController;
+use App\Http\Controllers\Api\RecipientApiController;
+use App\Http\Controllers\Api\PackagingApiController; 
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Rota para buscar remetente, destinatário e embalagem
+Route::get('/remetentes/buscar', [SenderApiController::class, 'buscar']);
+Route::get('/destinatarios/buscar', [RecipientApiController::class, 'buscar']);
+Route::get('/embalagens/buscar', [PackagingApiController::class, 'buscar']);
 
+// Rota de Geração de Token
+Route::get('/token', function (CorreiosTokenService $service) {
+    $token = $service->obterToken();
+
+    if ($token) {
+        return response()->json(['token' => $token]);
+    }
+
+    return response()->json(['erro' => 'Falha ao obter token'], 500);
+});

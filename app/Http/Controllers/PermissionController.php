@@ -14,7 +14,7 @@ class PermissionController extends Controller
     public function index()
     {
         // Recuperar os registros do banco dados
-        $permissions = Permission::orderBy('title', 'ASC')->paginate(10);
+        $permissions = Permission::orderBy('title', 'ASC')->paginate(50);
 
         // Salvar log
         Log::info('Listar as permissões.', ['action_user_id' => Auth::id()]);

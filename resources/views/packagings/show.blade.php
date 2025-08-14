@@ -31,7 +31,7 @@
     Diametro: {{ $packaging->diameter }}<br>
     Peso: {{ $packaging->weight }}<br>
     @can('edit-packaging')
-    Ativo: {{ $packaging->active }}<br>    
+    Ativo: {{ $packaging->active == 1 ? 'SIM' : 'NÃO' }}<br>
     @endcan
     Cadastrado: {{ \Carbon\Carbon::parse($packaging->created_at)->format('d/m/Y H:i:s') }}<br>
     Editado: {{ \Carbon\Carbon::parse($packaging->updated_at)->format('d/m/Y H:i:s') }}<br>

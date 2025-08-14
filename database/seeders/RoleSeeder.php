@@ -32,6 +32,7 @@ class RoleSeeder extends Seeder
 
             // Cadastrar permissão para o papel 
             $admin->givePermissionTo([
+
                 // Acesso Dashboard
                 'dashboard',
 
@@ -86,6 +87,18 @@ class RoleSeeder extends Seeder
                 'create-recipient',
                 'edit-recipient',
                 'destroy-recipient',
+
+                // Acesso Pré-Postagem
+                'index-prepostagem',
+                'show-prepostagem',
+                'create-prepostagem',
+                'edit-prepostagem',
+                'destroy-prepostagem',
+
+                // Acesso Pré-Postagem
+                'index-range',
+                'show-range',
+                'create-range',
             ]);
 
             /*******  Colaborador  *******/
@@ -120,6 +133,17 @@ class RoleSeeder extends Seeder
                 'create-recipient',
                 'edit-recipient',
                 'destroy-recipient',
+
+                // Acesso Pré-Postagem
+                'index-prepostagem',
+                'show-prepostagem',
+                'create-prepostagem',
+                'edit-prepostagem',
+                'destroy-prepostagem',
+
+                // Acesso Etiquetas
+                'index-range',
+                'show-range',
             ]);
 
         } catch (Exception $e){

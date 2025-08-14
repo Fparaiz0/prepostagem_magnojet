@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 /**
  * Classe de requisição para validação de cursos.
@@ -13,7 +12,7 @@ use Illuminate\Validation\Rule;
  *
  * @package App\Http\Requests
  */
-class RecipientRequest extends FormRequest
+class PrePostagemRequest extends FormRequest
 {
     /**
      * Determina se o usuário está autorizado a fazer esta requisição.
@@ -33,20 +32,10 @@ class RecipientRequest extends FormRequest
      */
     public function rules(): array
     {
-        $recipient = $this->route('recipient');
+        $prepostagem = $this->route('prepostagem');
 
         return [
-        'name' => ['required', 'string', 'max:255'],
-        'cnpj' => [
-            'required',
-            'string',
-            Rule::unique('recipients', 'cnpj')->ignore($recipient?->id),
-        ],
-        'cep' => ['required', 'string'],
-        'public_place' => ['required', 'string'],
-        'number' => ['required', 'string'],
-        'city' => ['required', 'string'],
-        'uf' => ['required', 'string', 'size:2'],
+            // 'code_object' => 'required|unique:prepostagens,code_object,' . ($prepostagem ? $prepostagem->id : null),
         ];
     }
 
@@ -58,14 +47,8 @@ class RecipientRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => "Campo nome é obrigatório!",
-            'cnpj.required' => "Campo Cnpj é obrigatório!",
-            'cnpj.unique' => "O CNPJ informado já está cadastrado!",
-            'cep.required' => "Campo Cep é obrigatório!",
-            'public_place.required' => "Campo Logradouro é obrigatório!",
-            'number.required' => "Campo Número é obrigatório!",
-            'city.required' => "Campo Cidade é obrigatório!",
-            'uf.required' => "Campo UF é obrigatório!", 
+            'code_object.required' => "Campo codigo de rastreamento é obrigatório!",
+            'code_object.unique' => "O codigo de rastreamento já foi utilizado!",
         ];
     }
 }

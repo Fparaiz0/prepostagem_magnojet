@@ -29,7 +29,7 @@
             <input type="text" name="number" id="number" placeholder="Número do remetente" value="{{ old('number') }}" required><br><br>
 
             <label>Bairro: </label>
-            <input type="text" name="neighborhood" id="neighborhood" placeholder="Bairro do remetente" value="{{ old('neighborhood') }}" required><br><br>
+            <input type="text" name="neighborhood" id="neighborhood" placeholder="Bairro do remetente" value="{{ old('neighborhood') }}"><br><br>
 
             <label>Cidade: </label>
             <input type="text" name="city" id="city" placeholder="Cidade do remetente" value="{{ old('city') }}" required><br><br>

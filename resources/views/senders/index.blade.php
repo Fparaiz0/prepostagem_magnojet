@@ -37,6 +37,7 @@
     @empty
         Nenhum registro encontrado!
     @endforelse
-
-    {{ $senders->links() }}
+    <div class="d-flex justify-content-center">
+      {{ $senders->links() }}
+    </div>
 @endsection

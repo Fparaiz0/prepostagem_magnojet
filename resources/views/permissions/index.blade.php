@@ -14,7 +14,6 @@
     @forelse ($permissions as $permission)
         ID: {{ $permission->id }}<br>
         Título: {{ $permission->title }}<br>
-        Nome: {{ $permission->name }}<br>
 
         @can('show-permission')
             <a href="{{ route('permissions.show', ['permission' => $permission->id]) }}">Visualizar</a><br>

@@ -36,6 +36,12 @@ class PackagingRequest extends FormRequest
 
         return [
             'name' => 'required|unique:packagings,name,' . ($packaging ? $packaging->id : null),
+            'height' => 'required' . ($packaging ? $packaging->id : null),
+            'width' => 'required' . ($packaging ? $packaging->id : null),
+            'length' => 'required' . ($packaging ? $packaging->id : null),
+            'diameter' => 'required' . ($packaging ? $packaging->id : null),
+            'weight' => 'required' . ($packaging ? $packaging->id : null),
+            'active' => 'required' . ($packaging ? $packaging->id : null),
         ];
     }
 
@@ -49,6 +55,11 @@ class PackagingRequest extends FormRequest
         return [
             'name.required' => "Campo nome é obrigatório!",
             'name.unique' => "O nome já está cadastrado!",
+            'height.required' => "Campo altura é obrigatório!",
+            'width.required' => "Campo largura é obrigatório!",
+            'length.required' => "Campo comprimento é obrigatório!",
+            'diameter.required' => "Campo diâmetro é obrigatório!",
+            'weight.required' => "Campo peso é obrigatório!",
         ];
     }
 }

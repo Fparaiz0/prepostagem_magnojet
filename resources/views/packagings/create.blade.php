@@ -31,8 +31,11 @@
             <label>Peso: </label>
             <input type="text" name="weight" id="weight" placeholder="Peso da embalagem" value="1" required><br><br>
 
-            <label>Ativo?: </label>
-            <input type="text" name="active" id="active" placeholder="1 - Ativo | 2 - Inativo" value="{{ old('active') }}" required><br><br>
+            <label>Ativo</label>
+            <select name="active" id="active" required>
+            <option value="1" {{ old('active') == '1' ? 'selected' : '' }}>Sim</option>
+            <option value="2" {{ old('active') == '0' ? 'selected' : '' }}>Não</option>
+            </select><br><br>
 
             <button type="submit">Cadastrar</button>
         </form>

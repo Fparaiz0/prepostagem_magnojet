@@ -38,5 +38,7 @@
         Nenhum registro encontrado!
     @endforelse
 
-    {{ $recipients->links() }}
+    <div class="d-flex justify-content-center">
+      {{ $recipients->links() }}
+    </div>
 @endsection

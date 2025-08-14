@@ -60,7 +60,7 @@ class SenderRequest extends FormRequest
         return [
             'name.required' => "Campo nome é obrigatório!",
             'cnpj.required' => "Campo Cnpj é obrigatório!",
-            'cnpj.unique' => "O Cnpj informado já está cadastrado!",
+            'cnpj.unique' => "O CNPJ informado já está cadastrado!",
             'cep.required' => "Campo Cep é obrigatório!",
             'public_place.required' => "Campo Logradouro é obrigatório!",
             'number.required' => "Campo Número é obrigatório!",

@@ -72,6 +72,15 @@ class PermissionSeeder extends Seeder
                 ['title'=> 'Editar os destinatarios', 'name' => 'edit-recipient'],
                 ['title'=> 'Apagar os destinatarios', 'name' => 'destroy-recipient'],
 
+                ['title'=> 'Listar as Pré-Postagem', 'name' => 'index-prepostagem'],
+                ['title'=> 'Visualizar as Pré-Postagem', 'name' => 'show-prepostagem'],
+                ['title'=> 'Cadastrar as Pré-Postagem', 'name' => 'create-prepostagem'],
+                ['title'=> 'Editar as Pré-Postagem', 'name' => 'edit-prepostagem'],
+                ['title'=> 'Apagar as Pré-Postagem', 'name' => 'destroy-prepostagem'],
+
+                ['title'=> 'Listar as Etiquetas', 'name' => 'index-range'],
+                ['title'=> 'Visualizar as Etiquetas', 'name' => 'show-range'],
+                ['title'=> 'Gerar as Etiquetas', 'name' => 'create-range'],
             ];
 
             foreach ($permissions as $permission) {

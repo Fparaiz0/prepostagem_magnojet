@@ -14,7 +14,7 @@ class PackagingController extends Controller
     public function index()
     {
         // Recuperar os registros do banco dados
-        $packagings = Packaging::orderBy('id', 'ASC')->paginate(50);
+        $packagings = Packaging::orderBy('id', 'ASC')->paginate(10);
 
         // Salvar log
         Log::info('Listar as embalagens.', ['action_user_id' => Auth::id()]);

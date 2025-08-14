@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthApiController;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ForgotPasswordController;
@@ -12,9 +12,12 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserStatusController;
 use App\Http\Controllers\PackagingController;
+use App\Http\Controllers\PrePostagemController;
+use App\Http\Controllers\RangeController;
 use App\Http\Controllers\RecipientController;
 use App\Http\Controllers\SenderController;
 use Illuminate\Support\Facades\Route;
+
 
 // Página inicial do site 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -46,39 +49,39 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name
 Route::group(['middleware' => 'auth'], function () {
 
     // Página inicial do Administrativo
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index')->middleware('permission:dashboard');;
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index')->middleware('permission:dashboard');
 
     // Página de Perfil
     Route::prefix('profile')->group(function () {
-        Route::get('/', [ProfileController::class, 'show'])->name('profile.show')->middleware('permission:show-profile');;
-        Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('permission:edit-profile');;
-        Route::put('/', [ProfileController::class, 'update'])->name('profile.update')->middleware('permission:edit-profile');;
-        Route::get('/edit-password', [ProfileController::class, 'editPassword'])->name('profile.edit_password')->middleware('permission:edit-password-profile');;
-        Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update_password')->middleware('permission:edit-password-profile');;
+        Route::get('/', [ProfileController::class, 'show'])->name('profile.show')->middleware('permission:show-profile');
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('permission:edit-profile');
+        Route::put('/', [ProfileController::class, 'update'])->name('profile.update')->middleware('permission:edit-profile');
+        Route::get('/edit-password', [ProfileController::class, 'editPassword'])->name('profile.edit_password')->middleware('permission:edit-password-profile');
+        Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update_password')->middleware('permission:edit-password-profile');
     });
 
     // Usuários
     Route::prefix('users')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('users.index')->middleware('permission:index-user');;
-        Route::get('/create', [UserController::class, 'create'])->name('users.create')->middleware('permission:create-user');;
-        Route::get('/{user}', [UserController::class, 'show'])->name('users.show')->middleware('permission:show-user');;
-        Route::post('/', [UserController::class, 'store'])->name('users.store')->middleware('permission:create-user');;
-        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware('permission:edit-user');;
-        Route::put('/{user}', [UserController::class, 'update'])->name('users.update')->middleware('permission:edit-user');;
-        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy')->middleware('permission:destroy-user');;
-        Route::get('/{user}/edit-password', [UserController::class, 'editPassword'])->name('users.edit_password')->middleware('permission:edit-password-user');;
-        Route::put('/{user}/update-password', [UserController::class, 'updatePassword'])->name('users.update_password')->middleware('permission:edit-password-user');;
+        Route::get('/', [UserController::class, 'index'])->name('users.index')->middleware('permission:index-user');
+        Route::get('/create', [UserController::class, 'create'])->name('users.create')->middleware('permission:create-user');
+        Route::get('/{user}', [UserController::class, 'show'])->name('users.show')->middleware('permission:show-user');
+        Route::post('/', [UserController::class, 'store'])->name('users.store')->middleware('permission:create-user');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware('permission:edit-user');
+        Route::put('/{user}', [UserController::class, 'update'])->name('users.update')->middleware('permission:edit-user');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy')->middleware('permission:destroy-user');
+        Route::get('/{user}/edit-password', [UserController::class, 'editPassword'])->name('users.edit_password')->middleware('permission:edit-password-user');
+        Route::put('/{user}/update-password', [UserController::class, 'updatePassword'])->name('users.update_password')->middleware('permission:edit-password-user');
     });
 
     // Usuários Status
     Route::prefix('user-statuses')->group(function () {
-        Route::get('/', [UserStatusController::class, 'index'])->name('user_statuses.index')->middleware('permission:index-user-status');;
-        Route::get('/create', [UserStatusController::class, 'create'])->name('user_statuses.create')->middleware('permission:create-user-status');;
-        Route::get('/{userStatus}', [UserStatusController::class, 'show'])->name('user_statuses.show')->middleware('permission:show-user-status');;
-        Route::post('/', [UserStatusController::class, 'store'])->name('user_statuses.store')->middleware('permission:create-user-status');;
-        Route::get('/{userStatus}/edit', [UserStatusController::class, 'edit'])->name('user_statuses.edit')->middleware('permission:edit-user-status');;
-        Route::put('/{userStatus}', [UserStatusController::class, 'update'])->name('user_statuses.update')->middleware('permission:edit-user-status');;
-        Route::delete('/{userStatus}', [UserStatusController::class, 'destroy'])->name('user_statuses.destroy')->middleware('permission:destroy-user-status');;
+        Route::get('/', [UserStatusController::class, 'index'])->name('user_statuses.index')->middleware('permission:index-user-status');
+        Route::get('/create', [UserStatusController::class, 'create'])->name('user_statuses.create')->middleware('permission:create-user-status');
+        Route::get('/{userStatus}', [UserStatusController::class, 'show'])->name('user_statuses.show')->middleware('permission:show-user-status');
+        Route::post('/', [UserStatusController::class, 'store'])->name('user_statuses.store')->middleware('permission:create-user-status');
+        Route::get('/{userStatus}/edit', [UserStatusController::class, 'edit'])->name('user_statuses.edit')->middleware('permission:edit-user-status');
+        Route::put('/{userStatus}', [UserStatusController::class, 'update'])->name('user_statuses.update')->middleware('permission:edit-user-status');
+        Route::delete('/{userStatus}', [UserStatusController::class, 'destroy'])->name('user_statuses.destroy')->middleware('permission:destroy-user-status');
     });
 
     // Papéis
@@ -111,35 +114,51 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Embalagens
     Route::prefix('packagings')->group(function () {
-        Route::get('/', [PackagingController::class, 'index'])->name('packagings.index')->middleware('permission:index-packaging');;
-        Route::get('/create', [PackagingController::class, 'create'])->name('packagings.create')->middleware('permission:create-packaging');;
-        Route::get('/{packaging}', [PackagingController::class, 'show'])->name('packagings.show')->middleware('permission:show-packaging');;
-        Route::post('/', [PackagingController::class, 'store'])->name('packagings.store')->middleware('permission:create-packaging');;
-        Route::get('/{packaging}/edit', [PackagingController::class, 'edit'])->name('packagings.edit')->middleware('permission:edit-packaging');;
-        Route::put('/{packaging}', [PackagingController::class, 'update'])->name('packagings.update')->middleware('permission:edit-packaging');;
-        Route::delete('/{packaging}', [PackagingController::class, 'destroy'])->name('packagings.destroy')->middleware('permission:destroy-packaging');;
+        Route::get('/', [PackagingController::class, 'index'])->name('packagings.index')->middleware('permission:index-packaging');
+        Route::get('/create', [PackagingController::class, 'create'])->name('packagings.create')->middleware('permission:create-packaging');
+        Route::get('/{packaging}', [PackagingController::class, 'show'])->name('packagings.show')->middleware('permission:show-packaging');
+        Route::post('/', [PackagingController::class, 'store'])->name('packagings.store')->middleware('permission:create-packaging');
+        Route::get('/{packaging}/edit', [PackagingController::class, 'edit'])->name('packagings.edit')->middleware('permission:edit-packaging');
+        Route::put('/{packaging}', [PackagingController::class, 'update'])->name('packagings.update')->middleware('permission:edit-packaging');
+        Route::delete('/{packaging}', [PackagingController::class, 'destroy'])->name('packagings.destroy')->middleware('permission:destroy-packaging');
     });
 
     // Remetentes
     Route::prefix('sender')->group(function () {
-        Route::get('/', [SenderController::class, 'index'])->name('senders.index')->middleware('permission:index-sender');;
-        Route::get('/create', [SenderController::class, 'create'])->name('senders.create')->middleware('permission:create-sender');;
-        Route::get('/{sender}', [SenderController::class, 'show'])->name('senders.show')->middleware('permission:show-sender');;
-        Route::post('/', [SenderController::class, 'store'])->name('senders.store')->middleware('permission:create-sender');;
-        Route::get('/{sender}/edit', [SenderController::class, 'edit'])->name('senders.edit')->middleware('permission:edit-sender');;
-        Route::put('/{sender}', [SenderController::class, 'update'])->name('senders.update')->middleware('permission:edit-sender');;
-        Route::delete('/{sender}', [SenderController::class, 'destroy'])->name('senders.destroy')->middleware('permission:destroy-sender');;
+        Route::get('/', [SenderController::class, 'index'])->name('senders.index')->middleware('permission:index-sender');
+        Route::get('/create', [SenderController::class, 'create'])->name('senders.create')->middleware('permission:create-sender');
+        Route::get('/{sender}', [SenderController::class, 'show'])->name('senders.show')->middleware('permission:show-sender');
+        Route::post('/', [SenderController::class, 'store'])->name('senders.store')->middleware('permission:create-sender');
+        Route::get('/{sender}/edit', [SenderController::class, 'edit'])->name('senders.edit')->middleware('permission:edit-sender');
+        Route::put('/{sender}', [SenderController::class, 'update'])->name('senders.update')->middleware('permission:edit-sender');
+        Route::delete('/{sender}', [SenderController::class, 'destroy'])->name('senders.destroy')->middleware('permission:destroy-sender');
     });
 
     // Destinatários
     Route::prefix('recipient')->group(function () {
-        Route::get('/', [RecipientController::class, 'index'])->name('recipients.index')->middleware('permission:index-recipient');;
-        Route::get('/create', [RecipientController::class, 'create'])->name('recipients.create')->middleware('permission:create-recipient');;
-        Route::get('/{recipient}', [RecipientController::class, 'show'])->name('recipients.show')->middleware('permission:show-recipient');;
-        Route::post('/', [RecipientController::class, 'store'])->name('recipients.store')->middleware('permission:create-recipient');;
-        Route::get('/{recipient}/edit', [RecipientController::class, 'edit'])->name('recipients.edit')->middleware('permission:edit-recipient');;
-        Route::put('/{recipient}', [RecipientController::class, 'update'])->name('recipients.update')->middleware('permission:edit-recipient');;
-        Route::delete('/{recipient}', [RecipientController::class, 'destroy'])->name('recipients.destroy')->middleware('permission:destroy-recipient');;
+        Route::get('/', [RecipientController::class, 'index'])->name('recipients.index')->middleware('permission:index-recipient');
+        Route::get('/create', [RecipientController::class, 'create'])->name('recipients.create')->middleware('permission:create-recipient');
+        Route::get('/{recipient}', [RecipientController::class, 'show'])->name('recipients.show')->middleware('permission:show-recipient');
+        Route::post('/', [RecipientController::class, 'store'])->name('recipients.store')->middleware('permission:create-recipient');
+        Route::get('/{recipient}/edit', [RecipientController::class, 'edit'])->name('recipients.edit')->middleware('permission:edit-recipient');
+        Route::put('/{recipient}', [RecipientController::class, 'update'])->name('recipients.update')->middleware('permission:edit-recipient');
+        Route::delete('/{recipient}', [RecipientController::class, 'destroy'])->name('recipients.destroy')->middleware('permission:destroy-recipient');
     });
 
+    // Pré-Postagem
+    Route::prefix('prepostagem')->group(function () {
+        Route::get('/', [PrepostagemController::class, 'index'])->name('prepostagens.index')->middleware('permission:index-prepostagem');
+        Route::get('/create', [PrepostagemController::class, 'create'])->name('prepostagens.create')->middleware('permission:create-prepostagem');
+        Route::get('/canceled', [PrepostagemController::class, 'canceled'])->name('prepostagens.canceled')->middleware('permission:canceled-prepostagem');
+        Route::get('/{prepostagem}', [PrepostagemController::class, 'show'])->name('prepostagens.show')->middleware('permission:show-prepostagem');
+        Route::post('/', [PrepostagemController::class, 'store'])->name('prepostagens.store')->middleware('permission:create-prepostagem');
+        Route::delete('/{prepostagem}', [PrepostagemController::class, 'destroy'])->name('prepostagens.destroy')->middleware('permission:destroy-prepostagem');
+   });
+        // Range de etiquetas
+    Route::prefix('range')->group(function () {
+        Route::get('/', [RangeController::class, 'index'])->name('tracks.index')->middleware('permission:index-range');
+        Route::get('/show', [RangeController::class, 'show'])->name('tracks.show')->middleware('permission:show-range');
+        Route::get('/create', [RangeController::class, 'create'])->name('tracks.create')->middleware('permission:create-range');
+        Route::post('/', [RangeController::class, 'store'])->name('tracks.store')->middleware('permission:create-range');
+    });
 });
