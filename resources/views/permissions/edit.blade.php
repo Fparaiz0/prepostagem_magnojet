@@ -10,7 +10,7 @@
         <div class="flex space-x-3 mt-4 md:mt-0">
             @can('index-permission')
             <a href="{{ route('permissions.index') }}" 
-                class="flex items-center px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 hover:bg-indigo-50 transition-all shadow-xs hover:shadow-sm border-indigo-100 hover:border-indigo-200">
+                class="flex items-center px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 hover:bg-indigo-50 transition-all shadow-xs hover:shadow-sm hover:border-indigo-200">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
@@ -69,7 +69,7 @@
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Campo Título -->
                     <div class="space-y-2">
-                        <label for="title" class="block text-sm font-medium text-gray-700 flex items-center">
+                        <label for="title" class="text-sm font-medium text-gray-700 flex items-center">
                             Título da Permissão
                             <span class="text-red-500 ml-1">*</span>
                         </label>
@@ -81,7 +81,7 @@
 
                     <!-- Campo Nome -->
                     <div class="space-y-2">
-                        <label for="name" class="block text-sm font-medium text-gray-700 flex items-center">
+                        <label for="name" class="text-sm font-medium text-gray-700 flex items-center">
                             Nome Interno
                             <span class="text-red-500 ml-1">*</span>
                         </label>

@@ -88,7 +88,7 @@ function mostrarListaDestinatarios(lista) {
         btn.type = 'button';
         btn.className = `
             w-full text-left p-4 mb-2 border rounded-lg shadow-sm
-            hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500
+            hover:bg-gray-100 focus:outline-none cursor-pointer focus:ring-2 focus:ring-blue-500
             transition duration-150
         `;
         btn.innerHTML = `
