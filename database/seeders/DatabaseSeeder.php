@@ -18,10 +18,14 @@ class DatabaseSeeder extends Seeder
         // Seeds que devem rodar em produção
         if (App::environment() === 'production') {
             $this->call([
+                
                 UserStatusSeeder::class,
                 UserSeeder::class,
+                PackagingSeeder::class,
+                PermissionSeeder::class, 
+                RoleSeeder::class,
+                SenderSeeder::class,
 
-                
             ]);
         }
 
@@ -36,7 +40,6 @@ class DatabaseSeeder extends Seeder
 
                 PackagingSeeder::class,
                 SenderSeeder::class,
-                RecipientSeeder::class
             ]);
         }
     }

@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 
 // Página inicial do site 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [AuthController::class, 'index'])->name('login');
 
 // Tela de login 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
@@ -150,11 +150,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', [PrepostagemController::class, 'index'])->name('prepostagens.index')->middleware('permission:index-prepostagem');
         Route::get('/create', [PrepostagemController::class, 'create'])->name('prepostagens.create')->middleware('permission:create-prepostagem');
         Route::get('/canceled', [PrepostagemController::class, 'canceled'])->name('prepostagens.canceled')->middleware('permission:canceled-prepostagem');
+         Route::get('/posted', [PrepostagemController::class, 'posted'])->name('prepostagens.posted')->middleware('permission:posted-prepostagem');
         Route::get('/{prepostagem}', [PrepostagemController::class, 'show'])->name('prepostagens.show')->middleware('permission:show-prepostagem');
         Route::post('/', [PrepostagemController::class, 'store'])->name('prepostagens.store')->middleware('permission:create-prepostagem');
         Route::delete('/{prepostagem}', [PrepostagemController::class, 'destroy'])->name('prepostagens.destroy')->middleware('permission:destroy-prepostagem');
    });
-        // Range de etiquetas
+
+    // Range de etiquetas
     Route::prefix('range')->group(function () {
         Route::get('/', [RangeController::class, 'index'])->name('tracks.index')->middleware('permission:index-range');
         Route::get('/show', [RangeController::class, 'show'])->name('tracks.show')->middleware('permission:show-range');

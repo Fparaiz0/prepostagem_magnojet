@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('recipients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('cnpj')->unique();
+            $table->string('cnpj')->nullable();
             $table->string('cep');
             $table->string('public_place');
             $table->string('number');
+            $table->string('complement')->nullable(); 
             $table->string('neighborhood')->nullable(); 
             $table->string('city'); 
             $table->string('uf'); 

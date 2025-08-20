@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Recipient;
 use Exception;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 

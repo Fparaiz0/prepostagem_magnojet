@@ -20,6 +20,7 @@ class Recipient extends Model implements Auditable
         'cep',
         'public_place',
         'number', 
+        'complement',
         'neighborhood', 
         'city',
         'uf'

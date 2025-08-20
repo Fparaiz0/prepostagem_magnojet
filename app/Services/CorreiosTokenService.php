@@ -23,38 +23,39 @@ class CorreiosTokenService
      * @return string|null Token válido ou null se falhar.
      */
     public function obterToken(): ?string
-    {
-        // Tenta recuperar token válido no banco
-        $token = CorreiosToken::where('valid_until', '>', now())->latest()->first();
+{
+    // Recupera o token mais recente válido do banco
+    $tokenBanco = CorreiosToken::where('valid_until', '>', now())
+        ->orderByDesc('created_at')
+        ->first();
 
-        if ($token) {
-            return $token->token;
-        }
+    // Tenta obter novo token da API
+    $response = Http::withoutVerifying()
+        ->withBasicAuth($this->usuario, $this->senha)
+        ->post('https://api.correios.com.br/token/v1/autentica/cartaopostagem', [
+            'numero'   => '0067038727',
+            'contrato' => '9912326924',
+            'dr'       => 36,
+        ]);
 
-        // Não tem token válido, faz a requisição para gerar novo token
-        $response = Http::withoutVerifying()
-            ->withBasicAuth($this->usuario, $this->senha)
-            ->post('https://api.correios.com.br/token/v1/autentica/cartaopostagem', [
-                'numero'   => '0067038727',
-                'contrato' => '9912326924',
-                'dr'       => 36,
-            ]);
+    if ($response->successful()) {
+        $novoToken = $response->json()['token'] ?? null;
 
-        if ($response->successful()) {
-            $novoToken = $response->json()['token'] ?? null;
-
-            if ($novoToken) {
+        if ($novoToken) {
+            // Se for diferente do token salvo, cria novo registro
+            if (!$tokenBanco || $tokenBanco->token !== $novoToken) {
                 CorreiosToken::create([
                     'token' => $novoToken,
-                    'valid_until' => now()->addDay(), // Token válido por 1 dia
+                    'valid_until' => now()->addDay(),
                 ]);
-
-                return $novoToken;
             }
-        }
 
-        // Falhou ao obter token
-        return null;
+            return $novoToken;
+        }
     }
+
+    // Se falhou a requisição, usa o token salvo se ainda for válido
+    return $tokenBanco->token ?? null;
+}
 }
 

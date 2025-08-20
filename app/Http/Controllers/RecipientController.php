@@ -14,7 +14,7 @@ class RecipientController extends Controller
     public function index()
     {
         // Recuperar os registros do banco dados
-        $recipients = Recipient::orderBy('id', 'ASC')->paginate(50);
+        $recipients = Recipient::orderBy('name', 'ASC')->paginate(50);
 
         // Salvar log
         Log::info('Listar os destinatários.', ['action_user_id' => Auth::id()]);
@@ -52,6 +52,7 @@ class RecipientController extends Controller
                 'cep'=> $request->cep,
                 'public_place' => $request->public_place,
                 'number' => $request->number, 
+                'complement' => $request->complement, 
                 'neighborhood'=> $request->neighborhood,
                 'city' => $request->city, 
                 'uf' => $request->uf
@@ -91,6 +92,7 @@ class RecipientController extends Controller
                 'cep'=> $request->cep,
                 'public_place' => $request->public_place,
                 'number' => $request->number, 
+                'complement' => $request->complement, 
                 'neighborhood'=> $request->neighborhood,
                 'city' => $request->city, 
                 'uf' => $request->uf

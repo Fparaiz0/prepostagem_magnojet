@@ -88,11 +88,12 @@ class RoleSeeder extends Seeder
                 'edit-recipient',
                 'destroy-recipient',
 
-                // Acesso Pré-Postagem
+               // Acesso Pré-Postagem
                 'index-prepostagem',
                 'show-prepostagem',
                 'create-prepostagem',
-                'edit-prepostagem',
+                'canceled-prepostagem',
+                'posted-prepostagem',
                 'destroy-prepostagem',
 
                 // Acesso Pré-Postagem
@@ -138,8 +139,10 @@ class RoleSeeder extends Seeder
                 'index-prepostagem',
                 'show-prepostagem',
                 'create-prepostagem',
-                'edit-prepostagem',
+                'canceled-prepostagem',
+                'posted-prepostagem',
                 'destroy-prepostagem',
+
 
                 // Acesso Etiquetas
                 'index-range',

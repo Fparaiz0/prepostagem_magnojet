@@ -75,7 +75,8 @@ class PermissionSeeder extends Seeder
                 ['title'=> 'Listar as Pré-Postagem', 'name' => 'index-prepostagem'],
                 ['title'=> 'Visualizar as Pré-Postagem', 'name' => 'show-prepostagem'],
                 ['title'=> 'Cadastrar as Pré-Postagem', 'name' => 'create-prepostagem'],
-                ['title'=> 'Editar as Pré-Postagem', 'name' => 'edit-prepostagem'],
+                ['title'=> 'Editar as Pré-Postagem', 'name' => 'canceled-prepostagem'],
+                ['title'=> 'Editar as Pré-Postagem', 'name' => 'posted-prepostagem'],
                 ['title'=> 'Apagar as Pré-Postagem', 'name' => 'destroy-prepostagem'],
 
                 ['title'=> 'Listar as Etiquetas', 'name' => 'index-range'],

@@ -18,7 +18,7 @@ class UserController extends Controller
         // Recuperar os registros do banco dados
         // $users = User::where('id', 1000)->get();
         // $users = User::orderBy('id', 'DESC')->get();
-        $users = User::orderBy('id', 'DESC')->paginate(10);
+        $users = User::orderBy('id', 'ASC')->paginate(10);
 
         // Salvar log
         Log::info('Listar os usuários.', ['action_user_id' => Auth::id()]);

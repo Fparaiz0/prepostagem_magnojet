@@ -18,8 +18,8 @@ class RangeController extends Controller
     {
         // Recuperar os registros do banco de dados com used = 0
         $tracks = Range::where('used', 0)
-            ->orderBy('id', 'DESC')
-            ->paginate(50);
+            ->orderBy('id', 'ASC')
+            ->paginate(55);
 
         // Salvar log
         Log::info('Listar as etiquetas não utilizadas.', [
@@ -33,10 +33,10 @@ class RangeController extends Controller
     // Listar as Etiquetas
     public function show()
     {
-        // Recuperar os registros do banco de dados com used = 0
+        // Recuperar os registros do banco de dados com used = 1
         $tracks = Range::where('used', 1)
             ->orderBy('id', 'DESC')
-            ->paginate(50);
+            ->paginate(55);
 
         // Salvar log
         Log::info('Listar as etiquetas utilizadas.', [

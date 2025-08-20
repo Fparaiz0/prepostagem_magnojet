@@ -37,11 +37,6 @@ class RecipientRequest extends FormRequest
 
         return [
         'name' => ['required', 'string', 'max:255'],
-        'cnpj' => [
-            'required',
-            'string',
-            Rule::unique('recipients', 'cnpj')->ignore($recipient?->id),
-        ],
         'cep' => ['required', 'string'],
         'public_place' => ['required', 'string'],
         'number' => ['required', 'string'],

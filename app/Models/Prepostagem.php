@@ -44,6 +44,7 @@ class Prepostagem extends Model implements Auditable
             'aware_object_not_forbidden',
             'payment_method', 
             'situation', 
-            'observation'
+            'observation',
+            'complement_recipient', 
         ];
 }

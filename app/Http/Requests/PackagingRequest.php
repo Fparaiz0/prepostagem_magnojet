@@ -35,13 +35,13 @@ class PackagingRequest extends FormRequest
         $packaging = $this->route('packaging');
 
         return [
-            'name' => 'required|unique:packagings,name,' . ($packaging ? $packaging->id : null),
-            'height' => 'required' . ($packaging ? $packaging->id : null),
-            'width' => 'required' . ($packaging ? $packaging->id : null),
-            'length' => 'required' . ($packaging ? $packaging->id : null),
-            'diameter' => 'required' . ($packaging ? $packaging->id : null),
-            'weight' => 'required' . ($packaging ? $packaging->id : null),
-            'active' => 'required' . ($packaging ? $packaging->id : null),
+            'name'     => 'required|unique:packagings,name,' . ($packaging ? $packaging->id : 'NULL'),
+            'height'   => 'required|integer|min:0',
+            'width'    => 'required|integer|min:0',
+            'length'   => 'required|integer|min:0',
+            'diameter' => 'required|integer|min:0',
+            'weight'   => 'required|integer|min:0',
+            'active'   => 'required|boolean',
         ];
     }
 

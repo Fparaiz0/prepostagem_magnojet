@@ -1,29 +1,53 @@
 @extends('layouts.login')
 
 @section('content')
-    <h3>Nova Senha</h3>
 
-    <x-alert />
+<body class="bg-login">
 
-    <form action="{{ route('password.update') }}" method="POST">
-        @csrf
-        @method('POST')
+    <div class="card-login">
+        <div class="logo-wrapper-login">
+            <a href="/">
+                <img src="/logo-define-500x500_v3.png" alt="Logo" class="logo-login">
+            </a>
+        </div>
 
-        <input type="hidden" name="token" value="{{ $token }}">
+        <h1 class="title-login">Nova Senha</h1>
 
-        <label for="email">E-mail</label>
-        <input type="email" name="email" id="email" placeholder="Digite o e-mail cadastrado" value=" {{ old('email', $email) }}" required> <br><br>
+        <form action="{{ route('password.update') }}" method="POST" class="mt-4">
+            @csrf
+            @method('POST')
 
-        <label for="password">Senha</label>
-        <input type="password" name="password" id="password" placeholder="Digite a nova senha" value="{{ old('password')}}" required> <br><br>
+            <input type="hidden" name="token" value="{{ $token }}">
 
-        <label>Confirmar Senha: </label>
-        <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirmar a senha" value="{{ old('password_confirmation') }}" required><br><br>
+            <!-- Campo e-mail -->
+            <div class="form-group-login">
+                <label for="email" class="form-label-login">E-mail</label>
+                <input type="email" name="email" id="email" placeholder="Digite o e-mail cadastrado" value=" {{ old('email', $email) }}" class="form-input-login" required> 
+            </div>
 
-        <button type="submit">Atualizar</button><br><br>
+            <!-- Campo senha -->
+            <div class="form-group-login">
+                <label for="password" class="form-label-login">Senha</label>
+                <input type="password" name="password" id="password" placeholder="Digite a nova senha" value="{{ old('password') }}" class="form-input-login" required> 
+            </div>
 
-    </form>
+            <!-- Campo confirmar senha -->
+            <div class="form-group-login">
+                <label for="password" class="form-label-login">Confirmar senha</label>
+                <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirmar a senha" value="{{ old('password_confirmation') }}" class="form-input-login" required> 
+            </div>
 
-    <a href=" {{ route('login') }} ">Login</a><br><br>
+            <x-alert />
+
+            <!-- Link para página de login e botão cadastrar novo usuário -->
+            <div class="btn-group-login">
+                <a href="{{ route('login') }}" class="link-login">Login</a>
+                <button type="submit" class="btn-primary">Atualizar</button>
+            </div>
+
+        </form>
+    </div>
+
+</body>
 
 @endsection

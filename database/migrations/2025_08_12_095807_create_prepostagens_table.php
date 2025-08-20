@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('prepostagens', function (Blueprint $table) {
             $table->id();
             $table->string('name_sender');
-            $table->string('cnpj_sender');
+            $table->string('cnpj_sender')->nullable();
             $table->string('cep_sender');
             $table->string('public_place_sender');
             $table->string('number_sender');
@@ -22,10 +22,11 @@ return new class extends Migration
             $table->string('city_sender');
             $table->string('uf_sender');
             $table->string('name_recipient');
-            $table->string('cnpj_recipient');
+            $table->string('cnpj_recipient')->nullable();
             $table->string('cep_recipient');
             $table->string('public_place_recipient');
             $table->string('number_recipient');
+            $table->string('complement_recipient')->nullable(); 
             $table->string('neighborhood_recipient')->nullable();
             $table->string('city_recipient');
             $table->string('uf_recipient');
