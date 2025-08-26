@@ -39,7 +39,7 @@
                         <input type="text" name="name_sender" id="name_sender" value="MAGNO JET INDUSTRIA LTDA" readonly 
                                class="w-full px-4 py-2.5 border border-gray-300 rounded-l-lg bg-gray-50 text-gray-700">
                         <button type="button" onclick="buscarRemetente()" title="Buscar por nome" 
-                                class="px-4 bg-gray-200 border border-gray-300 border-l-0 rounded-r-lg hover:bg-gray-300 transition-colors flex items-center">
+                                class="px-4 bg-gray-200 border cursor-pointer border-gray-300 border-l-0 rounded-r-lg hover:bg-gray-300 transition-colors flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
@@ -109,7 +109,7 @@
                         <input type="text" name="name_recipient" id="name_recipient" value="{{ old('name_recipient') }}" required 
                                class="w-full px-4 py-2.5 border border-gray-300 rounded-l-lg focus:ring-blue-500 focus:border-blue-500">
                         <button type="button" onclick="buscarDestinatario()" title="Buscar por nome" 
-                                class="px-4 bg-blue-100 border border-blue-300 border-l-0 rounded-r-lg hover:bg-blue-200 transition-colors flex items-center">
+                                class="px-4 bg-blue-100 border cursor-pointer border-blue-300 border-l-0 rounded-r-lg hover:bg-blue-200 transition-colors flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
@@ -119,49 +119,49 @@
 
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">CNPJ</label>
-                    <input type="text" name="cnpj_recipient" id="cnpj_recipient" value="{{ old('cnpj_recipient') }}" readonly 
+                    <input type="text" name="cnpj_recipient" id="cnpj_recipient" value="{{ old('cnpj_recipient') }}" 
                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
                 </div>
 
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">CEP</label>
-                    <input type="text" name="cep_recipient" id="cep_recipient" value="{{ old('cep_recipient') }}" readonly 
+                    <input type="text" name="cep_recipient" id="cep_recipient" value="{{ old('cep_recipient') }}" 
                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
                 </div>
 
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Logradouro</label>
-                    <input type="text" name="public_place_recipient" id="public_place_recipient" value="{{ old('public_place_recipient') }}" readonly 
+                    <input type="text" name="public_place_recipient" id="public_place_recipient" value="{{ old('public_place_recipient') }}" 
                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
                 </div>
 
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Número</label>
-                    <input type="text" name="number_recipient" id="number_recipient" value="{{ old('number_recipient') }}" readonly 
+                    <input type="text" name="number_recipient" id="number_recipient" value="{{ old('number_recipient') }}" 
                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
                 </div>
 
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Complemento</label>
-                    <input type="text" name="complement_recipient" id="complement_recipient" value="{{ old('complement_recipient') }}" readonly 
+                    <input type="text" name="complement_recipient" id="complement_recipient" value="{{ old('complement_recipient') }}" 
                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
                 </div>
 
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Bairro</label>
-                    <input type="text" name="neighborhood_recipient" id="neighborhood_recipient" value="{{ old('neighborhood_recipient') }}" readonly 
+                    <input type="text" name="neighborhood_recipient" id="neighborhood_recipient" value="{{ old('neighborhood_recipient') }}" 
                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
                 </div>
 
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Cidade</label>
-                    <input type="text" name="city_recipient" id="city_recipient" value="{{ old('city_recipient') }}" readonly 
+                    <input type="text" name="city_recipient" id="city_recipient" value="{{ old('city_recipient') }}" 
                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
                 </div>
 
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">UF</label>
-                    <input type="text" name="uf_recipient" id="uf_recipient" value="{{ old('uf_recipient') }}" readonly 
+                    <input type="text" name="uf_recipient" id="uf_recipient" value="{{ old('uf_recipient') }}" 
                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
                 </div>
             </div>
@@ -184,7 +184,7 @@
                         <input type="text" name="name" id="name" value="{{ old('name') }}" required 
                                class="w-full px-4 py-2.5 border border-gray-300 rounded-l-lg focus:ring-orange-500 focus:border-orange-500">
                         <button type="button" onclick="buscarEmbalagem()" title="Buscar embalagem" 
-                                class="px-4 bg-orange-100 border border-orange-300 border-l-0 rounded-r-lg hover:bg-orange-200 transition-colors flex items-center">
+                                class="px-4 bg-orange-100 border cursor-pointer border-orange-300 border-l-0 rounded-r-lg hover:bg-orange-200 transition-colors flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
@@ -235,11 +235,6 @@
                 <h3 class="text-lg font-semibold text-gray-800">Informações Adicionais</h3>
             </div>
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Código de Serviço</label>
-                    <input type="text" name="code_service" id="code_service" value="03220" readonly 
-                           class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
-                </div>
 
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Código de Rastreamento</label>
@@ -262,27 +257,11 @@
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">Formato do Objeto</label>
                     <select name="code_format_informed_object" id="code_format_informed_object" required 
-                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                            class="w-full px-4 py-2.5 border cursor-pointer border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
                         <option value="">Selecione o formato</option>
                         <option value="1" {{ old('code_format_informed_object') == '1' ? 'selected' : '' }}>Envelope</option>
                         <option value="2" {{ old('code_format_informed_object') == '2' ? 'selected' : '' }} selected>Caixa/Pacote</option>
                         <option value="3" {{ old('code_format_informed_object') == '3' ? 'selected' : '' }}>Rolo/Cilindro</option>
-                    </select>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Objeto Proibido?</label>
-                    <select name="aware_object_not_forbidden" id="aware_object_not_forbidden" readonly 
-                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
-                        <option value="1">NÃO</option>
-                    </select>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Forma de Pagamento</label>
-                    <select name="payment_method" id="payment_method" readonly 
-                            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-700">
-                        <option value="2">À FATURAR</option>
                     </select>
                 </div>
 
@@ -297,7 +276,7 @@
         <!-- Botão -->
         <div class="px-6 py-4 border-t border-blue-300 bg-gray-50 flex justify-end">
             <button type="submit" 
-                    class="px-6 py-2.5 bg-blue-900 text-white font-medium rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900 transition-colors flex items-center">
+                    class="px-6 py-2.5 bg-blue-900 text-white font-medium cursor-pointer rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900 transition-colors flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
@@ -308,7 +287,7 @@
 
      <!-- Modal Seleção de Destinatário -->
     <div id="modalSelecionarDestinatario"
-        class="fixed inset-0 bg-black/60 backdrop-blur-sm items-center justify-center z-50 hidden flex transition-opacity duration-300 ease-out">
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-opacity duration-300 ease-out">
         
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl mx-4 md:mx-auto animate-fade-in-slow">
             <!-- Cabeçalho -->

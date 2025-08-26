@@ -42,19 +42,19 @@
             <div class="p-6 border border-green-300 rounded-lg bg-white shadow-sm hover:shadow-md transition duration-200">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                     <div>
-                        <p class="text-sm font-medium text-blue-500">Destinatário</p>
+                        <p class="info-field">Destinatário</p>
                         <p class="text-black-800 font-semibold">{{ $prepostagem->name_recipient }}</p>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-blue-500">Data</p>
+                        <p class="info-field">Data</p>
                         <p class="text-black-800 font-semibold">{{ \Carbon\Carbon::parse($prepostagem->created_at)->format('d/m/Y H:i') }}</p>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-blue-500">Código</p>
+                        <p class="info-field">Código</p>
                         <p class="text-black-600 font-semibold">{{ $prepostagem->object_code }}</p>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-blue-500">Situação</p>
+                        <p class="info-field">Situação</p>
                         <span class="px-3 py-1 rounded-full text-xs font-medium 
                             @if($prepostagem->situation == 1) bg-blue-200 text-blue-800 
                             @elseif($prepostagem->situation == 2) bg-red-200 text-red-800 

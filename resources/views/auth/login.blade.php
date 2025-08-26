@@ -15,7 +15,7 @@
         </div>
 
         <!-- Título -->
-        <h1 class="text-2xl font-bold text-center text-blue-400">Área Restrita</h1> 
+        <h1 class="text-2xl font-bold text-center text-blue-400">Pré-Postagem</h1> 
 
         <!-- Formulário de Login -->
         <form action="{{ route('login.process') }}" method="POST" class="mt-4">
@@ -67,14 +67,6 @@
                     Acessar
                 </button>
             </div>
-
-            <!-- Link para registro -->
-            <div class="mt-4 text-center">
-                <a href="{{ route('register') }}" class="text-ms text-blue-600 hover:no-underline">
-                    Criar nova conta!
-                </a>
-            </div>
-
         </form>
     </div>
 

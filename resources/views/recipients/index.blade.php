@@ -21,26 +21,26 @@
     <!-- Lista de Destinatários -->
     <div class="bg-gray-50 rounded-lg shadow-sm overflow-hidden border border-blue-200">
         <!-- Cabeçalho da Tabela -->
-        <div class="grid grid-cols-12 bg-gray-50 px-6 py-3 border-b border-blue-200 font-medium text-gray-500 uppercase text-sm">
-            <div class="col-span-4">Nome</div>
-            <div class="col-span-3">CPF/CNPJ</div>
-            <div class="col-span-3">Data de Cadastro</div>
-            <div class="col-span-2 text-right">Ações</div>
+        <div class="grid grid-cols-12 divide-x divide-blue-200 border-b border-blue-200">
+            <div class="col-span-4 px-6 py-4 text-center">Nome</div>
+            <div class="col-span-3 px-6 py-4 text-center">CPF/CNPJ</div>
+            <div class="col-span-3 px-6 py-4 text-center">Data de Cadastro</div>
+            <div class="col-span-2 px-6 py-4 text-center">Ações</div>
         </div>
 
         <!-- Corpo da Lista -->
         @forelse ($recipients as $recipient)
-        <div class="grid grid-cols-12 px-6 py-4 border-b border-blue-200 hover:bg-gray-50 items-center">
-            <div class="col-span-4 font-medium text-gray-800">
+        <div class="grid grid-cols-12 divide-x divide-blue-200 border-b border-blue-200 hover:bg-gray-50">
+            <div class="col-span-4 font-medium px-6 py-4 text-center text-gray-800">
                 {{ $recipient->name }}
             </div>
-            <div class="col-span-3 text-gray-600 font-mono">
+            <div class="col-span-3 px-6 py-4 text-center text-gray-600 font-mono">
                 {{ $recipient->cnpj }}
             </div>
-            <div class="col-span-3 text-gray-500">
+            <div class="col-span-3 px-6 py-4 text-center text-gray-500">
                 {{ \Carbon\Carbon::parse($recipient->created_at)->format('d/m/Y') }}
             </div>
-            <div class="col-span-2 flex justify-end space-x-2">
+            <div class="col-span-2 flex px-6 py-4 text-center justify-center space-x-2">
                 @can('show-recipient')
                 <a href="{{ route('recipients.show', $recipient->id) }}" class="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors" title="Visualizar">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

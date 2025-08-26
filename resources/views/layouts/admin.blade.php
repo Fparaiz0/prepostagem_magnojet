@@ -77,14 +77,14 @@
 
                 <!-- Título -->
                 <div class="sidebar-header">
-                    <span class="sidebar-title">Magnojet Pré-Postagem</span>
+                    <img src="/magnojetsidebar.png" alt="Logo" class="w-40 h-auto flex justify-center">
                 </div>
 
                 <!-- Menu -->
                 <nav class="sidebar-nav">
 
                     @can('dashboard')
-                        <a href="{{ route('dashboard.index') }}" class="sidebar-link">Dashboard</a>
+                        <a href="{{ route('dashboard.index') }}" class="sidebar-link">Página inicial</a>
                     @endcan
 
                     <!-- Etiquetas -->

@@ -41,10 +41,6 @@
                 <button type="submit" class="btn-primary">Recuperar</button>
             </div>
 
-            <!-- Link de registro -->
-            <div class="mt-4 text-center">
-                <a href="{{ route('register') }}" class="link-login">Criar nova conta!</a>
-            </div>
         </form>
     </div>
 </body>

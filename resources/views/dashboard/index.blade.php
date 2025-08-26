@@ -5,7 +5,7 @@
 
     <!-- Cabeçalho da Página -->
     <div class="content-header">
-        <h2 class="content-title">Dashboard</h2>
+        <h2 class="content-title">Página inicial</h2>
 
         <div class="flex flex-wrap gap-3">
             <nav class="flex items-center text-sm text-gray-500 mt-1">

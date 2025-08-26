@@ -166,7 +166,7 @@ public function store(PrePostagemRequest $request)
                     "uf" => $request->uf_recipient,
                 ]
             ],
-            "codigoServico" => $request->code_service,
+            "codigoServico" => '03220',
             "codigoObjeto" => $request->object_code,
             "numeroNotaFiscal" => $request->invoice_number,
             "chaveNFe" => $request->nfe_key,
@@ -175,8 +175,8 @@ public function store(PrePostagemRequest $request)
             "alturaInformada" => $request->height_informed,
             "larguraInformada" => $request->width_informed,
             "comprimentoInformado" => $request->length_informed,
-            "cienteObjetoNaoProibido" => $request->aware_object_not_forbidden,
-            "modalidadePagamento" => $request->payment_method,
+            "cienteObjetoNaoProibido" => '1',
+            "modalidadePagamento" => '2',
             'observacao' => $request->observation ?? '',
         ];
 
@@ -217,7 +217,7 @@ public function store(PrePostagemRequest $request)
             'neighborhood_recipient' => $request->neighborhood_recipient,
             'city_recipient' => $request->city_recipient,
             'uf_recipient' => $request->uf_recipient,
-            'code_service' => $request->code_service,
+            'code_service' => '03220',
             'object_code' => $request->object_code,
             'invoice_number' => $request->invoice_number,
             'nfe_key' => $request->nfe_key,
@@ -227,8 +227,8 @@ public function store(PrePostagemRequest $request)
             'width_informed' => $request->width_informed,
             'length_informed' => $request->length_informed,
             'diameter_informed' => $request->diameter_informed,
-            'aware_object_not_forbidden' => $request->aware_object_not_forbidden,
-            'payment_method' => $request->payment_method,
+            'aware_object_not_forbidden' => '1',
+            'payment_method' => '2',
             'situation' => 1
         ]);
 
