@@ -1,11 +1,12 @@
-## 👋 Bem-vindo ao repositório!
+## Plataforma de Pré-Postagens dos Correios — MagnoJet
 
-Olá! Seja muito bem-vindo(a) a este projeto. Aqui você encontrará todas as informações necessárias para entender, instalar, executar e contribuir com este repositório.
+Olá! Seja muito bem-vindo(a) a este projeto. Esta plataforma foi desenvolvida para a empresa MagnoJet e tem como objetivo realizar a pré-postagem através das APIs oficiais dos Correios, oferecendo um fluxo simples, seguro e eficiente para geração de PLPs, etiquetas e integração logística.
 
-Fique à vontade para explorar, abrir issues, sugerir melhorias ou contribuir com pull requests. Toda colaboração é muito bem-vinda!
+Aqui você encontrará todas as informações necessárias para entender, instalar, executar e contribuir com este repositório. Fique à vontade para explorar, abrir issues, sugerir melhorias ou contribuir com pull requests. Toda colaboração é muito bem-vinda! 🚀
 
 ## Requisitos 
 
+* Laravel 12
 * PHP 8.2 ou superior - Conferir a versão: php -v 
 * MySQL 8.0 ou superior - Conferir a versão: mysql --version
 * Composer - Conferir a instalação: composer --version
