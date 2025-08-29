@@ -132,96 +132,84 @@
         </form>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const cepInput = document.getElementById('cep');
-            const ufInput = document.getElementById('uf');
-            const publicPlaceInput = document.getElementById('public_place');
-            const neighborhoodInput = document.getElementById('neighborhood');
-            const cityInput = document.getElementById('city');
-            const complementInput = document.getElementById('complement');
-            const cepLoading = document.getElementById('cep-loading');
-            const cepError = document.getElementById('cep-error');
-            
-            // Aplicar máscara de CEP
-            cepInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 5) {
-                    value = value.replace(/^(\d{5})(\d)/, '$1-$2');
-                }
-                if (value.length > 9) {
-                    value = value.substring(0, 9);
-                }
-                e.target.value = value;
-                
-                // Buscar CEP quando estiver completo
-                if (value.length === 9) {
-                    buscarCep(value);
-                }
-            });
-            
-            // Buscar CEP ao sair do campo (caso o usuário não tenha digitado o CEP completo)
-            cepInput.addEventListener('blur', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length === 8) {
-                    buscarCep(value);
-                }
-            });
-            
-            function buscarCep(cep) {
-                // Limpar mensagem de erro anterior
-                cepError.classList.add('hidden');
-                
-                // Mostrar indicador de carregamento
-                cepLoading.classList.remove('hidden');
-                
-                // Fazer requisição para a API ViaCEP
-                fetch(`https://viacep.com.br/ws/${cep}/json/`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Erro na requisição');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Esconder indicador de carregamento
-                        cepLoading.classList.add('hidden');
-                        
-                        if (data.erro) {
-                            // Mostrar mensagem de erro se o CEP não for encontrado
-                            cepError.classList.remove('hidden');
-                            cepError.textContent = 'CEP não encontrado';
-                            limparCamposEndereco();
-                            return;
-                        }
-                        
-                        // Preencher os campos com os dados retornados
-                        ufInput.value = data.uf || '';
-                        publicPlaceInput.value = data.logradouro || '';
-                        neighborhoodInput.value = data.bairro || '';
-                        cityInput.value = data.localidade || '';
-                        complementInput.value = data.complemento || '';
-                        
-                        // Dar foco para o campo número após preencher o endereço
-                        document.getElementById('number').focus();
-                    })
-                    .catch(error => {
-                        // Esconder indicador de carregamento e mostrar erro
-                        cepLoading.classList.add('hidden');
-                        cepError.classList.remove('hidden');
-                        cepError.textContent = 'Erro ao buscar CEP. Tente novamente.';
-                        limparCamposEndereco();
-                        console.error('Erro ao buscar CEP:', error);
-                    });
+     <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cepInput = document.getElementById('cep');
+        const ufInput = document.getElementById('uf');
+        const publicPlaceInput = document.getElementById('public_place');
+        const neighborhoodInput = document.getElementById('neighborhood');
+        const cityInput = document.getElementById('city');
+        const complementInput = document.getElementById('complement');
+        const cepLoading = document.getElementById('cep-loading');
+        const cepError = document.getElementById('cep-error');
+
+        // Permitir apenas números no campo CEP
+        cepInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // mantém só dígitos
+            if (value.length > 8) {
+                value = value.substring(0, 8); // máximo 8 dígitos
             }
-            
-            function limparCamposEndereco() {
-                ufInput.value = '';
-                publicPlaceInput.value = '';
-                neighborhoodInput.value = '';
-                cityInput.value = '';
-                complementInput.value = '';
+            e.target.value = value;
+
+            // Buscar CEP quando tiver os 8 dígitos
+            if (value.length === 8) {
+                buscarCep(value);
             }
         });
-    </script>
+
+        // Buscar CEP ao sair do campo
+        cepInput.addEventListener('blur', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length === 8) {
+                buscarCep(value);
+            }
+        });
+
+        function buscarCep(cep) {
+            cepError.classList.add('hidden');
+            cepLoading.classList.remove('hidden');
+
+            fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro na requisição');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    cepLoading.classList.add('hidden');
+
+                    if (data.erro) {
+                        cepError.classList.remove('hidden');
+                        cepError.textContent = 'CEP não encontrado';
+                        limparCamposEndereco();
+                        return;
+                    }
+
+                    ufInput.value = data.uf || '';
+                    publicPlaceInput.value = data.logradouro || '';
+                    neighborhoodInput.value = data.bairro || '';
+                    cityInput.value = data.localidade || '';
+                    complementInput.value = data.complemento || '';
+
+                    document.getElementById('number').focus();
+                })
+                .catch(error => {
+                    cepLoading.classList.add('hidden');
+                    cepError.classList.remove('hidden');
+                    cepError.textContent = 'Erro ao buscar CEP. Tente novamente.';
+                    limparCamposEndereco();
+                    console.error('Erro ao buscar CEP:', error);
+                });
+        }
+
+        function limparCamposEndereco() {
+            ufInput.value = '';
+            publicPlaceInput.value = '';
+            neighborhoodInput.value = '';
+            cityInput.value = '';
+            complementInput.value = '';
+        }
+    });
+</script>
 @endsection

@@ -93,7 +93,7 @@ function mostrarListaDestinatarios(lista) {
         `;
         btn.innerHTML = `
             <p class="font-semibold text-gray-800">${destinatario.name}</p>
-            <p class="text-sm text-gray-600">CNPJ: ${destinatario.cnpj}</p>
+            <p class="text-sm text-gray-600">${destinatario.public_place}</p>
             <p class="text-sm text-gray-600">${destinatario.city}/${destinatario.uf}</p>
         `;
         btn.onclick = () => preencherCamposDestinatario(destinatario);

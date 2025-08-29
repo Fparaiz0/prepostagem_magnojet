@@ -162,5 +162,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/show', [RangeController::class, 'show'])->name('tracks.show')->middleware('permission:show-range');
         Route::get('/create', [RangeController::class, 'create'])->name('tracks.create')->middleware('permission:create-range');
         Route::post('/', [RangeController::class, 'store'])->name('tracks.store')->middleware('permission:create-range');
+        Route::post('/{id}/toggle-invoice', [RangeController::class, 'toggleInvoice'])->name('tracks.toggleInvoice');
+        Route::get('/find-by-invoice/{invoice}', [RangeController::class, 'findByInvoice'])->name('ranges.findByInvoice');
     });
 });

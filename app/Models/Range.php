@@ -17,5 +17,7 @@ class Range extends Model implements Auditable
             'correios_etiquetas_id',
             'object_code',
             'used',
+            'selected',
+            'invoice',
         ];
 }

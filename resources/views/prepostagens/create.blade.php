@@ -308,5 +308,34 @@
     </div>
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const invoiceInput = document.getElementById("invoice_number");
+    const objectCodeInput = document.getElementById("object_code");
+
+    invoiceInput.addEventListener("blur", async () => {
+        const invoice = invoiceInput.value.trim();
+        if (!invoice) return;
+
+        try {
+            // chamada para a rota correta
+            const response = await fetch(`/range/find-by-invoice/${invoice}`);
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                // preenche o código de rastreamento automaticamente
+                objectCodeInput.value = data.object_code;
+            } else {
+                objectCodeInput.value = "";
+                alert(data.message || "Nota Fiscal não encontrada.");
+            }
+        } catch (error) {
+            console.error("Erro ao buscar código de rastreamento:", error);
+            alert("Erro ao buscar código de rastreamento. Tente novamente.");
+        }
+    });
+});
+</script>
+
 <script src="{{ asset('js/prepostagem.js') }}"></script>
 @endsection

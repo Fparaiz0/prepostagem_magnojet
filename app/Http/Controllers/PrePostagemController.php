@@ -10,22 +10,22 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use App\Models\CorreiosToken;
 use App\Models\Range;
+use Illuminate\Http\Request;
 
 class PrePostagemController extends Controller
 {
-  public function index()
+public function index(Request $request)
 {
     // 1. Buscar o token
     $token = CorreiosToken::latest()->first();
 
     if (!$token) {
         Log::warning('Token dos Correios não encontrado ao abrir index.');
-        // Você pode decidir retornar aqui ou continuar exibindo pré-postagens sem atualizar status
     } else {
         // 2. Buscar todas pré-postagens com situation = 1 para verificar
-        $prepostagens = Prepostagem::where('situation', 1)->get();
+        $prepostagensParaVerificar = Prepostagem::where('situation', 1)->get();
 
-        foreach ($prepostagens as $prepostagem) {
+        foreach ($prepostagensParaVerificar as $prepostagem) {
             try {
                 $response = Http::withoutVerifying()
                     ->withToken($token->token)
@@ -63,46 +63,74 @@ class PrePostagemController extends Controller
         Log::info('Verificação de pré-postagens concluída.');
     }
 
-    // 3. Buscar novamente as pré-postagens atualizadas para exibir na view
-    $prepostagens = Prepostagem::orderBy('id', 'DESC')
-        ->where('situation', 1)
-        ->paginate(50);
+    $query = Prepostagem::orderBy('id', 'DESC')
+        ->where('situation', 1);
+
+    // Adicionar filtro de pesquisa se existir
+    if ($request->has('search') && !empty($request->search)) {
+        $searchTerm = $request->search;
+        $query->where('name_recipient', 'like', '%' . $searchTerm . '%');
+    }
+
+    $prepostagens = $query->paginate(50);
 
     Log::info('Listar as Pré-Postagem.', ['action_user_id' => Auth::id()]);
 
-    return view('prepostagens.index', ['prepostagens' => $prepostagens]);
+    return view('prepostagens.index', [
+        'prepostagens' => $prepostagens,
+        'search' => $request->search // Passar o termo de pesquisa para a view
+    ]);
 }
 
+   // Listar as Pré-Postagem canceladas
+public function canceled(Request $request)
+{
+    // Recuperar os registros do banco dados
+    $query = Prepostagem::orderBy('id', 'DESC')
+        ->where('situation', 2);
 
-    // Listar as Pré-Postagem canceladas
-    public function canceled()
-    {
-        // Recuperar os registros do banco dados
-        $prepostagens = Prepostagem::orderBy('id', 'DESC')
-        ->where('situation', 2)
-        ->paginate(50);
-
-        // Salvar log
-        Log::info('Listar as Pré-Postagem canceladas.', ['action_user_id' => Auth::id()]);
-
-        // Carregar a view 
-        return view('prepostagens.canceled', ['prepostagens' => $prepostagens]);
+    // Adicionar filtro de pesquisa se existir
+    if ($request->has('search') && !empty($request->search)) {
+        $searchTerm = $request->search;
+        $query->where('name_recipient', 'like', '%' . $searchTerm . '%');
     }
 
-    // Listar as Pré-Postagem postadas
-    public function posted()
-    {
-        // Recuperar os registros do banco dados
-        $prepostagens = Prepostagem::orderBy('id', 'ASC')
-        ->where('situation', 3)
-        ->paginate(50);
+    $prepostagens = $query->paginate(50);
 
-        // Salvar log
-        Log::info('Listar as Pré-Postagem postadas.', ['action_user_id' => Auth::id()]);
+    // Salvar log
+    Log::info('Listar as Pré-Postagem canceladas.', ['action_user_id' => Auth::id()]);
 
-        // Carregar a view 
-        return view('prepostagens.posted', ['prepostagens' => $prepostagens]);
+    // Carregar a view 
+    return view('prepostagens.canceled', [
+        'prepostagens' => $prepostagens,
+        'search' => $request->search
+    ]);
+}
+
+// Listar as Pré-Postagem postadas
+public function posted(Request $request)
+{
+    // Recuperar os registros do banco dados
+    $query = Prepostagem::orderBy('id', 'DESC')
+        ->where('situation', 3);
+
+    // Adicionar filtro de pesquisa se existir
+    if ($request->has('search') && !empty($request->search)) {
+        $searchTerm = $request->search;
+        $query->where('name_recipient', 'like', '%' . $searchTerm . '%');
     }
+
+    $prepostagens = $query->paginate(50);
+
+    // Salvar log
+    Log::info('Listar as Pré-Postagem postadas.', ['action_user_id' => Auth::id()]);
+
+    // Carregar a view 
+    return view('prepostagens.posted', [
+        'prepostagens' => $prepostagens,
+        'search' => $request->search
+    ]);
+}
 
     // Visualizar os detalhes das Pré-Postagens
     public function show(Prepostagem $prepostagem)

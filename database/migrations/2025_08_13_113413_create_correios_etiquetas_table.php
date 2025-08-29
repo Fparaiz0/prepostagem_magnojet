@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('correios_etiquetas', function (Blueprint $table) {
             $table->id();
             $table->string('object_code')->unique();
-            $table->integer('used');  
+            $table->integer('used');
+            $table->string('invoice')->nullable()->default(null);
+            $table->integer('selected')->default(0);
             $table->timestamps();
         });
     }

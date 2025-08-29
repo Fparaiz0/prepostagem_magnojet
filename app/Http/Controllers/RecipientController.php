@@ -5,22 +5,31 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RecipientRequest;
 use App\Models\Recipient;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class RecipientController extends Controller
 {
     // Listar os destinatários
-    public function index()
+    public function index(Request $request)
     {
         // Recuperar os registros do banco dados
-        $recipients = Recipient::orderBy('name', 'ASC')->paginate(50);
+        $recipients = Recipient::when($request->has('nome'), function ($whenQuery) use ($request){
+            $whenQuery->where('name', 'like', '%' . $request->nome . '%');
+        })
+        ->orderByDesc('created_at')
+        ->paginate(50)
+        ->withQueryString();
+
+        // Carregar a VIEW
+        return view('recipients.index', [
+            'recipients' => $recipients,
+            'name' => $request->nome, // Alterado para $request->nome
+        ]);
 
         // Salvar log
         Log::info('Listar os destinatários.', ['action_user_id' => Auth::id()]);
-
-        // Carregar a view 
-        return view('recipients.index', ['recipients' => $recipients]);
     }
 
     // Visualizar os detalhes dos destinatários

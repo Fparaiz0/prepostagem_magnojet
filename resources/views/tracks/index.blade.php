@@ -59,10 +59,24 @@
                 </div>
             @else
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                    @foreach ($tracks as $range)
-                        <div
-                            class="px-3 py-2 bg-blue-50 border border-blue-100 rounded-md text-blue-800 font-mono text-sm hover:bg-blue-100 transition-colors cursor-default">
-                            {{ $range->object_code }}
+                    @foreach ($tracks as $index => $range)
+                        <div class="relative">
+                            <div class="absolute -top-2 -left-2 w-6 h-6 flex items-center justify-center bg-blue-200 text-black text-xs font-bold rounded-full">
+                                {{ ($tracks->currentPage() - 1) * $tracks->perPage() + $index + 1 }}
+                            </div>
+                            <div
+                                class="track-code px-3 py-2 border rounded-md font-mono text-sm transition-colors cursor-pointer 
+                                    {{ $range->selected ? 'text-red-800 bg-red-50 border-red-100 hover:bg-red-100' : 'text-blue-800 bg-blue-50 border-blue-100 hover:bg-blue-100' }}"
+                                data-id="{{ $range->id }}">
+                                
+                                {{-- Exibe código --}}
+                                <div>{{ $range->object_code }}</div>
+
+                                {{-- Exibe NF embaixo --}}
+                                @if ($range->invoice)
+                                    <div class="text-xs text-gray-600 mt-1">NF: {{ $range->invoice }}</div>
+                                @endif
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -88,44 +102,28 @@
                     <nav class="flex items-center space-x-1">
                         {{-- Previous Button --}}
                         @if ($tracks->onFirstPage())
-                            <span class="px-3 py-1 border rounded-md text-gray-400 cursor-not-allowed">
-                                <span class="sr-only">Anterior</span>
-                                &laquo;
-                            </span>
+                            <span class="px-3 py-1 border rounded-md text-gray-400 cursor-not-allowed">&laquo;</span>
                         @else
                             <a href="{{ $tracks->previousPageUrl() }}"
-                               class="px-3 py-1 border rounded-md bg-white text-gray-700 hover:bg-gray-50 transition-colors">
-                                <span class="sr-only">Anterior</span>
-                                &laquo;
-                            </a>
+                               class="px-3 py-1 border rounded-md bg-white text-gray-700 hover:bg-gray-50 transition-colors">&laquo;</a>
                         @endif
 
                         {{-- Page Numbers --}}
                         @foreach ($tracks->getUrlRange(1, $tracks->lastPage()) as $page => $url)
                             @if ($page == $tracks->currentPage())
-                                <span class="px-3 py-1 border rounded-md bg-blue-600 text-white font-medium">
-                                    {{ $page }}
-                                </span>
+                                <span class="px-3 py-1 border rounded-md bg-blue-600 text-white font-medium">{{ $page }}</span>
                             @else
                                 <a href="{{ $url }}"
-                                   class="px-3 py-1 border rounded-md bg-white text-gray-700 hover:bg-gray-50 transition-colors">
-                                    {{ $page }}
-                                </a>
+                                   class="px-3 py-1 border rounded-md bg-white text-gray-700 hover:bg-gray-50 transition-colors">{{ $page }}</a>
                             @endif
                         @endforeach
 
                         {{-- Next Button --}}
                         @if ($tracks->hasMorePages())
                             <a href="{{ $tracks->nextPageUrl() }}"
-                               class="px-3 py-1 border rounded-md bg-white text-gray-700 hover:bg-gray-50 transition-colors">
-                                <span class="sr-only">Próximo</span>
-                                &raquo;
-                            </a>
+                               class="px-3 py-1 border rounded-md bg-white text-gray-700 hover:bg-gray-50 transition-colors">&raquo;</a>
                         @else
-                            <span class="px-3 py-1 border rounded-md text-gray-400 cursor-not-allowed">
-                                <span class="sr-only">Próximo</span>
-                                &raquo;
-                            </span>
+                            <span class="px-3 py-1 border rounded-md text-gray-400 cursor-not-allowed">&raquo;</span>
                         @endif
                     </nav>
                 </div>
@@ -133,5 +131,102 @@
         @endif
     </div>
 </div>
+
+<!-- Modal com fundo blur -->
+<div id="invoiceModal" class="fixed inset-0 hidden items-center justify-center z-50 bg-black/40 backdrop-blur-sm">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Vincular Nota Fiscal</h2>
+        <input type="text" id="invoiceInput" class="w-full px-3 py-2 border rounded-md focus:ring focus:ring-blue-300" placeholder="Digite a nota fiscal">
+        <div class="flex justify-end mt-4 space-x-2">
+            <button id="cancelInvoice" class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300">Cancelar</button>
+            <button id="saveInvoice" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Salvar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let selectedId = null;
+        const modal = document.getElementById("invoiceModal");
+        const input = document.getElementById("invoiceInput");
+
+        document.querySelectorAll(".track-code").forEach(function (el) {
+            el.addEventListener("click", function () {
+                const id = el.getAttribute("data-id");
+
+                if (el.classList.contains("text-blue-800")) {
+                    // Abrir modal para digitar NF
+                    selectedId = id;
+                    input.value = "";
+                    modal.classList.remove("hidden");
+                    modal.classList.add("flex");
+                    input.focus();
+                } else {
+                    // Já estava selecionado → desmarcar
+                    if (confirm("Tem certeza que deseja remover a NF desta etiqueta?")) {
+                        toggleInvoice(id, null, el);
+                    }
+                }
+            });
+        });
+
+        document.getElementById("cancelInvoice").addEventListener("click", function () {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        });
+
+        document.getElementById("saveInvoice").addEventListener("click", function () {
+            const invoice = input.value.trim();
+            if (!invoice) {
+                alert("Digite a nota fiscal.");
+                return;
+            }
+
+            // 1. Checar se já existe NF igual em outro elemento
+            const exists = Array.from(document.querySelectorAll(".track-code"))
+                .some(el => el.querySelector(".text-xs")?.innerText === `NF: ${invoice}`);
+
+            const el = document.querySelector(`.track-code[data-id='${selectedId}']`);
+            toggleInvoice(selectedId, invoice, el);
+
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        });
+
+        function toggleInvoice(id, invoice, el) {
+            fetch(`/range/${id}/toggle-invoice`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                },
+                body: JSON.stringify({ invoice: invoice })
+            })
+            .then(res => res.json())
+            .then(response => {
+                if (response.success) {
+                    if (response.data.selected === 1) {
+                        el.classList.remove("text-blue-800", "bg-blue-50", "border-blue-100", "hover:bg-blue-100");
+                        el.classList.add("text-red-800", "bg-red-50", "border-red-100", "hover:bg-red-100");
+
+                        // Exibir NF embaixo
+                        if (invoice) {
+                            el.innerHTML = `<div>${response.data.object_code}</div><div class="text-xs text-gray-600 mt-1">NF: ${invoice}</div>`;
+                        }
+                    } else {
+                        el.classList.remove("text-red-800", "bg-red-50", "border-red-100", "hover:bg-red-100");
+                        el.classList.add("text-blue-800", "bg-blue-50", "border-blue-100", "hover:bg-blue-100");
+
+                        // Voltar só para o código
+                        el.innerHTML = `<div>${response.data.object_code}</div>`;
+                    }
+                } else {
+                    alert(response.message || "Erro ao atualizar.");
+                }
+            })
+            .catch(() => alert("Erro de comunicação com o servidor."));
+        }
+    });
+</script>
 
 @endsection
