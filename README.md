@@ -216,7 +216,7 @@ php artisan migrate
 
 ## Como enviar e baixar os arquivos do GitHub
 
-- Criar o repositório **"projeto-laravel-12"** no GitHub.
+- Criar o repositório **"prepostagem_correios"** no GitHub.
 - Criar o branch **"develop"** no repositório.
 
 Baixar os arquivos do Git.
