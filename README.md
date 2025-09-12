@@ -6,7 +6,7 @@ Aqui você encontrará todas as informações necessárias para entender, instal
 
 ## Requisitos 
 
-* Laravel 12
+* Laravel 12 - Conferir a versão: php artisan --version
 * PHP 8.2 ou superior - Conferir a versão: php -v 
 * MySQL 8.0 ou superior - Conferir a versão: mysql --version
 * Composer - Conferir a instalação: composer --version
