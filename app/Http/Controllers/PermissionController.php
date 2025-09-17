@@ -19,7 +19,7 @@ class PermissionController extends Controller
         // Salvar log
         Log::info('Listar as permissões.', ['action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('permissions.index', ['permissions' => $permissions]);
     }
 
@@ -29,14 +29,14 @@ class PermissionController extends Controller
         // Salvar log
         Log::info('Visualizar a permissão.', ['permission_id' => $permission->id, 'action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('permissions.show', ['permission' => $permission]);
     }
 
     // Carregar o formulário cadastrar nova permissão ou página
     public function create()
     {
-        // Carregar a view 
+        // Carregar a view
         return view('permissions.create');
     }
 
@@ -69,7 +69,7 @@ class PermissionController extends Controller
     // Carregar o formulário editar permissão ou página
     public function edit(Permission $permission)
     {
-        // Carregar a view 
+        // Carregar a view
         return view('permissions.edit', ['permission' => $permission]);
     }
 
@@ -110,7 +110,7 @@ class PermissionController extends Controller
 
             // Salvar log
             Log::info('Permissão apagada.', ['permission_id' => $permission->id, 'action_user_id' => Auth::id()]);
-            
+
             // Redirecionar o usuário, enviar a mensagem de sucesso
             return redirect()->route('permissions.index')->with('success', 'Permissão apagada com sucesso!');
         } catch (Exception $e) {

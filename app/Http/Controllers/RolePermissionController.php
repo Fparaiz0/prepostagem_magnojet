@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +15,7 @@ class RolePermissionController extends Controller
     public function index(Role $role)
     {
         // Verificar se o papel é super admin, não permitir visualizar as permissões
-        if($role->name == 'Super Admin'){
+        if ($role->name == 'Super Admin') {
             // Salvar log
             Log::info('A permissão do Super Admin não pode ser acessada.', ['role_id' => $role->id, 'action_user_id' => Auth::id()]);
 
@@ -26,21 +25,21 @@ class RolePermissionController extends Controller
 
         // Recuperar as permissões do papel
         $rolePermissions = DB::table('role_has_permissions')
-        ->where('role_id', $role->id)
-        ->pluck('permission_id')
-        ->all();
+            ->where('role_id', $role->id)
+            ->pluck('permission_id')
+            ->all();
 
         // Recuperar as permissões
-        $permissions = Permission::orderBy('name')->get(); 
+        $permissions = Permission::orderBy('name')->get();
 
         // Salvar log
         Log::info('Listar as permissões do papel.', ['role_id' => $role->id, 'action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('role_permissions.index', [
             'rolePermissions' => $rolePermissions,
-            'permissions' => $permissions, 
-            'role' => $role, 
+            'permissions' => $permissions,
+            'role' => $role,
         ]);
     }
 
@@ -48,29 +47,29 @@ class RolePermissionController extends Controller
     public function update(Role $role, Permission $permission)
     {
         // Capturar possíveis exceções durante a execução
-        try{
+        try {
             // Definir ação (Bloquear ou Liberar)
-            $action = $role->permissions->contains($permission) ? 'bloquear' : 'liberar'; 
+            $action = $role->permissions->contains($permission) ? 'bloquear' : 'liberar';
 
             // Liberar ou bloquear a permissão
-           $role->{$action === 'bloquear' ? 'revokePermissionTo' : 'givePermissionTo'}($permission); 
+            $role->{$action === 'bloquear' ? 'revokePermissionTo' : 'givePermissionTo'}($permission);
 
-            // Salvar log 
-           Log::info(ucfirst($action) . 'permissão para o papel', [
-            'role_id' => $role->id,
-            'permission_id' => $permission->id, 
-            'action_user_id'=> Auth::id()
-        ]);
+            // Salvar log
+            Log::info(ucfirst($action).'permissão para o papel', [
+                'role_id' => $role->id,
+                'permission_id' => $permission->id,
+                'action_user_id' => Auth::id(),
+            ]);
 
-           // Redirecionar o usuário, enviar a mensagem de sucesso 
-           return redirect()->route('role-permissions.index', ['role' => $role->id])->with('success','Permissão' . ($action === 'bloquear' ? ' bloqueada ' : ' liberada ') . 'com sucesso!');
+            // Redirecionar o usuário, enviar a mensagem de sucesso
+            return redirect()->route('role-permissions.index', ['role' => $role->id])->with('success', 'Permissão'.($action === 'bloquear' ? ' bloqueada ' : ' liberada ').'com sucesso!');
 
-        } catch(Exception $e) {
-            // Salvar log 
+        } catch (Exception $e) {
+            // Salvar log
             Log::notice('Permissão para o papel não editada.', ['error' => $e->getMessage(), 'action_user_id' => Auth::id()]);
 
-            // Redirecionar o usuário, enviar a mensagem de erro 
-            return back()->withInput()->with('error', 'Permissão para o papel não editada!'); 
+            // Redirecionar o usuário, enviar a mensagem de erro
+            return back()->withInput()->with('error', 'Permissão para o papel não editada!');
         }
     }
 }

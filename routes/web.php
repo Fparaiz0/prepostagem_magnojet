@@ -1,28 +1,25 @@
 <?php
 
-
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ForgotPasswordController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\RolePermissionController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserStatusController;
 use App\Http\Controllers\PackagingController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PrePostagemController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RangeController;
 use App\Http\Controllers\RecipientController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\SenderController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserStatusController;
 use Illuminate\Support\Facades\Route;
 
-
-// Página inicial do site 
+// Página inicial do site
 Route::get('/', [AuthController::class, 'index'])->name('login');
 
-// Tela de login 
+// Tela de login
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 
 // Processar os dados do login
@@ -31,17 +28,17 @@ Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.proc
 // Logout
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Formulário cadastrar novo usuário 
+// Formulário cadastrar novo usuário
 Route::get('/register', [AuthController::class, 'create'])->name('register');
 
 // Receber os dados do formulário e cadastrar novo usuário
 Route::post('/register', [AuthController::class, 'store'])->name('register.store');
 
-// Solicitar link para resetar a senha  
+// Solicitar link para resetar a senha
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
-// Formulário para redefinir a senha com o token 
+// Formulário para redefinir a senha com o token
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showRequestForm'])->name('password.reset');
 Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
@@ -95,10 +92,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/{role}', [RoleController::class, 'destroy'])->name('roles.destroy')->middleware('permission:destroy-role');
     });
 
-    // Permissão do papel 
+    // Permissão do papel
     Route::prefix('role-permissions')->group(function () {
         Route::get('/{role}', [RolePermissionController::class, 'index'])->name('role-permissions.index')->middleware('permission:index-role-permission');
-        Route::get('/{role}/{permission}', [RolePermissionController::class, 'update'])->name('role-permissions.update')->middleware('permission:update-role-permission');  
+        Route::get('/{role}/{permission}', [RolePermissionController::class, 'update'])->name('role-permissions.update')->middleware('permission:update-role-permission');
     });
 
     // Permissão
@@ -150,11 +147,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', [PrepostagemController::class, 'index'])->name('prepostagens.index')->middleware('permission:index-prepostagem');
         Route::get('/create', [PrepostagemController::class, 'create'])->name('prepostagens.create')->middleware('permission:create-prepostagem');
         Route::get('/canceled', [PrepostagemController::class, 'canceled'])->name('prepostagens.canceled')->middleware('permission:canceled-prepostagem');
-         Route::get('/posted', [PrepostagemController::class, 'posted'])->name('prepostagens.posted')->middleware('permission:posted-prepostagem');
+        Route::get('/posted', [PrepostagemController::class, 'posted'])->name('prepostagens.posted')->middleware('permission:posted-prepostagem');
         Route::get('/{prepostagem}', [PrepostagemController::class, 'show'])->name('prepostagens.show')->middleware('permission:show-prepostagem');
         Route::post('/', [PrepostagemController::class, 'store'])->name('prepostagens.store')->middleware('permission:create-prepostagem');
         Route::delete('/{prepostagem}', [PrepostagemController::class, 'destroy'])->name('prepostagens.destroy')->middleware('permission:destroy-prepostagem');
-   });
+        Route::post('/prepostagens/imprimir-selecionados', [PrePostagemController::class, 'imprimirSelecionados'])->name('prepostagens.imprimir-selecionados')->middleware('auth');
+        Route::post('/prepostagens/imprimir-todas', [PrePostagemController::class, 'imprimirTodas'])->name('prepostagens.imprimir-todas')->middleware('auth');
+        Route::get('/prepostagens/baixar-pdf/{idRecibo}', [PrePostagemController::class, 'baixarPDF'])->name('prepostagens.baixar-pdf')->middleware('auth');
+    });
 
     // Range de etiquetas
     Route::prefix('range')->group(function () {

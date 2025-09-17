@@ -42,7 +42,7 @@ class RangeController extends Controller
     public function show(Request $request)
     {
         // Query base para etiquetas utilizadas
-        $query = Range::where('used', 1)->orderBy('id', 'DESC');
+        $query = Range::where('used', 1)->orderBy('updated_at', 'DESC');
 
         // Adicionar filtro de pesquisa se existir
         if ($request->has('search') && !empty($request->search)) {
@@ -115,6 +115,7 @@ class RangeController extends Controller
                     Range::create([
                         'object_code' => $codigoEtiqueta,
                         'used' => 0,
+                        'selected' => 0
                     ]);
                 }
 

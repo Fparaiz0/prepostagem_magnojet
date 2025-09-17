@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Services\CorreiosTokenService;
-use App\Http\Controllers\Api\SenderApiController;
+use App\Http\Controllers\Api\PackagingApiController;
 use App\Http\Controllers\Api\RecipientApiController;
-use App\Http\Controllers\Api\PackagingApiController; 
+use App\Http\Controllers\Api\SenderApiController;
+use App\Services\CorreiosTokenService;
+use Illuminate\Support\Facades\Route;
 
 // Rota para buscar remetente, destinatário e embalagem
 Route::get('/remetentes/buscar', [SenderApiController::class, 'buscar']);

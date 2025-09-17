@@ -19,7 +19,7 @@ class AuthLoginRequest extends FormRequest
     /**
      * Retorna as regras de validação aplicáveis à requisição.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string> 
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      * Regras de validação.
      */
     public function rules(): array
@@ -38,9 +38,9 @@ class AuthLoginRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => "Campo e-mail é obrigatório!",
-            'email.email' => "Necessário enviar e-mail válido!",
-            'password.required' => "Campo senha é obrigatório!",
+            'email.required' => 'Campo e-mail é obrigatório!',
+            'email.email' => 'Necessário enviar e-mail válido!',
+            'password.required' => 'Campo senha é obrigatório!',
         ];
     }
 }

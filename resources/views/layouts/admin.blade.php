@@ -32,8 +32,7 @@
             <!-- Botão menu -->
             <button id="toggleSidebar" class="menu-button">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 6h16M4 12h16M4 18h16" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
 
@@ -46,8 +45,8 @@
                         @endauth
                         <svg class="ml-2 h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"
-                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                  clip-rule="evenodd" />
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
                         </svg>
                     </button>
 
@@ -72,7 +71,7 @@
                 <button id="closeSidebar" class="sidebar-close-button">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M6 18L18 6M6 6l12 12" />
+                            d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
 
@@ -91,14 +90,12 @@
                     <!-- Etiquetas -->
                     @can('index-range')
                         <div x-data="{ open: false }" class="w-full">
-                            <button @click="open = !open" class="sidebar-link w-full flex justify-between cursor-pointer items-center">
+                            <button @click="open = !open"
+                                class="sidebar-link w-full flex justify-between cursor-pointer items-center">
                                 Etiquetas
-                                <svg :class="{ 'rotate-180': open }"
-                                     class="w-4 h-4 transition-transform duration-200"
-                                     fill="none" stroke="currentColor" stroke-width="2"
-                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M19 9l-7 7-7-7"></path>
+                                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform duration-200"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
                                 </svg>
                             </button>
 
@@ -117,14 +114,12 @@
                     <!-- Pré-Postagem -->
                     @can('index-prepostagem')
                         <div x-data="{ open: false }" class="w-full">
-                            <button @click="open = !open" class="sidebar-link w-full cursor-pointer flex justify-between items-center">
+                            <button @click="open = !open"
+                                class="sidebar-link w-full cursor-pointer flex justify-between items-center">
                                 Pré-Postagem
-                                <svg :class="{ 'rotate-180': open }"
-                                     class="w-4 h-4 transition-transform duration-200"
-                                     fill="none" stroke="currentColor" stroke-width="2"
-                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M19 9l-7 7-7-7"></path>
+                                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform duration-200"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
                                 </svg>
                             </button>
 
@@ -187,11 +182,11 @@
         const dropdownButton = document.getElementById('userDropdownButton');
         const dropdownContent = document.getElementById('dropdownContent');
 
-        dropdownButton.addEventListener('click', function () {
+        dropdownButton.addEventListener('click', function() {
             dropdownContent.classList.toggle('hidden');
         });
 
-        window.addEventListener('click', function (event) {
+        window.addEventListener('click', function(event) {
             if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
                 dropdownContent.classList.add('hidden');
             }
@@ -200,11 +195,11 @@
 
     <!-- Sidebar Toggle Script -->
     <script>
-        document.getElementById('toggleSidebar').addEventListener('click', function () {
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('sidebar-open');
         });
 
-        document.getElementById('closeSidebar').addEventListener('click', function () {
+        document.getElementById('closeSidebar').addEventListener('click', function() {
             document.getElementById('sidebar').classList.remove('sidebar-open');
         });
     </script>

@@ -7,10 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Classe de requisição para validação de usuários.
  *
- * Responsável por definir as regras de validação e mensagens de erro 
+ * Responsável por definir as regras de validação e mensagens de erro
  * para operações relacionadas a usuários, como criação e edição.
- *
- * @package App\Http\Requests
  */
 class UserRequest extends FormRequest
 {
@@ -27,7 +25,7 @@ class UserRequest extends FormRequest
     /**
      * Retorna as regras de validação aplicáveis à requisição.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string> 
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      * Regras de validação.
      */
     public function rules(): array
@@ -36,7 +34,7 @@ class UserRequest extends FormRequest
 
         return [
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . ($user ? $user->id : null),
+            'email' => 'required|email|unique:users,email,'.($user ? $user->id : null),
             'password' => 'required_if:password,!=null|confirmed|min:6',
         ];
     }
@@ -49,13 +47,13 @@ class UserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => "Campo nome é obrigatório!",
-            'email.required' => "Campo e-mail é obrigatório!",
-            'email.email' => "Necessário enviar e-mail válido!",
-            'email.unique' => "O e-mail já está cadastrado!",
-            'password.required' => "Campo senha é obrigatório!",
-            'password.confirmed' => "A confirmação da senha não corresponde",
-            'password.min' => "Senha com no mínimo :min caracteres!",
+            'name.required' => 'Campo nome é obrigatório!',
+            'email.required' => 'Campo e-mail é obrigatório!',
+            'email.email' => 'Necessário enviar e-mail válido!',
+            'email.unique' => 'O e-mail já está cadastrado!',
+            'password.required' => 'Campo senha é obrigatório!',
+            'password.confirmed' => 'A confirmação da senha não corresponde',
+            'password.min' => 'Senha com no mínimo :min caracteres!',
         ];
     }
 }

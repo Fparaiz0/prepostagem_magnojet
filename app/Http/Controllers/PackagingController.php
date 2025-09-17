@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PackagingRequest;
 use App\Models\Packaging;
 use Exception;
-use App\Http\Requests\PackagingRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -19,7 +19,7 @@ class PackagingController extends Controller
         // Salvar log
         Log::info('Listar as embalagens.', ['action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('packagings.index', ['packagings' => $packagings]);
     }
 
@@ -29,14 +29,14 @@ class PackagingController extends Controller
         // Salvar log
         Log::info('Visualizar a embalagem.', ['packaging_id' => $packaging->id, 'action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('packagings.show', ['packaging' => $packaging]);
     }
 
     // Carregar o formulário cadastrar nova embalagem
     public function create()
     {
-        // Carregar a view 
+        // Carregar a view
         return view('packagings.create');
     }
 
@@ -47,13 +47,13 @@ class PackagingController extends Controller
         try {
             // Cadastrar no banco de dados na tabela packagings
             $packaging = Packaging::create([
-                'name' => $request->name, 
-                'height' => $request->height,  
-                'width'=> $request->width,
+                'name' => $request->name,
+                'height' => $request->height,
+                'width' => $request->width,
                 'length' => $request->length,
-                'diameter' => $request->diameter, 
-                'weight'=> $request->weight,
-                'active' => $request->active
+                'diameter' => $request->diameter,
+                'weight' => $request->weight,
+                'active' => $request->active,
             ]);
 
             // Salvar log
@@ -74,24 +74,24 @@ class PackagingController extends Controller
     // Carregar o formulário editar embalagem
     public function edit(Packaging $packaging)
     {
-        // Carregar a view 
+        // Carregar a view
         return view('packagings.edit', ['packaging' => $packaging]);
-        }
+    }
 
-        // Editar no banco de dados a embalagem
-        public function update(PackagingRequest $request, Packaging $packaging)
-        {
-            // Capturar possíveis exceções durante a execução.
-            try {
+    // Editar no banco de dados a embalagem
+    public function update(PackagingRequest $request, Packaging $packaging)
+    {
+        // Capturar possíveis exceções durante a execução.
+        try {
             // Editar as informações do registro no banco de dados
             $packaging->update([
-                'name' => $request->name, 
-                'height' => $request->height,  
-                'width'=> $request->width,
+                'name' => $request->name,
+                'height' => $request->height,
+                'width' => $request->width,
                 'length' => $request->length,
-                'diameter' => $request->diameter, 
-                'weight'=> $request->weight,
-                'active' => $request->active
+                'diameter' => $request->diameter,
+                'weight' => $request->weight,
+                'active' => $request->active,
             ]);
 
             // Salvar log

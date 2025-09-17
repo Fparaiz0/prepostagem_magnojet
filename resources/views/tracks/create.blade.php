@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-
     <!-- Wrapper Principal -->
     <div class="content-wrapper">
 
@@ -33,7 +32,8 @@
             </div>
 
             <!-- Formulário de Geração de Etiquetas -->
-            <form action="{{ route('tracks.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-auto border-blue-200 border">
+            <form action="{{ route('tracks.store') }}" method="POST"
+                class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-auto border-blue-200 border">
                 @csrf
 
                 <h2 class="text-xl font-semibold mb-4 text-gray-800">Gerar Etiquetas</h2>
@@ -43,16 +43,9 @@
                     <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">
                         Quantidade de etiquetas
                     </label>
-                    <input
-                        type="number"
-                        name="amount"
-                        id="amount"
-                        value="{{ old('amount') }}"
-                        placeholder="Digite a quantidade"
-                        required
-                        min="500"
-                        class="w-full border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
+                    <input type="number" name="amount" id="amount" value="{{ old('amount') }}"
+                        placeholder="Digite a quantidade" required min="500"
+                        class="w-full border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     @error('amount')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -60,8 +53,7 @@
 
                 <!-- Botão: Gerar -->
                 <div class="flex justify-end">
-                    <button
-                        type="submit"
+                    <button type="submit"
                         class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-md shadow-sm transition duration-150 ease-in-out cursor-pointer">
                         Gerar
                     </button>
@@ -73,5 +65,4 @@
 
         </div>
     </div>
-
 @endsection

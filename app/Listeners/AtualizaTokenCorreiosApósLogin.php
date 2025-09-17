@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use Illuminate\Auth\Events\Login;
 use App\Services\CorreiosTokenService;
+use Illuminate\Auth\Events\Login;
 
 class AtualizaTokenCorreiosApósLogin
 {
@@ -17,7 +17,6 @@ class AtualizaTokenCorreiosApósLogin
     /**
      * Handle the event.
      *
-     * @param  Login  $event
      * @return void
      */
     public function handle(Login $event)

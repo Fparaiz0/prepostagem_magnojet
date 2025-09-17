@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Sender;
+use Illuminate\Http\Request;
 
 class SenderApiController extends Controller
 {
@@ -14,14 +14,14 @@ class SenderApiController extends Controller
         $nome = $request->get('nome');
 
         $remetente = Sender::when($cnpj, function ($query, $cnpj) {
-                return $query->where('cnpj', $cnpj);
-            })
+            return $query->where('cnpj', $cnpj);
+        })
             ->when($nome, function ($query, $nome) {
                 return $query->orWhere('name', 'like', "%{$nome}%");
             })
             ->first();
 
-        if (!$remetente) {
+        if (! $remetente) {
             return response()->json(['message' => 'Remetente não encontrado'], 404);
         }
 
@@ -35,5 +35,5 @@ class SenderApiController extends Controller
             'cidade' => $remetente->city,
             'uf' => $remetente->uf,
         ]);
-    }   
+    }
 }

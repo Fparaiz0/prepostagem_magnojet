@@ -8,21 +8,21 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Recipient extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    
+
     // Indicar o nome da tabela
     protected $table = 'recipients';
 
     // Indicar quais colunas podem ser manipuladas
-    protected $fillable =  [
+    protected $fillable = [
         'recipient_id',
         'name',
-        'cnpj',  
+        'cnpj',
         'cep',
         'public_place',
-        'number', 
+        'number',
         'complement',
-        'neighborhood', 
+        'neighborhood',
         'city',
-        'uf'
+        'uf',
     ];
 }

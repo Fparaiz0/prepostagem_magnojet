@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,12 +23,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrap();
-        
+
         Schema::defaultStringLength(191);
 
-        // Super Admin tem acesso a todas as páginas 
-        Gate::before(function($user, $ability){
-            return $user->hasRole('Super Admin') ? true : null; 
-        }); 
+        // Super Admin tem acesso a todas as páginas
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('Super Admin') ? true : null;
+        });
     }
 }

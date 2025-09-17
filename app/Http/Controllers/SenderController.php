@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SenderRequest;
 use App\Models\Sender;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\SenderRequest;
 use Illuminate\Support\Facades\Log;
 
 class SenderController extends Controller
@@ -19,7 +19,7 @@ class SenderController extends Controller
         // Salvar log
         Log::info('Listar os remetentes.', ['action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('senders.index', ['senders' => $senders]);
     }
 
@@ -29,14 +29,14 @@ class SenderController extends Controller
         // Salvar log
         Log::info('Visualizar o remetente.', ['sender_id' => $sender->id, 'action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('senders.show', ['sender' => $sender]);
     }
 
     // Carregar o formulário cadastrar novo remetente
     public function create()
     {
-        // Carregar a view 
+        // Carregar a view
         return view('senders.create');
     }
 
@@ -47,14 +47,14 @@ class SenderController extends Controller
         try {
             // Cadastrar no banco de dados na tabela senders
             $sender = Sender::create([
-                'name' => $request->name, 
-                'cnpj' => $request->cnpj,  
-                'cep'=> $request->cep,
+                'name' => $request->name,
+                'cnpj' => $request->cnpj,
+                'cep' => $request->cep,
                 'public_place' => $request->public_place,
-                'number' => $request->number, 
-                'neighborhood'=> $request->neighborhood,
-                'city' => $request->city, 
-                'uf' => $request->uf
+                'number' => $request->number,
+                'neighborhood' => $request->neighborhood,
+                'city' => $request->city,
+                'uf' => $request->uf,
             ]);
 
             // Salvar log
@@ -72,28 +72,28 @@ class SenderController extends Controller
         }
     }
 
-     // Carregar o formulário editar remetente
+    // Carregar o formulário editar remetente
     public function edit(Sender $sender)
     {
-        // Carregar a view 
+        // Carregar a view
         return view('senders.edit', ['sender' => $sender]);
-        }
+    }
 
-        // Editar no banco de dados o remetente
-        public function update(SenderRequest $request, Sender $sender)
-        {
-            // Capturar possíveis exceções durante a execução.
-            try {
+    // Editar no banco de dados o remetente
+    public function update(SenderRequest $request, Sender $sender)
+    {
+        // Capturar possíveis exceções durante a execução.
+        try {
             // Editar as informações do registro no banco de dados
             $sender->update([
-                'name' => $request->name, 
-                'cnpj' => $request->cnpj,  
-                'cep'=> $request->cep,
+                'name' => $request->name,
+                'cnpj' => $request->cnpj,
+                'cep' => $request->cep,
                 'public_place' => $request->public_place,
-                'number' => $request->number, 
-                'neighborhood'=> $request->neighborhood,
-                'city' => $request->city, 
-                'uf' => $request->uf
+                'number' => $request->number,
+                'neighborhood' => $request->neighborhood,
+                'city' => $request->city,
+                'uf' => $request->uf,
             ]);
 
             // Salvar log
@@ -111,7 +111,7 @@ class SenderController extends Controller
         }
     }
 
-     // Excluir o remetente do banco de dados
+    // Excluir o remetente do banco de dados
     public function destroy(Sender $sender)
     {
         // Capturar possíveis exceções durante a execução.

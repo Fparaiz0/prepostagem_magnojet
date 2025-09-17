@@ -7,10 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Classe de requisição para validação de status para usuários.
  *
- * Responsável por definir as regras de validação e mensagens de erro 
+ * Responsável por definir as regras de validação e mensagens de erro
  * para operações relacionadas a status para usuários, como criação e edição.
- *
- * @package App\Http\Requests
  */
 class UserStatusRequest extends FormRequest
 {
@@ -27,7 +25,7 @@ class UserStatusRequest extends FormRequest
     /**
      * Retorna as regras de validação aplicáveis à requisição.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string> 
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      * Regras de validação.
      */
     public function rules(): array
@@ -35,7 +33,7 @@ class UserStatusRequest extends FormRequest
         $userStatus = $this->route('userStatus');
 
         return [
-            'name' => 'required|unique:user_statuses,name,' . ($userStatus ? $userStatus->id : null),
+            'name' => 'required|unique:user_statuses,name,'.($userStatus ? $userStatus->id : null),
         ];
     }
 
@@ -47,8 +45,8 @@ class UserStatusRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => "Campo nome é obrigatório!",
-            'name.unique' => "O nome já está cadastrado!",
+            'name.required' => 'Campo nome é obrigatório!',
+            'name.unique' => 'O nome já está cadastrado!',
         ];
     }
 }

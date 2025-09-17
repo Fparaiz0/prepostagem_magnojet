@@ -23,7 +23,7 @@ class UserController extends Controller
         // Salvar log
         Log::info('Listar os usuários.', ['action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('users.index', ['users' => $users]);
     }
 
@@ -34,7 +34,7 @@ class UserController extends Controller
         // Salvar log
         Log::info('Visualizar o usuário.', ['user_id' => $user->id, 'action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('users.show', ['user' => $user]);
     }
 
@@ -42,9 +42,9 @@ class UserController extends Controller
     public function create()
     {
         // Recuperar os papéis
-        $roles = Role::pluck('name')->all(); 
+        $roles = Role::pluck('name')->all();
 
-        // Carregar a view 
+        // Carregar a view
         return view('users.create', ['roles' => $roles]);
     }
 
@@ -61,13 +61,13 @@ class UserController extends Controller
             ]);
 
             // Verificar se veio algum papel selecionado
-            if($request->filled('roles')){
-                // Verificar se todos os papéis existem 
+            if ($request->filled('roles')) {
+                // Verificar se todos os papéis existem
                 $validRoles = Role::whereIn('name', $request->roles)->pluck('name')->toArray();
 
-                // Atribui os papéis válidos ao usuário 
-                $user->syncRoles($validRoles); // Se for apenas um papel coloque assignRole() no lugar de syncRoles que serve para vários papéis 
-                
+                // Atribui os papéis válidos ao usuário
+                $user->syncRoles($validRoles); // Se for apenas um papel coloque assignRole() no lugar de syncRoles que serve para vários papéis
+
             }
 
             // Salvar log
@@ -88,13 +88,13 @@ class UserController extends Controller
     // Carregar o formulário editar usuário
     public function edit(User $user)
     {
-        // Recuperar os papéis 
+        // Recuperar os papéis
         $roles = Role::pluck('name')->all();
 
         // Recuperar os papéis do usuário
-        $userRoles = $user->roles->pluck('name')->toArray(); 
+        $userRoles = $user->roles->pluck('name')->toArray();
 
-        // Carregar a view 
+        // Carregar a view
         return view('users.edit', ['user' => $user, 'roles' => $roles, 'userRoles' => $userRoles]);
     }
 
@@ -110,15 +110,15 @@ class UserController extends Controller
             ]);
 
             // Se houver papéis enviados no request, sincroniza-os com o usuário
-            if($request->filled('roles')){
-                // Verificar se todos os papéis existem 
+            if ($request->filled('roles')) {
+                // Verificar se todos os papéis existem
                 $validRoles = Role::whereIn('name', $request->roles)->pluck('name')->toArray();
 
-                // Atribui os papéis válidos ao usuário 
-                $user->syncRoles($validRoles); // Se for apenas um papel coloque assignRole() no lugar de syncRoles que serve para vários papéis 
-            }else{
+                // Atribui os papéis válidos ao usuário
+                $user->syncRoles($validRoles); // Se for apenas um papel coloque assignRole() no lugar de syncRoles que serve para vários papéis
+            } else {
                 // Se nenhum papel for enviado, remove todos os papéis do usuário
-                $user->syncRoles([]); 
+                $user->syncRoles([]);
             }
 
             // Salvar log
@@ -139,7 +139,7 @@ class UserController extends Controller
     // Carregar o formulário editar senha do usuário
     public function editPassword(User $user)
     {
-        // Carregar a view 
+        // Carregar a view
         return view('users.edit_password', ['user' => $user]);
     }
 
@@ -152,9 +152,9 @@ class UserController extends Controller
                 'password' => 'required|confirmed|min:6',
             ],
             [
-                'password.required' => "Campo senha é obrigatório!",
+                'password.required' => 'Campo senha é obrigatório!',
                 'password.confirmed' => 'A confirmação da senha não corresponde!',
-                'password.min' => "Senha com no mínimo :min caracteres!",
+                'password.min' => 'Senha com no mínimo :min caracteres!',
             ]
         );
 

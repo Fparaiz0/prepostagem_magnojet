@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Packaging;
+use Illuminate\Http\Request;
 
 class PackagingApiController extends Controller
 {
@@ -13,12 +13,12 @@ class PackagingApiController extends Controller
         $nome = $request->get('nome');
 
         $embalagem = Packaging::when($nome, function ($query, $nome) {
-                return $query->where('name', 'like', "%{$nome}%")
-                             ->where('active', 1);
-            })
+            return $query->where('name', 'like', "%{$nome}%")
+                ->where('active', 1);
+        })
             ->first();
 
-        if (!$embalagem) {
+        if (! $embalagem) {
             return response()->json(['message' => 'Embalagem nao encontrada'], 404);
         }
 
@@ -30,5 +30,5 @@ class PackagingApiController extends Controller
             'diametro' => $embalagem->diameter,
             'peso' => $embalagem->weight,
         ]);
-    }   
+    }
 }

@@ -19,7 +19,7 @@ class ProfileController extends Controller
         // Salvar log
         Log::info('Visualizar o perfil.', ['action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('profile.show', ['user' => $user]);
     }
 
@@ -32,7 +32,7 @@ class ProfileController extends Controller
         // Salvar log
         Log::info('Formulario editar o perfil.', ['action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('profile.edit', ['user' => $user]);
     }
 
@@ -46,13 +46,13 @@ class ProfileController extends Controller
         $request->validate(
             [
                 'name' => 'required',
-                'email' => 'required|email|unique:users,email,' . ($user ? $user->id : null),
+                'email' => 'required|email|unique:users,email,'.($user ? $user->id : null),
             ],
             [
-                'name.required' => "Campo nome é obrigatório!",
-                'email.required' => "Campo e-mail é obrigatório!",
-                'email.email' => "Necessário enviar e-mail válido!",
-                'email.unique' => "O e-mail já está cadastrado!",
+                'name.required' => 'Campo nome é obrigatório!',
+                'email.required' => 'Campo e-mail é obrigatório!',
+                'email.email' => 'Necessário enviar e-mail válido!',
+                'email.unique' => 'O e-mail já está cadastrado!',
             ]
         );
 
@@ -86,7 +86,7 @@ class ProfileController extends Controller
         // Recuperar do banco de dados as informações do usuário logado
         $user = User::where('id', Auth::id())->first();
 
-        // Carregar a view 
+        // Carregar a view
         return view('profile.edit_password', ['user' => $user]);
     }
 
@@ -100,9 +100,9 @@ class ProfileController extends Controller
                 'password' => 'required|confirmed|min:6',
             ],
             [
-                'password.required' => "Campo senha é obrigatório!",
+                'password.required' => 'Campo senha é obrigatório!',
                 'password.confirmed' => 'A confirmação da senha não corresponde!',
-                'password.min' => "Senha com no mínimo :min caracteres!",
+                'password.min' => 'Senha com no mínimo :min caracteres!',
             ]
         );
 

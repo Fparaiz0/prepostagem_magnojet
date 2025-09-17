@@ -7,10 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Classe de requisição para validação de papéis.
  *
- * Responsável por definir as regras de validação e mensagens de erro 
+ * Responsável por definir as regras de validação e mensagens de erro
  * para operações relacionadas a papéis, como criação e edição.
- *
- * @package App\Http\Requests
  */
 class RoleRequest extends FormRequest
 {
@@ -27,7 +25,7 @@ class RoleRequest extends FormRequest
     /**
      * Retorna as regras de validação aplicáveis à requisição.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string> 
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      * Regras de validação.
      */
     public function rules(): array
@@ -35,7 +33,7 @@ class RoleRequest extends FormRequest
         $role = $this->route('role');
 
         return [
-            'name' => 'required|unique:roles,name,' . ($role ? $role->id : null),
+            'name' => 'required|unique:roles,name,'.($role ? $role->id : null),
         ];
     }
 
@@ -47,8 +45,8 @@ class RoleRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => "Campo nome é obrigatório!",
-            'name.unique' => "O papel já está cadastrado!",
+            'name.required' => 'Campo nome é obrigatório!',
+            'name.unique' => 'O papel já está cadastrado!',
         ];
     }
 }

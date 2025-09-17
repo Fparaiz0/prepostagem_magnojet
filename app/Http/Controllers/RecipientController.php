@@ -25,7 +25,7 @@ class RecipientController extends Controller
         // Carregar a VIEW
         return view('recipients.index', [
             'recipients' => $recipients,
-            'name' => $request->nome, // Alterado para $request->nome
+            'name' => $request->nome,
         ]);
 
         // Salvar log

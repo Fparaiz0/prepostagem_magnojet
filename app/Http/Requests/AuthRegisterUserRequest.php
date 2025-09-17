@@ -19,7 +19,7 @@ class AuthRegisterUserRequest extends FormRequest
     /**
      * Retorna as regras de validação aplicáveis à requisição.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string> 
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      * Regras de validação.
      */
     public function rules(): array
@@ -39,13 +39,13 @@ class AuthRegisterUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => "Campo nome é obrigatório!",
-            'email.required' => "Campo e-mail é obrigatório!",
-            'email.email' => "Necessário enviar e-mail válido!",
-            'email.unique' => "O e-mail já está cadastrado!",
-            'password.required' => "Campo senha é obrigatório!",
-            'password.confirmed' => "A confirmação da senha não corresponde!",
-            'password.min' => "Senha com no mínimo :min caracteres!",
+            'name.required' => 'Campo nome é obrigatório!',
+            'email.required' => 'Campo e-mail é obrigatório!',
+            'email.email' => 'Necessário enviar e-mail válido!',
+            'email.unique' => 'O e-mail já está cadastrado!',
+            'password.required' => 'Campo senha é obrigatório!',
+            'password.confirmed' => 'A confirmação da senha não corresponde!',
+            'password.min' => 'Senha com no mínimo :min caracteres!',
         ];
     }
 }

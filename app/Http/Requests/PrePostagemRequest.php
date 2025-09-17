@@ -7,10 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Classe de requisição para validação de cursos.
  *
- * Responsável por definir as regras de validação e mensagens de erro 
+ * Responsável por definir as regras de validação e mensagens de erro
  * para operações relacionadas a cursos, como criação e edição.
- *
- * @package App\Http\Requests
  */
 class PrePostagemRequest extends FormRequest
 {
@@ -27,7 +25,7 @@ class PrePostagemRequest extends FormRequest
     /**
      * Retorna as regras de validação aplicáveis à requisição.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string> 
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      * Regras de validação.
      */
     public function rules(): array
@@ -47,8 +45,8 @@ class PrePostagemRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'code_object.required' => "Campo codigo de rastreamento é obrigatório!",
-            'code_object.unique' => "O codigo de rastreamento já foi utilizado!",
+            'code_object.required' => 'Campo codigo de rastreamento é obrigatório!',
+            'code_object.unique' => 'O codigo de rastreamento já foi utilizado!',
         ];
     }
 }

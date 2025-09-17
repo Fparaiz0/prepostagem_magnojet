@@ -19,7 +19,7 @@ class RoleController extends Controller
         // Salvar log
         Log::info('Listar os papéis.', ['action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('roles.index', ['roles' => $roles]);
     }
 
@@ -29,14 +29,14 @@ class RoleController extends Controller
         // Salvar log
         Log::info('Visualizar o papel.', ['role_id' => $role->id, 'action_user_id' => Auth::id()]);
 
-        // Carregar a view 
+        // Carregar a view
         return view('roles.show', ['role' => $role]);
     }
 
     // Carregar o formulário cadastrar novo papel
     public function create()
     {
-        // Carregar a view 
+        // Carregar a view
         return view('roles.create');
     }
 
@@ -47,17 +47,17 @@ class RoleController extends Controller
         try {
             // Cadastrar no banco de dados na tabela role
             $role = Role::create([
-                'name' => $request->name
+                'name' => $request->name,
             ]);
 
             // Permissões que serão atribuídas ao novo papel
             $permissions = [
-                'dashboard',                            
+                'dashboard',
                 'show-profile',
                 'edit-profile',
                 'edit-password-profile',
             ];
-    
+
             // Atribuir as permissões ao papel
             $role->givePermissionTo($permissions);
 
@@ -79,7 +79,7 @@ class RoleController extends Controller
     // Carregar o formulário editar papel
     public function edit(Role $role)
     {
-        // Carregar a view 
+        // Carregar a view
         return view('roles.edit', ['role' => $role]);
     }
 
@@ -90,7 +90,7 @@ class RoleController extends Controller
         try {
             // Editar as informações do registro no banco de dados
             $role->update([
-                'name' => $request->name
+                'name' => $request->name,
             ]);
 
             // Salvar log
@@ -119,7 +119,7 @@ class RoleController extends Controller
 
             // Salvar log
             Log::info('Papel apagado.', ['role_id' => $role->id, 'action_user_id' => Auth::id()]);
-            
+
             // Redirecionar o usuário, enviar a mensagem de sucesso
             return redirect()->route('roles.index')->with('success', 'Papel apagado com sucesso!');
         } catch (Exception $e) {

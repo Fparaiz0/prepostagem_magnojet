@@ -14,4 +14,12 @@ export default defineConfig({
     manifest: true,
     outDir: 'public/build',
   },
+  server: {
+        host: '10.1.1.50',
+        port: 8001, 
+        strictPort: true,
+        hmr: {
+            host: '10.1.1.50', 
+        }
+    }
 });
