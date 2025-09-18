@@ -420,70 +420,81 @@ class PrePostagemController extends Controller
             $idRecibo = $responseData['idRecibo'];
 
             // Agora fazer a segunda requisição para buscar o PDF usando o idRecibo
-            Log::info('Buscando PDF do rótulo usando idRecibo', ['idRecibo' => $idRecibo]);
+            // TENTAR ATÉ 5 VEZES COM INTERVALO DE 2 SEGUNDOS
+            $maxTentativas = 5;
+            $tentativa = 1;
+            $pdfContent = null;
+            $fileName = null;
 
-            $pdfResponse = Http::withoutVerifying()
-                ->timeout(60) // Timeout maior para geração do PDF
-                ->withToken($correiosToken->token)
-                ->withHeaders([
-                    'Accept' => 'application/json',
-                ])
-                ->get("https://api.correios.com.br/prepostagem/v1/prepostagens/rotulo/download/assincrono/{$idRecibo}");
+            while ($tentativa <= $maxTentativas) {
+                Log::info('Tentativa '.$tentativa.' de buscar PDF do rótulo usando idRecibo', ['idRecibo' => $idRecibo]);
 
-            if (! $pdfResponse->successful()) {
-                Log::error('Erro ao buscar PDF do rótulo', [
-                    'idRecibo' => $idRecibo,
-                    'status_code' => $pdfResponse->status(),
-                    'response_body' => $pdfResponse->body(),
-                ]);
+                try {
+                    $pdfResponse = Http::withoutVerifying()
+                        ->timeout(30) // Timeout de 30 segundos por tentativa
+                        ->withToken($correiosToken->token)
+                        ->withHeaders([
+                            'Accept' => 'application/json',
+                        ])
+                        ->get("https://api.correios.com.br/prepostagem/v1/prepostagens/rotulo/download/assincrono/{$idRecibo}");
 
-                return response()->json([
-                    'error' => 'Erro ao gerar PDF',
-                    'message' => 'O PDF das etiquetas está sendo processado. Tente novamente em alguns instantes.',
-                    'idRecibo' => $idRecibo, // Retornar o idRecibo para tentativas futuras
-                ], 202); // Código 202 - Accepted (processamento em andamento)
+                    if ($pdfResponse->successful()) {
+                        // Processar resposta do PDF
+                        $pdfData = $pdfResponse->json();
+
+                        // Verificar se a resposta contém os dados do PDF em base64
+                        if (isset($pdfData['dados'])) {
+                            // Decodificar o PDF base64
+                            $pdfContent = base64_decode($pdfData['dados']);
+                            $fileName = $pdfData['nome'] ?? "etiquetas_{$idRecibo}.pdf";
+
+                            if ($pdfContent) {
+                                Log::info('PDF gerado com sucesso na tentativa '.$tentativa, [
+                                    'idRecibo' => $idRecibo,
+                                    'fileName' => $fileName,
+                                    'pdfSize' => strlen($pdfContent),
+                                ]);
+                                break; // Sai do loop se conseguir obter o PDF
+                            }
+                        }
+                    }
+
+                    // Se não conseguiu na última tentativa, loga o erro
+                    if ($tentativa === $maxTentativas) {
+                        Log::error('Erro ao buscar PDF do rótulo após '.$maxTentativas.' tentativas', [
+                            'idRecibo' => $idRecibo,
+                            'status_code' => $pdfResponse->status(),
+                            'response_body' => $pdfResponse->body(),
+                        ]);
+
+                        return response()->json([
+                            'error' => 'Erro ao gerar PDF',
+                            'message' => 'Não foi possível gerar o PDF após várias tentativas. Tente novamente mais tarde.',
+                            'idRecibo' => $idRecibo,
+                        ], 500);
+                    }
+
+                } catch (\Exception $e) {
+                    // Se for a última tentativa e ainda deu erro, lança a exceção
+                    if ($tentativa === $maxTentativas) {
+                        Log::error('Exceção ao buscar PDF do rótulo na tentativa '.$tentativa, [
+                            'idRecibo' => $idRecibo,
+                            'error' => $e->getMessage(),
+                        ]);
+
+                        return response()->json([
+                            'error' => 'Erro ao processar PDF',
+                            'message' => 'Ocorreu um erro interno ao tentar gerar o PDF.',
+                        ], 500);
+                    }
+                }
+
+                // Aguarda 2 segundos antes da próxima tentativa
+                sleep(2);
+                $tentativa++;
             }
 
-            // Processar resposta do PDF
-            $pdfData = $pdfResponse->json();
-
-            // Verificar se a resposta contém os dados do PDF em base64
-            if (! isset($pdfData['dados'])) {
-                Log::warning('Resposta da API não contém dados do PDF', [
-                    'pdf_response' => $pdfData,
-                    'idRecibo' => $idRecibo,
-                ]);
-
-                return response()->json([
-                    'error' => 'PDF não disponível',
-                    'message' => 'O PDF ainda não está disponível. Tente novamente em alguns instantes.',
-                    'idRecibo' => $idRecibo,
-                ], 202);
-            }
-
-            // Decodificar o PDF base64
-            $pdfContent = base64_decode($pdfData['dados']);
-
-            if (! $pdfContent) {
-                Log::error('Erro ao decodificar PDF base64', [
-                    'idRecibo' => $idRecibo,
-                ]);
-
-                return response()->json([
-                    'error' => 'Erro ao processar PDF',
-                    'message' => 'Não foi possível decodificar o PDF recebido.',
-                ], 500);
-            }
-
-            // Obter o nome do arquivo
-            $fileName = $pdfData['nome'] ?? "etiquetas_{$idRecibo}.pdf";
-
-            Log::info('PDF gerado com sucesso', [
-                'idRecibo' => $idRecibo,
-                'fileName' => $fileName,
-                'pdfSize' => strlen($pdfContent),
-            ]);
-
+            // Se chegou aqui, conseguiu obter o PDF com sucesso
             // Retornar o PDF como resposta
             return response($pdfContent)
                 ->header('Content-Type', 'application/pdf')
@@ -560,7 +571,7 @@ class PrePostagemController extends Controller
                 'numeroCartaoPostagem' => '0067038727',
                 'tipoRotulo' => 'P',
                 'imprimeRemetente' => 'S',
-                'layoutImpressao' => 'LINEAR_100_150',
+                'layoutImpressao' => 'PADRAO',
             ];
 
             // Chamar API dos Correios para impressão de etiquetas
@@ -626,72 +637,82 @@ class PrePostagemController extends Controller
 
             $idRecibo = $responseData['idRecibo'];
 
-            // Agora fazer a segunda requisição para buscar o PDF usando o idRecibo
-            Log::info('Buscando PDF do rótulo usando idRecibo', ['idRecibo' => $idRecibo]);
+            // TENTAR ATÉ 5 VEZES COM INTERVALO DE 2 SEGUNDOS
+            $maxTentativas = 5;
+            $tentativa = 1;
+            $pdfContent = null;
+            $fileName = null;
 
-            $pdfResponse = Http::withoutVerifying()
-                ->timeout(60) // Timeout maior para geração do PDF
-                ->withToken($correiosToken->token)
-                ->withHeaders([
-                    'Accept' => 'application/json',
-                ])
-                ->get("https://api.correios.com.br/prepostagem/v1/prepostagens/rotulo/download/assincrono/{$idRecibo}");
+            while ($tentativa <= $maxTentativas) {
+                Log::info('Tentativa '.$tentativa.' de buscar PDF do rótulo usando idRecibo', ['idRecibo' => $idRecibo]);
 
-            if (! $pdfResponse->successful()) {
-                Log::error('Erro ao buscar PDF do rótulo', [
-                    'idRecibo' => $idRecibo,
-                    'status_code' => $pdfResponse->status(),
-                    'response_body' => $pdfResponse->body(),
-                ]);
+                try {
+                    $pdfResponse = Http::withoutVerifying()
+                        ->timeout(30) // Timeout de 30 segundos por tentativa
+                        ->withToken($correiosToken->token)
+                        ->withHeaders([
+                            'Accept' => 'application/json',
+                        ])
+                        ->get("https://api.correios.com.br/prepostagem/v1/prepostagens/rotulo/download/assincrono/{$idRecibo}");
 
-                return response()->json([
-                    'error' => 'Erro ao gerar PDF',
-                    'message' => 'O PDF das etiquetas está sendo processado. Tente novamente em alguns instantes.',
-                    'idRecibo' => $idRecibo, // Retornar o idRecibo para tentativas futuras
-                ], 202); // Código 202 - Accepted (processamento em andamento)
+                    if ($pdfResponse->successful()) {
+                        // Processar resposta do PDF
+                        $pdfData = $pdfResponse->json();
+
+                        // Verificar se a resposta contém os dados do PDF em base64
+                        if (isset($pdfData['dados'])) {
+                            // Decodificar o PDF base64
+                            $pdfContent = base64_decode($pdfData['dados']);
+                            $fileName = $pdfData['nome'] ?? "etiquetas_todas_{$idRecibo}.pdf";
+
+                            if ($pdfContent) {
+                                Log::info('PDF de todas as etiquetas gerado com sucesso na tentativa '.$tentativa, [
+                                    'idRecibo' => $idRecibo,
+                                    'fileName' => $fileName,
+                                    'pdfSize' => strlen($pdfContent),
+                                    'quantidade_etiquetas' => count($codigosObjeto),
+                                ]);
+                                break; // Sai do loop se conseguir obter o PDF
+                            }
+                        }
+                    }
+
+                    // Se não conseguiu na última tentativa, loga o erro
+                    if ($tentativa === $maxTentativas) {
+                        Log::error('Erro ao buscar PDF do rótulo após '.$maxTentativas.' tentativas', [
+                            'idRecibo' => $idRecibo,
+                            'status_code' => $pdfResponse->status(),
+                            'response_body' => $pdfResponse->body(),
+                        ]);
+
+                        return response()->json([
+                            'error' => 'Erro ao gerar PDF',
+                            'message' => 'Não foi possível gerar o PDF após várias tentativas. Tente novamente mais tarde.',
+                            'idRecibo' => $idRecibo,
+                        ], 500);
+                    }
+
+                } catch (\Exception $e) {
+                    // Se for a última tentativa e ainda deu erro, lança a exceção
+                    if ($tentativa === $maxTentativas) {
+                        Log::error('Exceção ao buscar PDF do rótulo na tentativa '.$tentativa, [
+                            'idRecibo' => $idRecibo,
+                            'error' => $e->getMessage(),
+                        ]);
+
+                        return response()->json([
+                            'error' => 'Erro ao processar PDF',
+                            'message' => 'Ocorreu um erro interno ao tentar gerar o PDF.',
+                        ], 500);
+                    }
+                }
+
+                // Aguarda 2 segundos antes da próxima tentativa
+                sleep(2);
+                $tentativa++;
             }
 
-            // Processar resposta do PDF
-            $pdfData = $pdfResponse->json();
-
-            // Verificar se a resposta contém os dados do PDF em base64
-            if (! isset($pdfData['dados'])) {
-                Log::warning('Resposta da API não contém dados do PDF', [
-                    'pdf_response' => $pdfData,
-                    'idRecibo' => $idRecibo,
-                ]);
-
-                return response()->json([
-                    'error' => 'PDF não disponível',
-                    'message' => 'O PDF ainda não está disponível. Tente novamente em alguns instantes.',
-                    'idRecibo' => $idRecibo,
-                ], 202);
-            }
-
-            // Decodificar o PDF base64
-            $pdfContent = base64_decode($pdfData['dados']);
-
-            if (! $pdfContent) {
-                Log::error('Erro ao decodificar PDF base64', [
-                    'idRecibo' => $idRecibo,
-                ]);
-
-                return response()->json([
-                    'error' => 'Erro ao processar PDF',
-                    'message' => 'Não foi possível decodificar o PDF recebido.',
-                ], 500);
-            }
-
-            // Obter o nome do arquivo
-            $fileName = $pdfData['nome'] ?? "etiquetas_todas_{$idRecibo}.pdf";
-
-            Log::info('PDF de todas as etiquetas gerado com sucesso', [
-                'idRecibo' => $idRecibo,
-                'fileName' => $fileName,
-                'pdfSize' => strlen($pdfContent),
-                'quantidade_etiquetas' => count($codigosObjeto),
-            ]);
-
+            // Se chegou aqui, conseguiu obter o PDF com sucesso
             // Retornar o PDF como resposta
             return response($pdfContent)
                 ->header('Content-Type', 'application/pdf')
