@@ -309,7 +309,7 @@ git push origin develop
 
 ## Autor
 
-Este projeto foi desenvolvido por [Felipe Paraizo](https://github.com/Fparaiz0) e está hospedado no repositório (https://github.com/Fparaiz0/prepostagem_correios).
+Este projeto foi desenvolvido por [Felipe Paraizo](https://github.com/Fparaiz0) e está hospedado no repositório (https://github.com/Fparaiz0/prepostagem_magnojet).
 
 ## Licença
 
