@@ -42,10 +42,31 @@
             </div>
         </div>
 
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
+            <div class="flex space-x-3">
+                @can('index-range')
+                    <a href="{{ route('tracks.show') }}"
+                        class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition duration-200 flex items-center text-sm font-medium">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Etiquetas Utilizadas
+                    </a>
+                @endcan
+            </div>
+        </div>
+
         <!-- Tracking Codes List -->
         <div class="bg-white rounded-lg shadow-sm overflow-hidden">
             <div class="p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Códigos Disponíveis</h3>
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800">Códigos Disponíveis</h3>
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                        {{ $tracks->total() }} etiquetas
+                    </span>
+                </div>
 
                 @if ($tracks->isEmpty())
                     <div class="text-center py-8">
