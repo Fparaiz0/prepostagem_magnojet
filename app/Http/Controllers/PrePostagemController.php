@@ -72,7 +72,7 @@ class PrePostagemController extends Controller
             $query->where('name_recipient', 'like', '%'.$searchTerm.'%');
         }
 
-        $prepostagens = $query->paginate(10);
+        $prepostagens = $query->paginate(50);
 
         Log::info('Listar as Pré-Postagem.', ['action_user_id' => Auth::id()]);
 
@@ -95,7 +95,7 @@ class PrePostagemController extends Controller
             $query->where('name_recipient', 'like', '%'.$searchTerm.'%');
         }
 
-        $prepostagens = $query->paginate(10);
+        $prepostagens = $query->paginate(50);
 
         // Salvar log
         Log::info('Listar as Pré-Postagem canceladas.', ['action_user_id' => Auth::id()]);
@@ -120,7 +120,7 @@ class PrePostagemController extends Controller
             $query->where('name_recipient', 'like', '%'.$searchTerm.'%');
         }
 
-        $prepostagens = $query->paginate(10);
+        $prepostagens = $query->paginate(50);
 
         // Salvar log
         Log::info('Listar as Pré-Postagem postadas.', ['action_user_id' => Auth::id()]);

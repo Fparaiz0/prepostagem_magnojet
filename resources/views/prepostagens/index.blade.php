@@ -4,6 +4,8 @@
     @php
         // Recuperar o token de autenticação do banco de dados
         $apiToken = \App\Models\CorreiosToken::latest()->first()->token ?? null;
+        // Contar pré-postagens com situação 1
+        $countSituacao1 = \App\Models\PrePostagem::where('situation', 1)->count();
     @endphp
 
     <div class="content-wrapper">
@@ -23,6 +25,16 @@
         <!-- Filtros e Botões -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
             <div class="flex space-x-3">
+                <!-- Indicador de quantidade de pré-postagens com situação 1 -->
+                <div class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg flex items-center text-sm font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    {{ $countSituacao1 }} Pré-Postada(s)
+                </div>
+
                 @can('posted-prepostagem')
                     <a href="{{ route('prepostagens.posted') }}"
                         class="px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 rounded-lg transition duration-200 flex items-center text-sm font-medium">
@@ -46,6 +58,16 @@
             </div>
 
             <div class="flex space-x-3">
+                <!-- Botão de selecionar todas as checkboxes -->
+                <button id="selectAllBtn"
+                    class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition duration-200 flex items-center text-sm font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                    Selecionar Todas
+                </button>
+
                 <!-- Botão de imprimir selecionados (só aparece quando há checkboxes marcados) -->
                 <button id="printSelectedBtn"
                     class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition duration-200 flex items-center text-sm font-medium hidden">
@@ -59,7 +81,7 @@
 
                 <!-- Botão de imprimir todas as pré-postagens com situation = 1 -->
                 <button id="printAllBtn"
-                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition duration-200 flex items-center text-sm font-medium">
+                    class="print-all-btn px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition duration-200 flex items-center text-sm font-medium">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -147,7 +169,8 @@
                     <div class="absolute top-4 right-4">
                         <input type="checkbox" class="object-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500"
                             data-object-code="{{ $prepostagem->object_code }}"
-                            data-recipient="{{ $prepostagem->name_recipient }}">
+                            data-recipient="{{ $prepostagem->name_recipient }}"
+                            @if ($prepostagem->situation != 1) disabled @endif>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-4">
@@ -411,6 +434,7 @@
         // Variável global para armazenar os códigos selecionados
         let selectedObjects = [];
         let currentReciboId = null;
+        let allSelected = false;
 
         function openCancelModal(id, recipient, objectCode) {
             const form = document.getElementById('cancelForm');
@@ -462,10 +486,10 @@
             if (spinner) {
                 spinner.classList.remove('animate-spin');
                 spinner.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-            `;
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+        `;
             }
         }
 
@@ -681,6 +705,36 @@
             }
         }
 
+        // Função para verificar o estado inicial dos checkboxes
+        function checkInitialSelectionState() {
+            const checkboxes = document.querySelectorAll('.object-checkbox:not(:disabled)');
+            const anySelected = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+            const printAllBtn = document.getElementById('printAllBtn');
+            const printSelectedBtn = document.getElementById('printSelectedBtn');
+            const selectAllBtn = document.getElementById('selectAllBtn');
+
+            if (allChecked && checkboxes.length > 0) {
+                allSelected = true;
+                if (selectAllBtn) {
+                    selectAllBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Desmarcar Todas`;
+                }
+                if (printAllBtn) printAllBtn.classList.add('hidden');
+            }
+
+            if (anySelected && !allChecked && printAllBtn) {
+                printAllBtn.classList.remove('hidden');
+            }
+
+            if (anySelected && printSelectedBtn) {
+                printSelectedBtn.classList.remove('hidden');
+            }
+        }
+
         // Inicialização quando o documento estiver carregado
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM carregado, inicializando eventos');
@@ -688,10 +742,12 @@
             const checkboxes = document.querySelectorAll('.object-checkbox');
             const printSelectedBtn = document.getElementById('printSelectedBtn');
             const printAllBtn = document.getElementById('printAllBtn');
+            const selectAllBtn = document.getElementById('selectAllBtn');
 
             console.log('Checkboxes encontrados:', checkboxes.length);
             console.log('Botão imprimir selecionados:', printSelectedBtn);
             console.log('Botão imprimir todas:', printAllBtn);
+            console.log('Botão selecionar todas:', selectAllBtn);
 
             // Verificar se temos um token de API válido
             const apiToken = '{{ $apiToken }}';
@@ -702,6 +758,7 @@
                 // Esconder os botões completamente se não houver token
                 if (printSelectedBtn) printSelectedBtn.style.display = 'none';
                 if (printAllBtn) printAllBtn.style.display = 'none';
+                if (selectAllBtn) selectAllBtn.style.display = 'none';
                 return;
             }
 
@@ -728,24 +785,112 @@
                     } else {
                         // Remover da lista de selecionados
                         selectedObjects = selectedObjects.filter(obj => obj.code !== objectCode);
+                        // Se desmarcar um checkbox individual, garantir que o estado "Selecionar Todas" seja false
+                        allSelected = false;
+                        if (selectAllBtn) {
+                            selectAllBtn.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Selecionar Todas`;
+                        }
                     }
 
                     console.log('Objetos selecionados:', selectedObjects);
 
                     // Mostrar ou esconder o botão de imprimir selecionados
                     if (selectedObjects.length > 0) {
+                        // Sempre mostrar apenas "Imprimir Selecionados"
                         printSelectedBtn.classList.remove('hidden');
                         printSelectedBtn.innerHTML = `
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m4 4h6a2 2 0 002-2v-4a2 2 0 00-2-2h-6a2 2 0 00-2 2v4a2 2 0 002 2z" />
-                            </svg>
-                            Imprimir Selecionados (${selectedObjects.length})
-                        `;
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m4 4h6a2 2 0 002-2v-4a2 2 0 00-2-2h-6a2 2 0 00-2 2v4a2 2 0 002 2z" />
+        </svg>
+        Imprimir Selecionados (${selectedObjects.length})
+    `;
+
+                        if (printAllBtn) printAllBtn.classList.add(
+                            'hidden');
                     } else {
                         printSelectedBtn.classList.add('hidden');
+                        if (printAllBtn) printAllBtn.classList.remove(
+                            'hidden');
+                    }
+
+                    // Verificar se todos os checkboxes estão selecionados para atualizar o botão "Selecionar Todas"
+                    const allCheckboxes = document.querySelectorAll(
+                        '.object-checkbox:not(:disabled)');
+                    const allChecked = Array.from(allCheckboxes).every(checkbox => checkbox
+                        .checked);
+
+                    if (allChecked && allCheckboxes.length > 0) {
+                        allSelected = true;
+                        if (selectAllBtn) {
+                            selectAllBtn.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Desmarcar Todas`;
+                        }
+                        // Quando todos estão selecionados, esconder "Imprimir Todas"
+                        if (printAllBtn) printAllBtn.classList.add('hidden');
                     }
                 });
             });
+
+            // Adicionar evento de clique ao botão de selecionar todas
+            if (selectAllBtn) {
+                selectAllBtn.addEventListener('click', function() {
+                    const checkboxes = document.querySelectorAll('.object-checkbox:not(:disabled)');
+
+                    allSelected = !allSelected;
+
+                    // 🔑 Limpar a lista antes de refazer
+                    selectedObjects = [];
+
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = allSelected;
+
+                        if (allSelected) {
+                            selectedObjects.push({
+                                code: checkbox.getAttribute('data-object-code'),
+                                recipient: checkbox.getAttribute('data-recipient')
+                            });
+                        }
+                    });
+
+                    console.log('Objetos selecionados após selecionar todas:', selectedObjects);
+
+                    // Atualizar texto do botão
+                    selectAllBtn.innerHTML = allSelected ?
+                        `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+         </svg>
+         Desmarcar Todas` :
+                        `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+         </svg>
+         Selecionar Todas`;
+
+                    // Mostrar/ocultar botões de impressão
+                    if (allSelected) {
+                        if (printAllBtn) printAllBtn.classList.add('hidden');
+                        if (printSelectedBtn) {
+                            printSelectedBtn.classList.remove('hidden');
+                            printSelectedBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m4 4h6a2 2 0 002-2v-4a2 2 0 00-2-2h-6a2 2 0 00-2 2v4a2 2 0 002 2z" />
+                </svg>
+                Imprimir Selecionados (${selectedObjects.length})
+            `;
+                        }
+                    } else {
+                        if (printAllBtn) printAllBtn.classList.remove('hidden');
+                        if (printSelectedBtn) printSelectedBtn.classList.add('hidden');
+                    }
+                });
+
+            }
 
             // Adicionar evento de clique ao botão de imprimir selecionados
             if (printSelectedBtn) {
@@ -756,7 +901,7 @@
                     if (!apiToken) {
                         alert(
                             'Token de autenticação não configurado. Entre em contato com o administrador.'
-                            );
+                        );
                         return;
                     }
 
@@ -784,7 +929,7 @@
                     if (!apiToken) {
                         alert(
                             'Token de autenticação não configurado. Entre em contato com o administrador.'
-                            );
+                        );
                         return;
                     }
 
@@ -796,6 +941,7 @@
             }
 
             console.log('Inicialização concluída');
+            checkInitialSelectionState();
         });
     </script>
 @endsection

@@ -33,7 +33,7 @@ class UserStatusController extends Controller
         return view('user_statuses.show', ['userStatus' => $userStatus]);
     }
 
-    // Carregar o formulário cadastrar novo status
+    // Carregar o formulário cadastrar novo status do usuário
     public function create()
     {
         // Carregar a view

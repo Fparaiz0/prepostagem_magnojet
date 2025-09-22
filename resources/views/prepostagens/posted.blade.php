@@ -1,6 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
+    @php
+        // Contar pré-postagens com situação 3
+        $countSituacao1 = \App\Models\PrePostagem::where('situation', 3)->count();
+    @endphp
     <div class="content-wrapper">
         <!-- Cabeçalho da Página -->
         <div class="content-header flex flex-col md:flex-row md:items-center md:justify-between mb-6">
@@ -18,6 +22,15 @@
         <!-- Filtros e Botões -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
             <div class="flex space-x-3">
+                <!-- Indicador de quantidade de pré-postagens com situação 3 -->
+                <div class="px-4 py-2 bg-green-100 text-green-700 rounded-lg flex items-center text-sm font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    {{ $countSituacao1 }} Postadas
+                </div>
                 @can('index-prepostagem')
                     <a href="{{ route('prepostagens.index') }}"
                         class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition duration-200 flex items-center text-sm font-medium">

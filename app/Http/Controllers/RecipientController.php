@@ -42,7 +42,7 @@ class RecipientController extends Controller
         return view('recipients.show', ['recipient' => $recipient]);
     }
 
-    // Carregar o formulário cadastrar novo remetente
+    // Carregar o formulário cadastrar novo destinatário
     public function create()
     {
         // Carregar a view 

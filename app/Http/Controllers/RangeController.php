@@ -64,7 +64,7 @@ class RangeController extends Controller
         ]);
     }
 
-    // Carregar o formulário cadastrar nova Pré-Postagem
+    // Carregar o formulário cadastrar novo range de etiquetas
     public function create()
     {
         // Carregar a view 
