@@ -195,6 +195,14 @@ class PrePostagemController extends Controller
                         'uf' => $request->uf_recipient,
                     ],
                 ],
+                'itensDeclaracaoConteudo' => [
+		            [
+		                'conteudo' => 'Equipamentos - ITENS NÃO PERIGOSOS',
+		                'quantidade' => '1',
+		                'peso' => '1000',
+		                'valor' => '0.00'
+		            ]
+  		        ],
                 'codigoServico' => '03220',
                 'codigoObjeto' => $request->object_code,
                 'numeroNotaFiscal' => $request->invoice_number,
@@ -220,6 +228,7 @@ class PrePostagemController extends Controller
                 $mensagemErro = implode("\n", $mensagens);
 
                 Log::warning('Falha ao enviar Pré-Postagem à API dos Correios.', [
+                    'Requisicao' => $payload,
                     'status' => $response->status(),
                     'erro' => $response->body(),
                 ]);
@@ -419,7 +428,6 @@ class PrePostagemController extends Controller
 
             $idRecibo = $responseData['idRecibo'];
 
-            // Agora fazer a segunda requisição para buscar o PDF usando o idRecibo
             // TENTAR ATÉ 5 VEZES COM INTERVALO DE 2 SEGUNDOS
             $maxTentativas = 5;
             $tentativa = 1;
@@ -564,7 +572,7 @@ class PrePostagemController extends Controller
                 'codigos_objeto' => $codigosObjeto,
             ]);
 
-            // Montar o payload conforme especificado pela API dos Correios
+            // Montar o payload 
             $payload = [
                 'codigosObjeto' => $codigosObjeto,
                 'idCorreios' => 'magno2016',
