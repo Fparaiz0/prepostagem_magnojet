@@ -13,8 +13,8 @@ class CorreiosTokenService
 
     public function __construct()
     {
-        $this->usuario = env('CORREIOS_USUARIO');
-        $this->senha = env('CORREIOS_SENHA');
+        $this->usuario = config('services.correios.usuario');
+        $this->senha = config('services.correios.senha');
     }
 
     /**
