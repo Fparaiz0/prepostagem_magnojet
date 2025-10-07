@@ -357,7 +357,7 @@ class PrePostagemController extends Controller
                 'numeroCartaoPostagem' => '0067038727',
                 'tipoRotulo' => 'P',
                 'imprimeRemetente' => 'S',
-                'layoutImpressao' => 'PADRAO',
+                'layoutImpressao' => 'LINEAR_100_150',
             ];
 
             Log::info('Enviando requisição para API dos Correios - Impressão de etiquetas', [
@@ -579,7 +579,7 @@ class PrePostagemController extends Controller
                 'numeroCartaoPostagem' => '0067038727',
                 'tipoRotulo' => 'P',
                 'imprimeRemetente' => 'S',
-                'layoutImpressao' => 'PADRAO',
+                'layoutImpressao' => 'LINEAR_100_150',
             ];
 
             // Chamar API dos Correios para impressão de etiquetas
