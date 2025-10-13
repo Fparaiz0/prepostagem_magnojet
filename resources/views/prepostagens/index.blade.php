@@ -419,6 +419,84 @@
         </div>
     </div>
 
+    <!-- Modal de Formato de Impressão -->
+    <div id="printFormatModal"
+        class="fixed inset-0 bg-gray-600/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0"
+            id="printFormatModalContent">
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">Formato de Impressão</h3>
+                <button type="button" onclick="closePrintFormatModal()"
+                    class="text-gray-400 hover:text-gray-500 transition-colors">
+                    <svg class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="px-6 py-6">
+                <div class="text-center">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m4 4h6a2 2 0 002-2v-4a2 2 0 00-2-2h-6a2 2 0 00-2 2v4a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Selecione o formato de impressão</h3>
+
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <!-- Opção Etiqueta -->
+                        <button type="button" onclick="selectPrintFormat('etiqueta')"
+                            class="print-format-option p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer text-center"
+                            data-format="etiqueta">
+                            <div class="flex flex-col items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-600 mb-2" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
+                                <span class="font-medium text-gray-700">Etiqueta</span>
+                                <span class="text-xs text-gray-500 mt-1">Formato padrão</span>
+                            </div>
+                        </button>
+
+                        <!-- Opção A4 -->
+                        <button type="button" onclick="selectPrintFormat('a4')"
+                            class="print-format-option p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer text-center"
+                            data-format="a4">
+                            <div class="flex flex-col items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-600 mb-2" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span class="font-medium text-gray-700">A4</span>
+                                <span class="text-xs text-gray-500 mt-1">Formato página</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <p class="text-sm text-gray-500">
+                        Escolha o formato desejado para impressão das etiquetas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="px-6 py-4 bg-gray-50 flex justify-end space-x-3 rounded-b-xl">
+                <button type="button" onclick="closePrintFormatModal()"
+                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm font-medium transition-colors cursor-pointer">
+                    Cancelar
+                </button>
+                <button type="button" id="confirmPrintBtn" onclick="confirmPrintAll()"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium transition-colors cursor-pointer hidden">
+                    Confirmar Impressão
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de Carregamento -->
     <div id="loadingModal"
         class="fixed inset-0 bg-gray-600/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
@@ -435,6 +513,7 @@
         let selectedObjects = [];
         let currentReciboId = null;
         let allSelected = false;
+        let selectedPrintFormat = null;
 
         function openCancelModal(id, recipient, objectCode) {
             const form = document.getElementById('cancelForm');
@@ -463,6 +542,68 @@
             setTimeout(() => {
                 modal.classList.add('hidden');
             }, 200);
+        }
+
+        // Função para abrir modal de formato de impressão
+        function openPrintFormatModal() {
+            const modal = document.getElementById('printFormatModal');
+            const modalContent = document.getElementById('printFormatModalContent');
+
+            // Resetar seleção
+            selectedPrintFormat = null;
+            document.querySelectorAll('.print-format-option').forEach(option => {
+                option.classList.remove('border-blue-500', 'bg-blue-50');
+                option.classList.add('border-gray-200');
+            });
+            document.getElementById('confirmPrintBtn').classList.add('hidden');
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 50);
+        }
+
+        function closePrintFormatModal() {
+            const modal = document.getElementById('printFormatModal');
+            const modalContent = document.getElementById('printFormatModalContent');
+
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        // Função para selecionar formato de impressão
+        function selectPrintFormat(format) {
+            selectedPrintFormat = format;
+            
+            // Atualizar UI
+            document.querySelectorAll('.print-format-option').forEach(option => {
+                if (option.getAttribute('data-format') === format) {
+                    option.classList.add('border-blue-500', 'bg-blue-50');
+                    option.classList.remove('border-gray-200');
+                } else {
+                    option.classList.remove('border-blue-500', 'bg-blue-50');
+                    option.classList.add('border-gray-200');
+                }
+            });
+
+            // Mostrar botão de confirmação
+            document.getElementById('confirmPrintBtn').classList.remove('hidden');
+        }
+
+        // Função para confirmar impressão de todas
+        function confirmPrintAll() {
+            if (!selectedPrintFormat) {
+                alert('Por favor, selecione um formato de impressão.');
+                return;
+            }
+
+            closePrintFormatModal();
+            printAllPrepostagens(selectedPrintFormat);
         }
 
         // Função para mostrar/ocultar modal de carregamento
@@ -494,9 +635,10 @@
         }
 
         // Função para enviar dados para API dos Correios via Laravel
-        async function sendToCorreiosAPI(objectCodes) {
+        async function sendToCorreiosAPI(objectCodes, formato = 'etiqueta') {
             console.log('Iniciando envio para API dos Correios');
             console.log('Códigos de objeto:', objectCodes);
+            console.log('Formato:', formato);
 
             // Validar se há códigos para enviar
             if (!objectCodes || objectCodes.length === 0) {
@@ -512,7 +654,8 @@
 
                 // Preparar dados para envio
                 const requestData = {
-                    codigosObjeto: objectCodes
+                    codigosObjeto: objectCodes,
+                    formato: formato
                 };
 
                 console.log('Dados que serão enviados:', requestData);
@@ -592,8 +735,9 @@
         }
 
         // Função para imprimir todas as pré-postagens
-        async function printAllPrepostagens() {
+        async function printAllPrepostagens(formato = 'etiqueta') {
             console.log('Iniciando impressão de todas as pré-postagens');
+            console.log('Formato selecionado:', formato);
 
             toggleLoadingModal(true);
 
@@ -608,7 +752,8 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         'Accept': 'application/json, application/pdf'
-                    }
+                    },
+                    body: JSON.stringify({ formato: formato })
                 });
 
                 console.log('Resposta da API (imprimir todas):', response);
@@ -911,12 +1056,8 @@
                         return;
                     }
 
-                    // Extrair apenas os códigos de objeto para enviar à API
-                    const objectCodes = selectedObjects.map(obj => obj.code);
-                    console.log('Códigos que serão enviados:', objectCodes);
-
-                    // Enviar para a API via Laravel
-                    sendToCorreiosAPI(objectCodes);
+                    // Abrir modal de formato para selecionados também
+                    openPrintFormatModalForSelected();
                 });
             }
 
@@ -933,15 +1074,82 @@
                         return;
                     }
 
-                    // Confirmar com o usuário antes de imprimir todas
-                    if (confirm('Deseja imprimir todas as pré-postagens pendentes?')) {
-                        printAllPrepostagens();
-                    }
+                    // Abrir modal de formato
+                    openPrintFormatModal();
                 });
             }
 
             console.log('Inicialização concluída');
             checkInitialSelectionState();
         });
+
+        // Função para abrir modal de formato para itens selecionados
+        function openPrintFormatModalForSelected() {
+            const modal = document.getElementById('printFormatModal');
+            const modalContent = document.getElementById('printFormatModalContent');
+
+            // Resetar seleção
+            selectedPrintFormat = null;
+            document.querySelectorAll('.print-format-option').forEach(option => {
+                option.classList.remove('border-blue-500', 'bg-blue-50');
+                option.classList.add('border-gray-200');
+            });
+            document.getElementById('confirmPrintBtn').classList.add('hidden');
+
+            // Atualizar texto do botão de confirmação
+            document.getElementById('confirmPrintBtn').textContent = 'Imprimir Selecionados';
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 50);
+        }
+
+        // Função para confirmar impressão dos selecionados
+        function confirmPrintSelected() {
+            if (!selectedPrintFormat) {
+                alert('Por favor, selecione um formato de impressão.');
+                return;
+            }
+
+            closePrintFormatModal();
+            
+            // Extrair apenas os códigos de objeto para enviar à API
+            const objectCodes = selectedObjects.map(obj => obj.code);
+            console.log('Códigos que serão enviados:', objectCodes);
+
+            // Enviar para a API via Laravel
+            sendToCorreiosAPI(objectCodes, selectedPrintFormat);
+        }
+
+        // Modificar a função selectPrintFormat para verificar contexto
+        function selectPrintFormat(format) {
+            selectedPrintFormat = format;
+            
+            // Atualizar UI
+            document.querySelectorAll('.print-format-option').forEach(option => {
+                if (option.getAttribute('data-format') === format) {
+                    option.classList.add('border-blue-500', 'bg-blue-50');
+                    option.classList.remove('border-gray-200');
+                } else {
+                    option.classList.remove('border-blue-500', 'bg-blue-50');
+                    option.classList.add('border-gray-200');
+                }
+            });
+
+            // Mostrar botão de confirmação
+            const confirmBtn = document.getElementById('confirmPrintBtn');
+            confirmBtn.classList.remove('hidden');
+            
+            // Verificar se é para selecionados ou todas
+            if (selectedObjects.length > 0) {
+                confirmBtn.textContent = 'Imprimir Selecionados';
+                confirmBtn.onclick = confirmPrintSelected;
+            } else {
+                confirmBtn.textContent = 'Imprimir Todas';
+                confirmBtn.onclick = confirmPrintAll;
+            }
+        }
     </script>
 @endsection

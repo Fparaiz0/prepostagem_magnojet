@@ -200,8 +200,8 @@ class PrePostagemController extends Controller
 		                'conteudo' => 'Equipamentos - ITENS NÃO PERIGOSOS',
 		                'quantidade' => '1',
 		                'peso' => '1000',
-		                'valor' => '0.00'
-		            ]
+		                'valor' => '0.00',
+                    ],
   		        ],
                 'codigoServico' => '03220',
                 'codigoObjeto' => $request->object_code,
@@ -348,7 +348,11 @@ class PrePostagemController extends Controller
             $validated = $request->validate([
                 'codigosObjeto' => 'required|array|min:1',
                 'codigosObjeto.*' => 'required|string|size:13', // Códigos de objeto têm 13 caracteres
+                'formato' => 'required|string|in:etiqueta,a4', // Campo obrigatório para formato
             ]);
+
+            // Determinar o layout de impressão baseado no formato
+            $layoutImpressao = $this->getLayoutImpressao($validated['formato']);
 
             // Montar o payload conforme especificado pela API dos Correios
             $payload = [
@@ -357,11 +361,14 @@ class PrePostagemController extends Controller
                 'numeroCartaoPostagem' => '0067038727',
                 'tipoRotulo' => 'P',
                 'imprimeRemetente' => 'S',
-                'layoutImpressao' => 'LINEAR_100_150',
+                'layoutImpressao' => $layoutImpressao,
             ];
 
-            Log::info('Enviando requisição para API dos Correios - Impressão de etiquetas', [
+            Log::info('Enviando requisição para API dos Correios - Impressão de etiquetas selecionadas', [
+                'quantidade_codigos' => count($validated['codigosObjeto']),
                 'codigos_objeto' => $validated['codigosObjeto'],
+                'formato' => $validated['formato'],
+                'layout_impressao' => $layoutImpressao,
                 'payload' => $payload,
             ]);
 
@@ -380,10 +387,11 @@ class PrePostagemController extends Controller
                 $statusCode = $response->status();
                 $errorBody = $response->body();
 
-                Log::error('Erro na API dos Correios - Impressão de etiquetas', [
+                Log::error('Erro na API dos Correios - Impressão de etiquetas selecionadas', [
                     'status_code' => $statusCode,
                     'response_body' => $errorBody,
-                    'codigos_objeto' => $validated['codigosObjeto'],
+                    'quantidade_codigos' => count($validated['codigosObjeto']),
+                    'formato' => $validated['formato'],
                 ]);
 
                 // Tentar extrair mensagens de erro da resposta
@@ -409,9 +417,10 @@ class PrePostagemController extends Controller
             // Processar resposta bem-sucedida
             $responseData = $response->json();
 
-            Log::info('Resposta recebida da API dos Correios - Impressão de etiquetas', [
+            Log::info('Resposta recebida da API dos Correios - Impressão de etiquetas selecionadas', [
                 'response_data' => $responseData,
-                'codigos_objeto' => $validated['codigosObjeto'],
+                'quantidade_codigos' => count($validated['codigosObjeto']),
+                'formato' => $validated['formato'],
             ]);
 
             // Verificar se a resposta contém o ID do recibo
@@ -435,7 +444,10 @@ class PrePostagemController extends Controller
             $fileName = null;
 
             while ($tentativa <= $maxTentativas) {
-                Log::info('Tentativa '.$tentativa.' de buscar PDF do rótulo usando idRecibo', ['idRecibo' => $idRecibo]);
+                Log::info('Tentativa '.$tentativa.' de buscar PDF do rótulo usando idRecibo', [
+                    'idRecibo' => $idRecibo,
+                    'formato' => $validated['formato'],
+                ]);
 
                 try {
                     $pdfResponse = Http::withoutVerifying()
@@ -454,13 +466,15 @@ class PrePostagemController extends Controller
                         if (isset($pdfData['dados'])) {
                             // Decodificar o PDF base64
                             $pdfContent = base64_decode($pdfData['dados']);
-                            $fileName = $pdfData['nome'] ?? "etiquetas_{$idRecibo}.pdf";
+                            $fileName = $pdfData['nome'] ?? "etiquetas_selecionadas_{$idRecibo}.pdf";
 
                             if ($pdfContent) {
-                                Log::info('PDF gerado com sucesso na tentativa '.$tentativa, [
+                                Log::info('PDF de etiquetas selecionadas gerado com sucesso na tentativa '.$tentativa, [
                                     'idRecibo' => $idRecibo,
                                     'fileName' => $fileName,
                                     'pdfSize' => strlen($pdfContent),
+                                    'quantidade_etiquetas' => count($validated['codigosObjeto']),
+                                    'formato' => $validated['formato'],
                                 ]);
                                 break; // Sai do loop se conseguir obter o PDF
                             }
@@ -473,6 +487,7 @@ class PrePostagemController extends Controller
                             'idRecibo' => $idRecibo,
                             'status_code' => $pdfResponse->status(),
                             'response_body' => $pdfResponse->body(),
+                            'formato' => $validated['formato'],
                         ]);
 
                         return response()->json([
@@ -488,6 +503,7 @@ class PrePostagemController extends Controller
                         Log::error('Exceção ao buscar PDF do rótulo na tentativa '.$tentativa, [
                             'idRecibo' => $idRecibo,
                             'error' => $e->getMessage(),
+                            'formato' => $validated['formato'],
                         ]);
 
                         return response()->json([
@@ -510,7 +526,7 @@ class PrePostagemController extends Controller
                 ->header('Content-Length', strlen($pdfContent));
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            Log::warning('Validação falhou para impressão de etiquetas', [
+            Log::warning('Validação falhou para impressão de etiquetas selecionadas', [
                 'errors' => $e->errors(),
             ]);
 
@@ -521,7 +537,7 @@ class PrePostagemController extends Controller
             ], 422);
 
         } catch (\Exception $e) {
-            Log::error('Erro interno ao processar impressão de etiquetas', [
+            Log::error('Erro interno ao processar impressão de etiquetas selecionadas', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
@@ -550,12 +566,20 @@ class PrePostagemController extends Controller
                 ], 500);
             }
 
+            // Validar o formato
+            $validated = $request->validate([
+                'formato' => 'required|string|in:etiqueta,a4', // Campo obrigatório para formato
+            ]);
+
+            $formato = $validated['formato'];
+
             // Buscar todas as pré-postagens com situation = 1
             $prepostagens = Prepostagem::where('situation', 1)->get();
 
             if ($prepostagens->isEmpty()) {
                 Log::warning('Nenhuma pré-postagem encontrada para impressão', [
                     'situation' => 1,
+                    'formato' => $formato,
                 ]);
 
                 return response()->json([
@@ -567,9 +591,14 @@ class PrePostagemController extends Controller
             // Extrair os códigos de objeto
             $codigosObjeto = $prepostagens->pluck('object_code')->toArray();
 
+            // Determinar o layout de impressão baseado no formato
+            $layoutImpressao = $this->getLayoutImpressao($formato);
+
             Log::info('Imprimindo todas as pré-postagens pendentes', [
                 'quantidade' => count($codigosObjeto),
                 'codigos_objeto' => $codigosObjeto,
+                'formato' => $formato,
+                'layout_impressao' => $layoutImpressao,
             ]);
 
             // Montar o payload 
@@ -579,7 +608,7 @@ class PrePostagemController extends Controller
                 'numeroCartaoPostagem' => '0067038727',
                 'tipoRotulo' => 'P',
                 'imprimeRemetente' => 'S',
-                'layoutImpressao' => 'LINEAR_100_150',
+                'layoutImpressao' => $layoutImpressao,
             ];
 
             // Chamar API dos Correios para impressão de etiquetas
@@ -600,7 +629,8 @@ class PrePostagemController extends Controller
                 Log::error('Erro na API dos Correios - Impressão de todas as etiquetas', [
                     'status_code' => $statusCode,
                     'response_body' => $errorBody,
-                    'codigos_objeto' => $codigosObjeto,
+                    'quantidade_codigos' => count($codigosObjeto),
+                    'formato' => $formato,
                 ]);
 
                 // Tentar extrair mensagens de erro da resposta
@@ -629,6 +659,7 @@ class PrePostagemController extends Controller
             Log::info('Resposta recebida da API dos Correios - Impressão de todas as etiquetas', [
                 'response_data' => $responseData,
                 'quantidade_codigos' => count($codigosObjeto),
+                'formato' => $formato,
             ]);
 
             // Verificar se a resposta contém o ID do recibo
@@ -652,7 +683,10 @@ class PrePostagemController extends Controller
             $fileName = null;
 
             while ($tentativa <= $maxTentativas) {
-                Log::info('Tentativa '.$tentativa.' de buscar PDF do rótulo usando idRecibo', ['idRecibo' => $idRecibo]);
+                Log::info('Tentativa '.$tentativa.' de buscar PDF do rótulo usando idRecibo', [
+                    'idRecibo' => $idRecibo,
+                    'formato' => $formato,
+                ]);
 
                 try {
                     $pdfResponse = Http::withoutVerifying()
@@ -679,6 +713,7 @@ class PrePostagemController extends Controller
                                     'fileName' => $fileName,
                                     'pdfSize' => strlen($pdfContent),
                                     'quantidade_etiquetas' => count($codigosObjeto),
+                                    'formato' => $formato,
                                 ]);
                                 break; // Sai do loop se conseguir obter o PDF
                             }
@@ -691,6 +726,7 @@ class PrePostagemController extends Controller
                             'idRecibo' => $idRecibo,
                             'status_code' => $pdfResponse->status(),
                             'response_body' => $pdfResponse->body(),
+                            'formato' => $formato,
                         ]);
 
                         return response()->json([
@@ -706,6 +742,7 @@ class PrePostagemController extends Controller
                         Log::error('Exceção ao buscar PDF do rótulo na tentativa '.$tentativa, [
                             'idRecibo' => $idRecibo,
                             'error' => $e->getMessage(),
+                            'formato' => $formato,
                         ]);
 
                         return response()->json([
@@ -727,6 +764,17 @@ class PrePostagemController extends Controller
                 ->header('Content-Disposition', "inline; filename=\"{$fileName}\"")
                 ->header('Content-Length', strlen($pdfContent));
 
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::warning('Validação falhou para impressão de todas as etiquetas', [
+                'errors' => $e->errors(),
+            ]);
+
+            return response()->json([
+                'error' => 'Dados inválidos',
+                'message' => 'Os dados fornecidos são inválidos.',
+                'errors' => $e->errors(),
+            ], 422);
+
         } catch (\Exception $e) {
             Log::error('Erro interno ao processar impressão de todas as etiquetas', [
                 'error' => $e->getMessage(),
@@ -738,5 +786,17 @@ class PrePostagemController extends Controller
                 'message' => 'Ocorreu um erro interno ao processar a solicitação.',
             ], 500);
         }
+    }
+
+    /**
+     * Determinar o layout de impressão baseado no formato selecionado
+     */
+    private function getLayoutImpressao(string $formato): string
+    {
+        return match($formato) {
+            'a4' => 'PADRAO',
+            'etiqueta' => 'LINEAR_100_150',
+            default => 'LINEAR_100_150', // Valor padrão
+        };
     }
 }
