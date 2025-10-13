@@ -1136,7 +1136,7 @@
                     option.classList.remove('border-blue-500', 'bg-blue-50');
                     option.classList.add('border-gray-200');
                 }
-            });
+            }); 
 
             // Mostrar botão de confirmação
             const confirmBtn = document.getElementById('confirmPrintBtn');
