@@ -6,17 +6,17 @@ Aqui você encontrará todas as informações necessárias para entender, instal
 
 ## Requisitos
 
-* Laravel 12 - Conferir a versão: php artisan --version
-* PHP 8.2 ou superior - Conferir a versão: php -v
-* MySQL 8.0 ou superior - Conferir a versão: mysql --version
-* Composer - Conferir a instalação: composer --version
-* Node.js 22 ou superior - Conferir a versão: node -v
-* GIT - Conferir se está instalado o GIT: git -v
+- Laravel 12 - Conferir a versão: php artisan --version
+- PHP 8.2 ou superior - Conferir a versão: php -v
+- MySQL 8.0 ou superior - Conferir a versão: mysql --version
+- Composer - Conferir a instalação: composer --version
+- Node.js 22 ou superior - Conferir a versão: node -v
+- GIT - Conferir se está instalado o GIT: git -v
 
 ## Como rodar o projeto baixado
 
--   Duplicar o arquivo ".env.example" e renomear para ".env".
--   Alterar as credenciais do banco de dados.
+- Duplicar o arquivo ".env.example" e renomear para ".env".
+- Alterar as credenciais do banco de dados.
 
 ```
 DB_CONNECTION=mysql
@@ -27,8 +27,8 @@ DB_USERNAME=NomedoUsuário
 DB_PASSWORD=SenhadoBanco
 ```
 
--   Para a funcionalidade enviar e-mail funcionar, necessário alterar as credenciais do servidor de envio de e-mail no arquivo ".env".
--   Utilizar o servidor fake durante o desenvolvimento: [Acessar envio gratuito de e-mail](https://mailtrap.io?ref=paraizo)
+- Para a funcionalidade enviar e-mail funcionar, necessário alterar as credenciais do servidor de envio de e-mail no arquivo ".env".
+- Utilizar o servidor fake durante o desenvolvimento: [Acessar envio gratuito de e-mail](https://mailtrap.io?ref=paraizo)
 
 ```
 MAIL_MAILER=smtp
@@ -256,8 +256,8 @@ php artisan migrate
 
 ## Como enviar e baixar os arquivos do GitHub
 
--   Criar o repositório **"projeto-laravel-12"** no GitHub.
--   Criar o branch **"develop"** no repositório.
+- Criar o repositório **"projeto-laravel-12"** no GitHub.
+- Criar o branch **"develop"** no repositório.
 
 Baixar os arquivos do Git.
 
@@ -265,7 +265,7 @@ Baixar os arquivos do Git.
 git clone -b <branch_name> <repository_url>.
 ```
 
--   Colocar o código fonte do projeto do diretório que está trabalhando.
+- Colocar o código fonte do projeto do diretório que está trabalhando.
 
 Alterar o Usuário Globalmente (para todos os repositórios).
 
