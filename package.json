@@ -1,4 +1,7 @@
 {
+  "name": "prepostagem_magnojet",
+  "version": "1.0.0",
+  "description": "Plataforma de Pré-Postagem da MagnoJet com integração via API 36 do CWS",
   "private": true,
   "type": "module",
   "scripts": {
