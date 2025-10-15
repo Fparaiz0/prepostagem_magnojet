@@ -122,7 +122,8 @@
             <form action="{{ route('prepostagens.index') }}" method="GET"
                 class="flex flex-col sm:flex-row gap-4 items-end">
                 <div class="flex-grow">
-                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Nome do Destinatário</label>
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Nome do
+                        Destinatário</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
@@ -437,8 +438,8 @@
             <div class="px-6 py-6">
                 <div class="text-center">
                     <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m4 4h6a2 2 0 002-2v-4a2 2 0 00-2-2h-6a2 2 0 00-2 2v4a2 2 0 002 2z" />
                         </svg>
@@ -579,7 +580,7 @@
         // Função para selecionar formato de impressão
         function selectPrintFormat(format) {
             selectedPrintFormat = format;
-            
+
             // Atualizar UI
             document.querySelectorAll('.print-format-option').forEach(option => {
                 if (option.getAttribute('data-format') === format) {
@@ -753,7 +754,9 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         'Accept': 'application/json, application/pdf'
                     },
-                    body: JSON.stringify({ formato: formato })
+                    body: JSON.stringify({
+                        formato: formato
+                    })
                 });
 
                 console.log('Resposta da API (imprimir todas):', response);
@@ -1114,7 +1117,7 @@
             }
 
             closePrintFormatModal();
-            
+
             // Extrair apenas os códigos de objeto para enviar à API
             const objectCodes = selectedObjects.map(obj => obj.code);
             console.log('Códigos que serão enviados:', objectCodes);
@@ -1126,7 +1129,7 @@
         // Modificar a função selectPrintFormat para verificar contexto
         function selectPrintFormat(format) {
             selectedPrintFormat = format;
-            
+
             // Atualizar UI
             document.querySelectorAll('.print-format-option').forEach(option => {
                 if (option.getAttribute('data-format') === format) {
@@ -1136,12 +1139,12 @@
                     option.classList.remove('border-blue-500', 'bg-blue-50');
                     option.classList.add('border-gray-200');
                 }
-            }); 
+            });
 
             // Mostrar botão de confirmação
             const confirmBtn = document.getElementById('confirmPrintBtn');
             confirmBtn.classList.remove('hidden');
-            
+
             // Verificar se é para selecionados ou todas
             if (selectedObjects.length > 0) {
                 confirmBtn.textContent = 'Imprimir Selecionados';
