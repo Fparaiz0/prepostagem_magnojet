@@ -6,6 +6,8 @@
         $apiToken = \App\Models\CorreiosToken::latest()->first()->token ?? null;
         // Contar pré-postagens com situação 1
         $countSituacao1 = \App\Models\PrePostagem::where('situation', 1)->count();
+        $countSituacao2 = \App\Models\PrePostagem::where('situation', 2)->count();
+        $countSituacao3 = \App\Models\PrePostagem::where('situation', 3)->count();
     @endphp
 
     <div class="content-wrapper">
@@ -22,18 +24,59 @@
             </nav>
         </div>
 
+        <!-- Cards de Status -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white rounded-xl shadow-sm border border-blue-200 p-4">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-lg bg-blue-100 text-blue-600 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Pré-Postadas</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ $countSituacao1 }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-green-200 p-4">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-lg bg-green-100 text-green-600 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Postadas</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ $countSituacao3 }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-red-200 p-4">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-lg bg-red-100 text-red-600 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Canceladas</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ $countSituacao2 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Filtros e Botões -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
-            <div class="flex space-x-3">
-                <!-- Indicador de quantidade de pré-postagens com situação 1 -->
-                <div class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg flex items-center text-sm font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    {{ $countSituacao1 }} Pré-Postada(s)
-                </div>
+            <div class="flex flex-wrap gap-2">
 
                 @can('posted-prepostagem')
                     <a href="{{ route('prepostagens.posted') }}"
@@ -57,7 +100,7 @@
                 @endcan
             </div>
 
-            <div class="flex space-x-3">
+            <div class="flex flex-wrap gap-2">
                 <!-- Botão de selecionar todas as checkboxes -->
                 <button id="selectAllBtn"
                     class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition duration-200 flex items-center text-sm font-medium">
@@ -108,8 +151,8 @@
             <x-alert />
         </div>
 
-        <!-- Formulário de Pesquisa Simplificado -->
-        <div class="bg-white rounded-xl shadow-sm border border-blue-300 p-6 mb-6">
+        <form action="{{ route('prepostagens.index') }}" method="GET"
+            class="bg-white rounded-xl shadow-sm border border-blue-300 p-6 mb-6">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold text-gray-800">Pesquisar Pré-Postagens</h3>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
@@ -119,10 +162,10 @@
                 </svg>
             </div>
 
-            <form action="{{ route('prepostagens.index') }}" method="GET"
-                class="flex flex-col sm:flex-row gap-4 items-end">
+            <div class="flex flex-col sm:flex-row gap-4 items-end">
                 <div class="flex-grow">
-                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Nome do Destinatário</label>
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Nome do
+                        Destinatário</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
@@ -137,9 +180,9 @@
                     </div>
                 </div>
 
-                <div class="flex space-x-2">
+                <div class="flex space-x-2 w-full sm:w-auto">
                     <button type="submit"
-                        class="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center justify-center">
+                        class="flex-1 sm:flex-none px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -148,7 +191,7 @@
                         Pesquisar
                     </button>
                     <a href="{{ route('prepostagens.index') }}"
-                        class="px-4 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center justify-center"
+                        class="flex-1 sm:flex-none px-4 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center justify-center"
                         title="Limpar pesquisa">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -157,14 +200,14 @@
                         </svg>
                     </a>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
 
         <!-- Lista de Pré-Postagens -->
         <div class="space-y-4">
             @forelse ($prepostagens as $prepostagem)
                 <div
-                    class="bg-white rounded-xl shadow-sm border border-blue-300 p-6 hover:shadow-md transition duration-200 relative">
+                    class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition duration-200 relative hover:border-blue-300">
                     <!-- Checkbox para seleção -->
                     <div class="absolute top-4 right-4">
                         <input type="checkbox" class="object-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500"
@@ -177,6 +220,7 @@
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Destinatário</p>
                             <p class="text-gray-800 font-semibold truncate">{{ $prepostagem->name_recipient }}</p>
+                            <p class="text-sm text-gray-500 mt-1">{{ $prepostagem->address_recipient }}</p>
                         </div>
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Data</p>
@@ -437,8 +481,8 @@
             <div class="px-6 py-6">
                 <div class="text-center">
                     <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m4 4h6a2 2 0 002-2v-4a2 2 0 00-2-2h-6a2 2 0 00-2 2v4a2 2 0 002 2z" />
                         </svg>
@@ -579,7 +623,7 @@
         // Função para selecionar formato de impressão
         function selectPrintFormat(format) {
             selectedPrintFormat = format;
-            
+
             // Atualizar UI
             document.querySelectorAll('.print-format-option').forEach(option => {
                 if (option.getAttribute('data-format') === format) {
@@ -753,7 +797,9 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         'Accept': 'application/json, application/pdf'
                     },
-                    body: JSON.stringify({ formato: formato })
+                    body: JSON.stringify({
+                        formato: formato
+                    })
                 });
 
                 console.log('Resposta da API (imprimir todas):', response);
@@ -1114,7 +1160,7 @@
             }
 
             closePrintFormatModal();
-            
+
             // Extrair apenas os códigos de objeto para enviar à API
             const objectCodes = selectedObjects.map(obj => obj.code);
             console.log('Códigos que serão enviados:', objectCodes);
@@ -1126,7 +1172,7 @@
         // Modificar a função selectPrintFormat para verificar contexto
         function selectPrintFormat(format) {
             selectedPrintFormat = format;
-            
+
             // Atualizar UI
             document.querySelectorAll('.print-format-option').forEach(option => {
                 if (option.getAttribute('data-format') === format) {
@@ -1141,7 +1187,7 @@
             // Mostrar botão de confirmação
             const confirmBtn = document.getElementById('confirmPrintBtn');
             confirmBtn.classList.remove('hidden');
-            
+
             // Verificar se é para selecionados ou todas
             if (selectedObjects.length > 0) {
                 confirmBtn.textContent = 'Imprimir Selecionados';
