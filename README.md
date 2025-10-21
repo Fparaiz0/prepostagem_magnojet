@@ -4,6 +4,9 @@ Olá! Seja muito bem-vindo(a) a este projeto. Esta plataforma foi desenvolvida p
 
 Aqui você encontrará todas as informações necessárias para entender, instalar, executar e contribuir com este repositório. Fique à vontade para explorar, abrir issues, sugerir melhorias ou contribuir com pull requests. Toda colaboração é muito bem-vinda! 🚀
 
+## Login 
+<img width="1364" height="634" alt="image" src="https://github.com/user-attachments/assets/a08ce511-de74-4edc-a364-52ed6cb1e96c" />
+
 ## Dashboard
 <img width="1365" height="639" alt="image" src="https://github.com/user-attachments/assets/c740c3ca-673e-412f-9483-dadda9362ffe" />
 
