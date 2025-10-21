@@ -4,6 +4,12 @@ Olá! Seja muito bem-vindo(a) a este projeto. Esta plataforma foi desenvolvida p
 
 Aqui você encontrará todas as informações necessárias para entender, instalar, executar e contribuir com este repositório. Fique à vontade para explorar, abrir issues, sugerir melhorias ou contribuir com pull requests. Toda colaboração é muito bem-vinda! 🚀
 
+## Dashboard
+<img width="1365" height="639" alt="image" src="https://github.com/user-attachments/assets/c740c3ca-673e-412f-9483-dadda9362ffe" />
+
+## Pré-Postagem
+<img width="1365" height="640" alt="prepostagens" src="https://github.com/user-attachments/assets/5371b275-cfb5-4ec8-8da3-70cf8c01e514" />
+
 ## Requisitos
 
 - Laravel 12 - Conferir a versão: php artisan --version
