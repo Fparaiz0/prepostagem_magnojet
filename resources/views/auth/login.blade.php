@@ -2,56 +2,76 @@
 
 @section('content')
 
-    <body class="bg-gradient-to-r from-blue-950 to-blue-900 min-h-screen flex flex-col justify-center items-center">
+    <body class="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-blue-950 flex items-center justify-center p-4">
 
-        <!-- Card de Login -->
-        <div class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
+        <!-- Container Principal -->
+        <div class="w-full max-w-md">
 
-            <!-- Logo -->
-            <div class="flex justify-center mb-4">
-                <a href="/">
-                    <img src="/logo-define-500x500_v3.png" alt="Logo" class="h-26 w-44">
-                </a>
+            <!-- Card de Login -->
+            <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+
+                <!-- Header -->
+                <div class="bg-white px-8 py-8 text-center border-b border-gray-100">
+                    <div class="flex justify-center mb-4">
+                        <a href="/">
+                            <img src="/logo-define-500x500_v3.png" alt="Logo" class="h-20 w-35">
+                        </a>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">Pré-Postagem</h1>
+                    <p class="text-gray-600 text-sm mt-1">Sistema de Gestão</p>
+                </div>
+
+                <!-- Formulário -->
+                <div class="px-8 py-6">
+                    <form action="{{ route('login.process') }}" method="POST" class="space-y-5">
+                        @csrf
+                        @method('POST')
+
+                        <!-- Campo E-mail -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                E-mail
+                            </label>
+                            <input type="email" name="email" id="email" placeholder="seu@email.com" required
+                                value="{{ old('email') }}"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+
+                        <!-- Campo Senha -->
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                                Senha
+                            </label>
+                            <input type="password" name="password" id="password" placeholder="Sua senha" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+
+                        <!-- Alertas -->
+                        <x-alert />
+
+                        <!-- Botão -->
+                        <button type="submit"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors cursor-pointer shadow-sm hover:shadow-md">
+                            Acessar Sistema
+                        </button>
+
+                        <!-- Link Esqueci Senha -->
+                        <div class="text-center">
+                            <a href="{{ route('password.request') }}"
+                                class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
+                                Esqueceu sua senha?
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Footer -->
+                <div class="bg-gray-50 px-8 py-4 border-t border-gray-100 text-center">
+                    <p class="text-xs text-gray-500">
+                        &copy; {{ date('Y') }} MagnoJet
+                    </p>
+                </div>
             </div>
-
-            <!-- Título -->
-            <h1 class="text-2xl font-bold text-center text-blue-400">Pré-Postagem</h1>
-
-            <!-- Formulário de Login -->
-            <form action="{{ route('login.process') }}" method="POST" class="mt-4">
-                @csrf
-                @method('POST')
-
-                <!-- Campo: E-mail -->
-                <div class="mt-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
-                    <input type="email" name="email" id="email" placeholder="Digite o e-mail" required
-                        class="mt-1 block w-full rounded-md border-2 border-blue-100 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:outline-none px-3 py-2">
-                </div>
-
-                <!-- Campo: Senha -->
-                <div class="mt-4">
-                    <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
-                    <input type="password" name="password" id="password" placeholder="Digite a senha" required
-                        class="mt-1 block w-full rounded-md border-2 border-blue-100 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:outline-none px-3 py-2">
-                </div>
-
-                <!-- Alertas -->
-                <x-alert />
-
-                <!-- Ações -->
-                <div class="mt-4 flex items-center justify-between">
-                    <a href="{{ route('password.request') }}" class="text-ms text-blue-600 hover:no-underline">
-                        Esqueceu a senha?
-                    </a>
-
-                    <button type="submit"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded focus:outline-none cursor-pointer">
-                        Acessar
-                    </button>
-                </div>
-            </form>
         </div>
-
     </body>
 @endsection

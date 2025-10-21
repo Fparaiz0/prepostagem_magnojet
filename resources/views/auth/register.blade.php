@@ -2,60 +2,94 @@
 
 @section('content')
 
-    <body class="bg-login">
+    <body class="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-blue-950 flex items-center justify-center p-4">
 
-        <div class="card-login">
-            <div class="logo-wrapper-login">
-                <a href="/">
-                    <img src="/logo-define-500x500_v3.png" alt="Logo" class="logo-login">
-                </a>
+        <!-- Container Principal -->
+        <div class="w-full max-w-md">
+
+            <!-- Card de Registro -->
+            <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+
+                <!-- Header -->
+                <div class="bg-white px-8 py-8 text-center border-b border-gray-100">
+                    <div class="flex justify-center mb-4">
+                        <a href="/">
+                            <img src="/logo-define-500x500_v3.png" alt="Logo" class="h-20 w-32">
+                        </a>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">Novo Usuário</h1>
+                    <p class="text-gray-600 text-sm mt-1">Crie sua conta</p>
+                </div>
+
+                <!-- Formulário -->
+                <div class="px-8 py-6">
+                    <form action="{{ route('register.store') }}" method="POST" class="space-y-5">
+                        @csrf
+                        @method('POST')
+
+                        <!-- Campo Nome -->
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                                Nome
+                            </label>
+                            <input type="text" name="name" id="name" placeholder="Nome completo" required
+                                value="{{ old('name') }}"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+
+                        <!-- Campo E-mail -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                E-mail
+                            </label>
+                            <input type="email" name="email" id="email" placeholder="Melhor e-mail" required
+                                value="{{ old('email') }}"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+
+                        <!-- Campo Senha -->
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                                Senha
+                            </label>
+                            <input type="password" name="password" id="password" placeholder="Digite a senha" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+
+                        <!-- Campo Confirmar Senha -->
+                        <div>
+                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">
+                                Confirmar Senha
+                            </label>
+                            <input type="password" name="password_confirmation" id="password_confirmation"
+                                placeholder="Confirmar a senha" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+
+                        <!-- Alertas -->
+                        <x-alert />
+
+                        <!-- Botões -->
+                        <div class="flex items-center justify-between pt-4">
+                            <a href="{{ route('login') }}"
+                                class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
+                                Fazer Login
+                            </a>
+                            <button type="submit"
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors cursor-pointer shadow-sm hover:shadow-md">
+                                Cadastrar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Footer -->
+                <div class="bg-gray-50 px-8 py-4 border-t border-gray-100 text-center">
+                    <p class="text-xs text-gray-500">
+                        &copy; {{ date('Y') }} MagnoJet
+                    </p>
+                </div>
             </div>
-
-            <h1 class="title-login">Novo Usuário</h1>
-
-            <form action="{{ route('register.store') }}" method="POST" class="mt-4">
-                @csrf
-                @method('POST')
-
-                <!-- Campo nome -->
-                <div class="form-group-login">
-                    <label for="name" class="form-label-login">Nome</label>
-                    <input type="text" name="name" id="name" placeholder="Nome completo"
-                        value="{{ old('name') }}" class="form-input-login" required>
-                </div>
-
-                <!-- Campo e-mail -->
-                <div class="form-group-login">
-                    <label for="email" class="form-label-login">E-mail</label>
-                    <input type="email" name="email" id="email" placeholder="Melhor e-mail"
-                        value="{{ old('email') }}" class="form-input-login" required>
-                </div>
-
-                <!-- Campo senha -->
-                <div class="form-group-login">
-                    <label for="password" class="form-label-login">Senha</label>
-                    <input type="password" name="password" id="password" placeholder="Digite a senha"
-                        value="{{ old('password') }}" class="form-input-login" required>
-                </div>
-
-                <!-- Campo confirmar senha -->
-                <div class="form-group-login">
-                    <label for="password" class="form-label-login">Confirmar senha</label>
-                    <input type="password" name="password_confirmation" id="password_confirmation"
-                        placeholder="Confirmar a senha" value="{{ old('password_confirmation') }}" class="form-input-login"
-                        required>
-                </div>
-
-                <x-alert />
-
-                <!-- Link para página de login e botão cadastrar novo usuário -->
-                <div class="btn-group-login">
-                    <a href="{{ route('login') }}" class="link-login">Login</a>
-                    <button type="submit" class="btn-primary">Cadastrar</button>
-                </div>
-
-            </form>
         </div>
-
     </body>
 @endsection
