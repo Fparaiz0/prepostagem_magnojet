@@ -133,7 +133,8 @@
                     <p class="text-gray-700 mb-6 text-lg leading-relaxed">
                         Este sistema foi desenvolvido para facilitar e otimizar o processo de preparação de envios
                         realizados pela
-                        <strong class="text-blue-600">MagnoJet</strong>. Aqui, você pode:
+                        <a class="text-blue-600" href="https://www.magnojet.com.br/" target="_blank"
+                            rel="noopener noreferrer">MagnoJet</a>. Aqui, você pode:
                     </p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
