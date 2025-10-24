@@ -12,12 +12,12 @@ Route::get('/destinatarios/buscar', [RecipientApiController::class, 'buscar']);
 Route::get('/embalagens/buscar', [PackagingApiController::class, 'buscar']);
 
 // Rota de Geração de Token
-Route::get('/token', function (CorreiosTokenService $service) {
-    $token = $service->obterToken();
+Route::post('/token', function (CorreiosTokenService $service) {
+  $token = $service->obterToken();
 
-    if ($token) {
-        return response()->json(['token' => $token]);
-    }
+  if ($token) {
+    return response()->json(['token' => $token]);
+  }
 
-    return response()->json(['erro' => 'Falha ao obter token'], 500);
+  return response()->json(['erro' => 'Falha ao obter token'], 500);
 });
