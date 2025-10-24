@@ -20,9 +20,10 @@ Aqui você encontrará todas as informações necessárias para entender, instal
 
 - Laravel 12 - Conferir a versão: php artisan --version
 - PHP 8.2 ou superior - Conferir a versão: php -v
+- Node.js 22 ou superior - Conferir a versão: node -v
+- Tailwind CSS 4.1.12 ou superior - Conferir a versão: npm view tailwindcss version
 - MySQL 8.0 ou superior - Conferir a versão: mysql --version
 - Composer - Conferir a instalação: composer --version
-- Node.js 22 ou superior - Conferir a versão: node -v
 - GIT - Conferir se está instalado o GIT: git -v
 
 ## Como rodar o projeto baixado
