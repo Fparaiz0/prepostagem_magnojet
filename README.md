@@ -4,22 +4,26 @@ Olá! Seja muito bem-vindo(a) a este projeto. Esta plataforma foi desenvolvida p
 
 Aqui você encontrará todas as informações necessárias para entender, instalar, executar e contribuir com este repositório. Fique à vontade para explorar, abrir issues, sugerir melhorias ou contribuir com pull requests. Toda colaboração é muito bem-vinda! 🚀
 
-## Login 
+## Login
+
 <img width="1364" height="634" alt="image" src="https://github.com/user-attachments/assets/a08ce511-de74-4edc-a364-52ed6cb1e96c" />
 
 ## Dashboard
+
 <img width="1365" height="639" alt="image" src="https://github.com/user-attachments/assets/c740c3ca-673e-412f-9483-dadda9362ffe" />
 
 ## Pré-Postagem
+
 <img width="1365" height="640" alt="prepostagens" src="https://github.com/user-attachments/assets/5371b275-cfb5-4ec8-8da3-70cf8c01e514" />
 
 ## Requisitos
 
 - Laravel 12 - Conferir a versão: php artisan --version
 - PHP 8.2 ou superior - Conferir a versão: php -v
+- Node.js 22 ou superior - Conferir a versão: node -v
+- Tailwind CSS 4.1.12 ou superior - Conferir a versão: npm view tailwindcss version
 - MySQL 8.0 ou superior - Conferir a versão: mysql --version
 - Composer - Conferir a instalação: composer --version
-- Node.js 22 ou superior - Conferir a versão: node -v
 - GIT - Conferir se está instalado o GIT: git -v
 
 ## Como rodar o projeto baixado
