@@ -8,7 +8,9 @@
     "build": "vite build",
     "dev": "vite",
     "lint:check": "prettier --check .",
-    "lint:fix": "prettier --write ."
+    "lint:fix": "prettier --write .",
+    "test": "php artisan test",
+    "test:watch": "nodemon --exec ./vendor/bin/phpunit --ext php --watch tests --watch src"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.12",
@@ -17,6 +19,7 @@
     "axios": "^1.8.2",
     "concurrently": "^9.0.1",
     "laravel-vite-plugin": "^1.2.0",
+    "nodemon": "^3.1.10",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
     "tailwindcss": "^4.1.12",
