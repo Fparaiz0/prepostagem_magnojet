@@ -35,8 +35,7 @@ class CorreiosTokenService
       ->first();
 
     // Tenta obter novo token da API
-    $response = Http::withoutVerifying()
-      ->withBasicAuth($this->usuario, $this->senha)
+    $response = Http::withBasicAuth($this->usuario, $this->senha)
       ->post('https://api.correios.com.br/token/v1/autentica/cartaopostagem', [
         'numero' => $this->cartao,
         'contrato' => $this->contrato,

@@ -27,8 +27,7 @@ class PrePostagemController extends Controller
 
       foreach ($prepostagensParaVerificar as $prepostagem) {
         try {
-          $response = Http::withoutVerifying()
-            ->withToken($token->token)
+          $response = Http::withToken($token->token)
             ->get('https://api.correios.com.br/prepostagem/v1/prepostagens/postada', [
               'codigoObjeto' => $prepostagem->object_code,
             ]);
@@ -218,8 +217,7 @@ class PrePostagemController extends Controller
       ];
 
       // Chamar API dos Correios
-      $response = Http::withoutVerifying()
-        ->withToken($correiosToken->token)
+      $response = Http::withToken($correiosToken->token)
         ->post('https://api.correios.com.br/prepostagem/v1/prepostagens', $payload);
 
       if (!$response->successful()) {
@@ -297,8 +295,7 @@ class PrePostagemController extends Controller
       }
 
       // Enviar requisição de cancelamento para a API dos Correios
-      $response = Http::withoutVerifying()
-        ->withToken($correiosToken->token)
+      $response = Http::withToken($correiosToken->token)
         ->delete("https://api.correios.com.br/prepostagem/v1/prepostagens/objeto/{$prepostagem->object_code}");
 
       if (!$response->successful()) {
@@ -373,8 +370,7 @@ class PrePostagemController extends Controller
       ]);
 
       // Chamar API dos Correios para impressão de etiquetas
-      $response = Http::withoutVerifying()
-        ->timeout(30) // Timeout de 30 segundos
+      $response = Http::timeout(30) // Timeout de 30 segundos
         ->withToken($correiosToken->token)
         ->withHeaders([
           'Content-Type' => 'application/json',
@@ -450,8 +446,7 @@ class PrePostagemController extends Controller
         ]);
 
         try {
-          $pdfResponse = Http::withoutVerifying()
-            ->timeout(30) // Timeout de 30 segundos por tentativa
+          $pdfResponse = Http::timeout(30) // Timeout de 30 segundos por tentativa
             ->withToken($correiosToken->token)
             ->withHeaders([
               'Accept' => 'application/json',
@@ -612,8 +607,7 @@ class PrePostagemController extends Controller
       ];
 
       // Chamar API dos Correios para impressão de etiquetas
-      $response = Http::withoutVerifying()
-        ->timeout(30) // Timeout de 30 segundos
+      $response = Http::timeout(30) // Timeout de 30 segundos
         ->withToken($correiosToken->token)
         ->withHeaders([
           'Content-Type' => 'application/json',
@@ -689,8 +683,7 @@ class PrePostagemController extends Controller
         ]);
 
         try {
-          $pdfResponse = Http::withoutVerifying()
-            ->timeout(30) // Timeout de 30 segundos por tentativa
+          $pdfResponse = Http::timeout(30) // Timeout de 30 segundos por tentativa
             ->withToken($correiosToken->token)
             ->withHeaders([
               'Accept' => 'application/json',
