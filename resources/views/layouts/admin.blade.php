@@ -24,24 +24,19 @@
         }
     </style>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body class="bg-gray-50">
     <div class="flex h-screen">
-        <!-- Sidebar para Desktop -->
         <aside class="hidden lg:flex lg:flex-shrink-0">
             <div class="flex flex-col w-64 bg-white shadow-xl border-r border-gray-200">
-                <!-- Cabeçalho da Sidebar -->
                 <div class="flex items-center justify-center p-6 border-b border-gray-200">
                     <img src="/magnojetsidebar.png" alt="Logo MagnoJet" class="h-20 w-35">
                 </div>
 
-                <!-- Menu de Navegação -->
                 <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-                    <!-- Dashboard -->
                     @can('dashboard')
                         <a href="{{ route('dashboard.index') }}"
                             class="flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-colors group">
@@ -50,7 +45,6 @@
                         </a>
                     @endcan
 
-                    <!-- Etiquetas -->
                     @can('index-range')
                         <div x-data="{ open: false }" class="w-full">
                             <button @click="open = !open"
@@ -90,7 +84,6 @@
                         </div>
                     @endcan
 
-                    <!-- Pré-Postagem -->
                     @can('index-prepostagem')
                         <div x-data="{ open: false }" class="w-full">
                             <button @click="open = !open"
@@ -138,7 +131,6 @@
                         </div>
                     @endcan
 
-                    <!-- Cadastros -->
                     <div class="pt-4">
                         <h3 class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                             Cadastros
@@ -169,7 +161,6 @@
                         @endcan
                     </div>
 
-                    <!-- Administração -->
                     <div class="pt-4">
                         @can('index-user')
                             <h3 class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
@@ -211,7 +202,6 @@
                     </div>
                 </nav>
 
-                <!-- Rodapé da Sidebar -->
                 <div class="p-4 border-t border-gray-200">
                     <div class="text-center text-xs text-gray-500">
                         <p>Versão 1.0.0</p>
@@ -221,14 +211,10 @@
             </div>
         </aside>
 
-        <!-- Conteúdo Principal -->
         <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Navbar -->
             <header class="bg-white shadow-sm border-b border-gray-200">
                 <div class="flex items-center justify-between px-6 py-4">
-                    <!-- Lado Esquerdo: Menu Mobile e Título -->
                     <div class="flex items-center space-x-4">
-                        <!-- Botão menu mobile -->
                         <button id="toggleSidebar"
                             class="lg:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
                             <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -238,15 +224,12 @@
                         </button>
                     </div>
 
-                    <!-- Lado Direito: Usuário -->
                     <div class="flex items-center space-x-4">
-                        <!-- Indicador de Status -->
                         <div class="hidden md:flex items-center space-x-2 text-sm text-gray-500">
                             <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                             <span>Sistema Online</span>
                         </div>
 
-                        <!-- Dropdown do Usuário -->
                         <div class="relative">
                             <button id="userDropdownButton"
                                 class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors">
@@ -277,7 +260,6 @@
                                 </svg>
                             </button>
 
-                            <!-- Dropdown Content -->
                             <div id="dropdownContent"
                                 class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 hidden z-50">
                                 <div class="px-4 py-3 border-b border-gray-100">
@@ -313,10 +295,8 @@
                 </div>
             </header>
 
-            <!-- Conteúdo da Página -->
             <main class="flex-1 overflow-auto bg-gray-50">
                 <div class="container mx-auto px-6 py-8">
-                    <!-- Área de Conteúdo -->
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
                         @yield('content')
                     </div>
@@ -325,13 +305,11 @@
         </div>
     </div>
 
-    <!-- Sidebar Mobile -->
     <div id="mobileSidebar" class="fixed inset-0 z-50 lg:hidden hidden">
         <div class="fixed inset-0 bg-black bg-opacity-50" id="sidebarOverlay"></div>
         <div class="fixed inset-y-0 left-0 w-64 bg-white shadow-xl transform transition-transform -translate-x-full"
             id="sidebarMobile">
             <div class="flex flex-col h-full">
-                <!-- Cabeçalho Mobile -->
                 <div class="flex items-center justify-between p-6 border-b border-gray-200">
                     <img src="/magnojetsidebar.png" alt="Logo MagnoJet" class="h-10 w-auto">
                     <button id="closeSidebar"
@@ -343,17 +321,13 @@
                     </button>
                 </div>
 
-                <!-- Menu Mobile (mesmo conteúdo da sidebar desktop) -->
                 <div class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-                    <!-- Mesmo conteúdo do menu desktop aqui -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script>
-        // Sidebar Mobile
         const toggleSidebar = document.getElementById('toggleSidebar');
         const closeSidebar = document.getElementById('closeSidebar');
         const mobileSidebar = document.getElementById('mobileSidebar');
@@ -386,7 +360,6 @@
             sidebarOverlay.addEventListener('click', closeMobileSidebar);
         }
 
-        // Dropdown User
         const dropdownButton = document.getElementById('userDropdownButton');
         const dropdownContent = document.getElementById('dropdownContent');
 
@@ -401,7 +374,6 @@
             });
         }
 
-        // Fechar sidebar ao redimensionar para desktop
         window.addEventListener('resize', function() {
             if (window.innerWidth >= 1024) {
                 closeMobileSidebar();
