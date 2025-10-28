@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    <!-- Cabeçalho da Página -->
     <div class="content-header">
         <h2 class="content-title">Destinatários</h2>
         <div class="flex space-x-3 mt-4 md:mt-0">
@@ -21,13 +20,11 @@
 
     <x-alert />
 
-    <!-- Formulário de Cadastro -->
     <div class="bg-white rounded-xl shadow-sm overflow-hidden">
         <form action="{{ route('recipients.store') }}" method="POST">
             @csrf
 
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Dados Básicos -->
                 <div class="md:col-span-2">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" fill="none"
@@ -53,7 +50,6 @@
                         placeholder="00.000.000/0000-00">
                 </div>
 
-                <!-- Endereço -->
                 <div class="md:col-span-2 mt-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none"
@@ -130,7 +126,6 @@
                 </div>
             </div>
 
-            <!-- Rodapé do Formulário -->
             <div class="px-6 py-4 border-t border-blue-200 bg-gray-50 flex justify-between">
                 <div class="text-sm text-gray-500">
                     Campos marcados com * são obrigatórios
@@ -154,21 +149,18 @@
             const cepLoading = document.getElementById('cep-loading');
             const cepError = document.getElementById('cep-error');
 
-            // Permitir apenas números no campo CEP
             cepInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, ''); // mantém só dígitos
+                let value = e.target.value.replace(/\D/g, '');
                 if (value.length > 8) {
-                    value = value.substring(0, 8); // máximo 8 dígitos
+                    value = value.substring(0, 8);
                 }
                 e.target.value = value;
 
-                // Buscar CEP quando tiver os 8 dígitos
                 if (value.length === 8) {
                     buscarCep(value);
                 }
             });
 
-            // Buscar CEP ao sair do campo
             cepInput.addEventListener('blur', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 if (value.length === 8) {
