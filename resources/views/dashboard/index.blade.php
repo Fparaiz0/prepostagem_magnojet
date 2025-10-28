@@ -12,7 +12,6 @@
     <div class="min-h-screen bg-gray-50 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <!-- Cabeçalho da Página -->
             <div class="mb-8">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <div class="mb-4 sm:mb-0">
@@ -20,7 +19,6 @@
                         <p class="text-sm text-gray-600 mt-1">Visão geral do sistema</p>
                     </div>
 
-                    <!-- Breadcrumb -->
                     <nav class="flex items-center text-sm text-gray-500">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -32,14 +30,11 @@
                 </div>
             </div>
 
-            <!-- Alert -->
             <div class="mb-6">
                 <x-alert />
             </div>
 
-            <!-- Cards de Estatísticas Rápidas -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <!-- Total de Pré-Postagens -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-lg bg-blue-100 text-blue-600 mr-4">
@@ -56,7 +51,6 @@
                     </div>
                 </div>
 
-                <!-- Destinatários -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-lg bg-green-100 text-green-600 mr-4">
@@ -73,7 +67,6 @@
                     </div>
                 </div>
 
-                <!-- Embalagens -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-lg bg-purple-100 text-purple-600 mr-4">
@@ -90,7 +83,6 @@
                     </div>
                 </div>
 
-                <!-- Etiquetas Disponíveis -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-lg bg-orange-100 text-orange-600 mr-4">
@@ -109,9 +101,7 @@
                 </div>
             </div>
 
-            <!-- Welcome Section -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-200 mb-8 overflow-hidden">
-                <!-- Header -->
                 <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center">
                         <div class="p-2 bg-blue-100 rounded-lg mr-3">
@@ -128,7 +118,6 @@
                     </div>
                 </div>
 
-                <!-- Content -->
                 <div class="p-6">
                     <p class="text-gray-700 mb-6 text-lg leading-relaxed">
                         Este sistema foi desenvolvido para facilitar e otimizar o processo de preparação de envios
@@ -151,7 +140,6 @@
                         @endforeach
                     </div>
 
-                    <!-- Info Box -->
                     <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
                         <div class="flex">
                             <div class="flex-shrink-0">
@@ -175,9 +163,7 @@
                 </div>
             </div>
 
-            <!-- Quick Access Section -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Pré-Postagem -->
                 <a href="{{ route('prepostagens.create') }}"
                     class="group bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-200 transform hover:scale-105">
                     <div class="flex items-center">
@@ -198,7 +184,6 @@
                     </div>
                 </a>
 
-                <!-- Destinatários -->
                 <a href="{{ route('recipients.index') }}"
                     class="group bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:border-green-300 hover:shadow-lg transition-all duration-200 transform hover:scale-105">
                     <div class="flex items-center">
@@ -219,7 +204,6 @@
                     </div>
                 </a>
 
-                <!-- Embalagens -->
                 <a href="{{ route('packagings.index') }}"
                     class="group bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:border-purple-300 hover:shadow-lg transition-all duration-200 transform hover:scale-105">
                     <div class="flex items-center">
