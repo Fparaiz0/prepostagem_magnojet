@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    <!-- Cabeçalho da Página -->
     <div class="content-header">
         <h2 class="content-title">Embalagens</h2>
         @can('create-packaging')
@@ -93,7 +92,6 @@
                 </table>
             </div>
 
-            <!-- Paginação Estilizada -->
             @if ($packagings->hasPages())
                 <div
                     class="px-6 py-4 border-t border-blue-200 bg-gray-50 flex flex-col sm:flex-row items-center justify-between">
