@@ -1,18 +1,15 @@
-// Função para abrir o modal (remove "hidden" e adiciona classe fade-in)
 function abrirModal() {
   const modal = document.getElementById("modalSelecionarDestinatario");
   modal.classList.remove("hidden");
   modal.classList.add("opacity-100");
 }
 
-// Função para fechar o modal (adiciona "hidden" e remove fade-in)
 function fecharModal() {
   const modal = document.getElementById("modalSelecionarDestinatario");
   modal.classList.add("hidden");
   modal.classList.remove("opacity-100");
 }
 
-// Configura o botão fechar do modal
 document
   .getElementById("fecharModalBtn")
   .addEventListener("click", fecharModal);
