@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    <!-- Cabeçalho da Página -->
     <div class="content-header">
         <h2 class="content-title">Alterar Senha</h2>
         <div class="flex flex-wrap gap-3">
@@ -19,18 +18,15 @@
         </div>
     </div>
 
-    <!-- Alert -->
     <div class="mt-4">
         <x-alert />
     </div>
 
-    <!-- Form -->
     <div class="bg-white rounded-lg shadow-md border border-gray-200 mt-6 overflow-hidden">
         <form action="{{ route('profile.update_password') }}" method="POST">
             @csrf
             @method('PUT')
             <div class="p-6 space-y-6">
-                <!-- Current Password -->
                 <div class="space-y-2">
                     <label for="current_password" class="block text-sm font-medium text-gray-700">Senha Atual*</label>
                     <div class="relative">
@@ -43,7 +39,6 @@
                     </div>
                 </div>
 
-                <!-- New Password -->
                 <div class="space-y-2">
                     <label for="password" class="block text-sm font-medium text-gray-700">Nova Senha*</label>
                     <div class="relative">
@@ -65,7 +60,6 @@
                     </div>
                 </div>
 
-                <!-- Confirm Password -->
                 <div class="space-y-2">
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar Nova
                         Senha*</label>
@@ -77,7 +71,6 @@
                 </div>
             </div>
 
-            <!-- Form Footer -->
             <div class="px-6 py-4 border-t border-blue-200 bg-gray-50 flex justify-end">
                 <button type="submit"
                     class="px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
