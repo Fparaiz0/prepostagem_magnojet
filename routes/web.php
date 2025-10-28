@@ -16,39 +16,28 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserStatusController;
 use Illuminate\Support\Facades\Route;
 
-// Página inicial do site
 Route::get('/', [AuthController::class, 'index'])->name('login');
 
-// Tela de login
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 
-// Processar os dados do login
 Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.process');
 
-// Logout
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Formulário cadastrar novo usuário
 Route::get('/register', [AuthController::class, 'create'])->name('register');
 
-// Receber os dados do formulário e cadastrar novo usuário
 Route::post('/register', [AuthController::class, 'store'])->name('register.store');
 
-// Solicitar link para resetar a senha
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
-// Formulário para redefinir a senha com o token
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showRequestForm'])->name('password.reset');
 Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
-// Grupo de rotas restritas
 Route::group(['middleware' => 'auth'], function () {
 
-  // Página inicial do Administrativo
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index')->middleware('permission:dashboard');
 
-  // Página de Perfil
   Route::prefix('profile')->group(function () {
     Route::get('/', [ProfileController::class, 'show'])->name('profile.show')->middleware('permission:show-profile');
     Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('permission:edit-profile');
@@ -57,7 +46,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update_password')->middleware('permission:edit-password-profile');
   });
 
-  // Usuários
   Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('users.index')->middleware('permission:index-user');
     Route::get('/create', [UserController::class, 'create'])->name('users.create')->middleware('permission:create-user');
@@ -70,7 +58,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/{user}/update-password', [UserController::class, 'updatePassword'])->name('users.update_password')->middleware('permission:edit-password-user');
   });
 
-  // Usuários Status
   Route::prefix('user-statuses')->group(function () {
     Route::get('/', [UserStatusController::class, 'index'])->name('user_statuses.index')->middleware('permission:index-user-status');
     Route::get('/create', [UserStatusController::class, 'create'])->name('user_statuses.create')->middleware('permission:create-user-status');
@@ -81,7 +68,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/{userStatus}', [UserStatusController::class, 'destroy'])->name('user_statuses.destroy')->middleware('permission:destroy-user-status');
   });
 
-  // Papéis
   Route::prefix('roles')->group(function () {
     Route::get('/', [RoleController::class, 'index'])->name('roles.index')->middleware('permission:index-role');
     Route::get('/create', [RoleController::class, 'create'])->name('roles.create')->middleware('permission:create-role');
@@ -92,13 +78,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/{role}', [RoleController::class, 'destroy'])->name('roles.destroy')->middleware('permission:destroy-role');
   });
 
-  // Permissão do papel
   Route::prefix('role-permissions')->group(function () {
     Route::get('/{role}', [RolePermissionController::class, 'index'])->name('role-permissions.index')->middleware('permission:index-role-permission');
     Route::get('/{role}/{permission}', [RolePermissionController::class, 'update'])->name('role-permissions.update')->middleware('permission:update-role-permission');
   });
 
-  // Permissão
   Route::prefix('permissions')->group(function () {
     Route::get('/', [PermissionController::class, 'index'])->name('permissions.index')->middleware('permission:index-permission');
     Route::get('/create', [PermissionController::class, 'create'])->name('permissions.create')->middleware('permission:create-permission');
@@ -109,7 +93,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/{permission}', [PermissionController::class, 'destroy'])->name('permissions.destroy')->middleware('permission:destroy-permission');
   });
 
-  // Embalagens
   Route::prefix('packagings')->group(function () {
     Route::get('/', [PackagingController::class, 'index'])->name('packagings.index')->middleware('permission:index-packaging');
     Route::get('/create', [PackagingController::class, 'create'])->name('packagings.create')->middleware('permission:create-packaging');
@@ -120,7 +103,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/{packaging}', [PackagingController::class, 'destroy'])->name('packagings.destroy')->middleware('permission:destroy-packaging');
   });
 
-  // Remetentes
   Route::prefix('sender')->group(function () {
     Route::get('/', [SenderController::class, 'index'])->name('senders.index')->middleware('permission:index-sender');
     Route::get('/create', [SenderController::class, 'create'])->name('senders.create')->middleware('permission:create-sender');
@@ -131,7 +113,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/{sender}', [SenderController::class, 'destroy'])->name('senders.destroy')->middleware('permission:destroy-sender');
   });
 
-  // Destinatários
   Route::prefix('recipient')->group(function () {
     Route::get('/', [RecipientController::class, 'index'])->name('recipients.index')->middleware('permission:index-recipient');
     Route::get('/create', [RecipientController::class, 'create'])->name('recipients.create')->middleware('permission:create-recipient');
@@ -142,7 +123,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/{recipient}', [RecipientController::class, 'destroy'])->name('recipients.destroy')->middleware('permission:destroy-recipient');
   });
 
-  // Pré-Postagem
   Route::prefix('prepostagem')->group(function () {
     Route::get('/', [PrepostagemController::class, 'index'])->name('prepostagens.index')->middleware('permission:index-prepostagem');
     Route::get('/create', [PrepostagemController::class, 'create'])->name('prepostagens.create')->middleware('permission:create-prepostagem');
@@ -156,7 +136,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/prepostagens/baixar-pdf/{idRecibo}', [PrePostagemController::class, 'baixarPDF'])->name('prepostagens.baixar-pdf')->middleware('auth');
   });
 
-  // Range de etiquetas
   Route::prefix('range')->group(function () {
     Route::get('/', [RangeController::class, 'index'])->name('tracks.index')->middleware('permission:index-range');
     Route::get('/show', [RangeController::class, 'show'])->name('tracks.show')->middleware('permission:show-range');
