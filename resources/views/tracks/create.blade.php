@@ -9,11 +9,9 @@
 @endsection
 
 @section('content')
-    <!-- Container Principal -->
     <div class="min-h-screen bg-gray-50 py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <!-- Cabeçalho da Página -->
             <div class="mb-8">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <div class="mb-4 sm:mb-0">
@@ -21,7 +19,6 @@
                         <p class="text-sm text-gray-600 mt-1">Gerar novos códigos de rastreamento</p>
                     </div>
 
-                    <!-- Botão: Etiquetas Disponíveis -->
                     @can('index-range')
                         <a href="{{ route('tracks.index') }}"
                             class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 hover:shadow-md transition-all duration-200">
@@ -34,7 +31,6 @@
                     @endcan
                 </div>
 
-                <!-- Breadcrumb -->
                 <nav class="mt-4 flex" aria-label="Breadcrumb">
                     <ol class="flex items-center space-x-2 text-sm text-gray-500">
                         <li>
@@ -52,14 +48,11 @@
                 </nav>
             </div>
 
-            <!-- Grid de Layout -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                <!-- Card do Formulário -->
                 <div class="lg:col-span-2">
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
 
-                        <!-- Cabeçalho do Card -->
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
                             <div class="flex items-center">
                                 <div class="p-2 bg-blue-100 rounded-lg mr-3">
@@ -76,11 +69,9 @@
                             </div>
                         </div>
 
-                        <!-- Formulário -->
                         <form action="{{ route('tracks.store') }}" method="POST" class="p-6">
                             @csrf
 
-                            <!-- Campo Quantidade -->
                             <div class="mb-6">
                                 <label for="amount" class="block text-sm font-medium text-gray-700 mb-2">
                                     <span class="flex items-center">
@@ -109,7 +100,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Informações e Validação -->
                                 <div class="mt-2 space-y-1">
                                     @error('amount')
                                         <p class="text-red-500 text-sm flex items-center">
@@ -126,7 +116,6 @@
                                 </div>
                             </div>
 
-                            <!-- Preview Dinâmico -->
                             <div id="previewSection" class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200 hidden">
                                 <h4 class="text-sm font-medium text-gray-700 mb-2">Prévia do Lote</h4>
                                 <div class="text-sm text-gray-600">
@@ -137,7 +126,6 @@
                                 </div>
                             </div>
 
-                            <!-- Botão de Ação -->
                             <div class="flex justify-end pt-4 border-t border-gray-200">
                                 <button type="submit" id="submitButton"
                                     class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-lg shadow-sm 
@@ -154,7 +142,6 @@
                     </div>
                 </div>
 
-                <!-- Card Informativo -->
                 <div class="lg:col-span-1">
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
                         <div class="flex items-center mb-4">
@@ -209,7 +196,6 @@
                 </div>
             </div>
 
-            <!-- Alertas -->
             <div class="mt-6">
                 <x-alert />
             </div>
@@ -234,7 +220,6 @@
             }
         }
 
-        // Inicializar preview se já houver valor
         document.addEventListener('DOMContentLoaded', function() {
             const amountInput = document.getElementById('amount');
             if (amountInput.value) {
