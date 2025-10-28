@@ -1,11 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
-    <!-- Cabeçalho da Página -->
     <div class="content-header">
         <h2 class="content-title">Embalagens</h2>
 
-        <!-- Botão: Lista Completa -->
         <div class="flex flex-wrap gap-3">
             @can('index-packaging')
                 <a href="{{ route('packagings.index') }}"
@@ -21,19 +19,16 @@
         </div>
     </div>
 
-    <!-- Componente de Alerta (mensagens de sucesso/erro) -->
     <div class="mt-4">
         <x-alert />
     </div>
 
-    <!-- Formulário de Cadastro de Embalagem -->
     <div class="bg-white rounded-lg shadow-md border border-gray-200 mt-6 overflow-hidden">
         <form action="{{ route('packagings.store') }}" method="POST">
             @csrf
 
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <!-- Seção: Informações Básicas -->
                 <div class="md:col-span-2">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" fill="none"
@@ -45,7 +40,6 @@
                     </h3>
                 </div>
 
-                <!-- Campo: Nome da Embalagem -->
                 <div class="space-y-2">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nome*</label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}"
@@ -56,7 +50,6 @@
                     @enderror
                 </div>
 
-                <!-- Campo: Status da Embalagem -->
                 <div class="space-y-2">
                     <label for="active" class="block text-sm font-medium text-gray-700">Status*</label>
                     <select name="active" id="active"
@@ -70,7 +63,6 @@
                     @enderror
                 </div>
 
-                <!-- Seção: Dimensões -->
                 <div class="md:col-span-2">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none"
@@ -82,7 +74,6 @@
                     </h3>
                 </div>
 
-                <!-- Campo: Altura -->
                 <div class="space-y-2">
                     <label for="height" class="block text-sm font-medium text-gray-700">Altura*</label>
                     <input type="number" step="0.01" name="height" id="height" value="{{ old('height') }}"
@@ -93,7 +84,6 @@
                     @enderror
                 </div>
 
-                <!-- Campo: Largura -->
                 <div class="space-y-2">
                     <label for="width" class="block text-sm font-medium text-gray-700">Largura*</label>
                     <input type="number" step="0.01" name="width" id="width" value="{{ old('width') }}"
@@ -104,7 +94,6 @@
                     @enderror
                 </div>
 
-                <!-- Campo: Comprimento -->
                 <div class="space-y-2">
                     <label for="length" class="block text-sm font-medium text-gray-700">Comprimento*</label>
                     <input type="number" step="0.01" name="length" id="length" value="{{ old('length') }}"
@@ -115,7 +104,6 @@
                     @enderror
                 </div>
 
-                <!-- Campo: Diâmetro -->
                 <div class="space-y-2">
                     <label for="diameter" class="block text-sm font-medium text-gray-700">Diâmetro*</label>
                     <input type="number" step="0.01" name="diameter" id="diameter" value="{{ old('diameter', 0) }}"
@@ -126,7 +114,6 @@
                     @enderror
                 </div>
 
-                <!-- Campo: Peso -->
                 <div class="space-y-2">
                     <label for="weight" class="block text-sm font-medium text-gray-700">Peso (g)*</label>
                     <input type="number" step="0.01" name="weight" id="weight" value="{{ old('weight', 1) }}"
@@ -138,7 +125,6 @@
                 </div>
             </div>
 
-            <!-- Rodapé do Formulário: Botão de Enviar -->
             <div class="px-6 py-4 border-t border-blue-200 bg-gray-50 flex justify-end">
                 <button type="submit"
                     class="px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
