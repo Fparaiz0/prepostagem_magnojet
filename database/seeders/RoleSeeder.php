@@ -9,149 +9,118 @@ use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        //Capturar possíveis exceções durante a execução do seeder. 
-        try{
-            /******* Super Admin - Tem acesso a todas as páginas *******/
-            // Se não encontrar o registro, cadastra o registro no BD
-            Role::firstOrCreate(
-                ['name' => 'Super Admin'], 
-                ['name' => 'Super Admin'], 
-            );
+  public function run(): void
+  {
+    try {
+      Role::firstOrCreate(
+        ['name' => 'Super Admin'],
+        ['name' => 'Super Admin'],
+      );
 
-            /*******  Admin  *******/
-            // Se não encontrar o registro, cadastra o registro no BD
-            $admin = Role::firstOrCreate(
-                ['name' => 'Admin'], 
-                ['name' => 'Admin'], 
-            );
+      $admin = Role::firstOrCreate(
+        ['name' => 'Admin'],
+        ['name' => 'Admin'],
+      );
 
-            // Cadastrar permissão para o papel 
-            $admin->givePermissionTo([
+      $admin->givePermissionTo([
 
-                // Acesso Dashboard
-                'dashboard',
+        'dashboard',
 
-                // Acesso Perfil
-                'show-profile',
-                'edit-profile',
-                'edit-password-profile',
+        'show-profile',
+        'edit-profile',
+        'edit-password-profile',
 
-                // Acesso Usuários
-                'index-user',
-                'show-user',
-                'create-user',
-                'edit-user',
-                'edit-password-user',
-                'edit-roles-user',
-                'destroy-user',
+        'index-user',
+        'show-user',
+        'create-user',
+        'edit-user',
+        'edit-password-user',
+        'edit-roles-user',
+        'destroy-user',
 
-                // Acesso Status do Usuários
-                'index-user-status',
-                'show-user-status',
-                'create-user-status',
-                'edit-user-status',
-                'destroy-user-status',
+        'index-user-status',
+        'show-user-status',
+        'create-user-status',
+        'edit-user-status',
+        'destroy-user-status',
 
-                // Acesso Papéis
-                'index-role',
-                'show-role',
-                'create-role',
-                'edit-role',
-                'destroy-role',
+        'index-role',
+        'show-role',
+        'create-role',
+        'edit-role',
+        'destroy-role',
 
-                // Acesso Permissões do papel
-                'index-role-permission',
+        'index-role-permission',
 
-                // Acesso Embalagens
-                'index-packaging',
-                'show-packaging',
-                'create-packaging',
-                'edit-packaging',
-                'destroy-packaging',
+        'index-packaging',
+        'show-packaging',
+        'create-packaging',
+        'edit-packaging',
+        'destroy-packaging',
 
-                // Acesso Remetentes
-                'index-sender',
-                'show-sender',
-                'create-sender',
-                'edit-sender',
-                'destroy-sender',
+        'index-sender',
+        'show-sender',
+        'create-sender',
+        'edit-sender',
+        'destroy-sender',
 
-                // Acesso Destinatários
-                'index-recipient',
-                'show-recipient',
-                'create-recipient',
-                'edit-recipient',
-                'destroy-recipient',
+        'index-recipient',
+        'show-recipient',
+        'create-recipient',
+        'edit-recipient',
+        'destroy-recipient',
 
-               // Acesso Pré-Postagem
-                'index-prepostagem',
-                'show-prepostagem',
-                'create-prepostagem',
-                'canceled-prepostagem',
-                'posted-prepostagem',
-                'destroy-prepostagem',
+        'index-prepostagem',
+        'show-prepostagem',
+        'create-prepostagem',
+        'canceled-prepostagem',
+        'posted-prepostagem',
+        'destroy-prepostagem',
 
-                // Acesso Pré-Postagem
-                'index-range',
-                'show-range',
-                'create-range',
-            ]);
+        'index-range',
+        'show-range',
+        'create-range',
+      ]);
 
-            /*******  Colaborador  *******/
-            // Se não encontrar o registro, cadastra o registro no BD
-            $colaborador = Role::firstOrCreate(
-                ['name' => 'Colaborador'], 
-                ['name' => 'Colaborador'], 
-            );
+      $colaborador = Role::firstOrCreate(
+        ['name' => 'Colaborador'],
+        ['name' => 'Colaborador'],
+      );
 
-            // Cadastrar permissão para o papel 
-            $colaborador->givePermissionTo([
-                
-                // Acesso Dashboard
-                'dashboard',
+      $colaborador->givePermissionTo([
 
-                // Acesso Perfil
-                'show-profile',
-                'edit-profile',
-                'edit-password-profile',
+        'dashboard',
 
-                // Acesso Embalagens
-                'index-packaging',
-                'show-packaging',   
+        'show-profile',
+        'edit-profile',
+        'edit-password-profile',
 
-                // Acesso Remetentes
-                'index-sender',
-                'show-sender',   
+        'index-packaging',
+        'show-packaging',
 
-                // Acesso Destinatários
-                'index-recipient',
-                'show-recipient',
-                'create-recipient',
-                'edit-recipient',
-                'destroy-recipient',
+        'index-sender',
+        'show-sender',
 
-                // Acesso Pré-Postagem
-                'index-prepostagem',
-                'show-prepostagem',
-                'create-prepostagem',
-                'canceled-prepostagem',
-                'posted-prepostagem',
-                'destroy-prepostagem',
+        'index-recipient',
+        'show-recipient',
+        'create-recipient',
+        'edit-recipient',
+        'destroy-recipient',
+
+        'index-prepostagem',
+        'show-prepostagem',
+        'create-prepostagem',
+        'canceled-prepostagem',
+        'posted-prepostagem',
+        'destroy-prepostagem',
 
 
-                // Acesso Etiquetas
-                'index-range',
-                'show-range',
-            ]);
+        'index-range',
+        'show-range',
+      ]);
 
-        } catch (Exception $e){
-            // Salvar log
-            Log::notice('Papel não cadastrado.', ['error' => $e->getMessage()]); 
-        }
+    } catch (Exception $e) {
+      Log::notice('Papel não cadastrado.', ['error' => $e->getMessage()]);
     }
+  }
 }
