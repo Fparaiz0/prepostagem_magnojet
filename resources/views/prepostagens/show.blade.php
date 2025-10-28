@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    <!-- Cabeçalho da Página -->
     <div class="content-header">
         <h2 class="content-title">Pré-Postagem</h2>
         <nav class="breadcrumb">
@@ -9,14 +8,11 @@
         </nav>
     </div>
 
-    <!-- Alert -->
     <div class="mt-4">
         <x-alert />
     </div>
 
-    <!-- Container Principal -->
     <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-        <!-- Cabeçalho do Objeto -->
         @switch($prepostagem->situation)
             @case(1)
                 <div class="bg-gradient-to-r from-blue-100 to-gray-50 px-6 py-4 border-b">
@@ -87,9 +83,7 @@
                     </div>
                 </div>
 
-                <!-- Grid de Informações -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
-                    <!-- Seção Remetente -->
                     @switch($prepostagem->situation)
                         @case(1)
                             <div class="bg-gray-50 rounded-lg p-5 border border-blue-300">
@@ -148,7 +142,6 @@
                                 </div>
                             </div>
 
-                            <!-- Seção Destinatário -->
                             @switch($prepostagem->situation)
                                 @case(1)
                                     <div class="bg-gray-50 rounded-lg p-5 border border-blue-300">
@@ -209,7 +202,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Seção Detalhes do Objeto -->
                                     @switch($prepostagem->situation)
                                         @case(1)
                                             <div class="lg:col-span-2 bg-gray-50 rounded-lg p-5 border border-blue-300">
@@ -295,7 +287,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Rodapé com Ações -->
                                         <div
                                             class="bg-gray-50 px-6 py-4 border-t border-blue-200 flex justify-end space-x-3">
                                             @if ($prepostagem->situation == 1)
