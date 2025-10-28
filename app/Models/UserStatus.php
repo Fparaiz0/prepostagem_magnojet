@@ -7,17 +7,14 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class UserStatus extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
+  use \OwenIt\Auditing\Auditable;
 
-    // Indicar o nome da tabela
-    protected $table = 'user_statuses';
+  protected $table = 'user_statuses';
 
-    // Indicar quais colunas podem ser manipuladas
-    protected $fillable = ['name'];
+  protected $fillable = ['name'];
 
-    // Criar relacionamento entre um e muitos
-    public function user()
-    {
-        return $this->hasMany(User::class);
-    }
+  public function user()
+  {
+    return $this->hasMany(User::class);
+  }
 }
