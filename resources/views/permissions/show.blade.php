@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    <!-- Cabeçalho da Página -->
     <div class="content-header flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
             <h2 class="content-title text-2xl">Detalhes da Permissão</h2>
@@ -37,40 +36,32 @@
         <x-alert />
     </div>
 
-    <!-- Card de Detalhes -->
     <div class="bg-white rounded-xl shadow-sm overflow-hidden mt-6">
-        <!-- Cabeçalho do Card -->
         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex items-center">
             <div class="w-3 h-3 rounded-full bg-green-500 mr-3"></div>
             <h3 class="text-lg font-semibold text-gray-800">Informações da Permissão</h3>
         </div>
 
-        <!-- Conteúdo do Card -->
         <div class="p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- ID -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-500">ID</label>
                     <p class="text-lg font-semibold text-gray-800">{{ $permission->id }}</p>
                 </div>
 
-                <!-- Título -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-500">Título</label>
                     <p class="text-lg font-semibold text-gray-800">{{ $permission->title }}</p>
                 </div>
 
-                <!-- Nome -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-500">Nome Interno</label>
                     <p class="text-sm font-mono text-green-600 bg-green-50 p-2 rounded-lg">{{ $permission->name }}</p>
                     <p class="text-xs text-gray-500 mt-1">Identificador único usado no sistema</p>
                 </div>
 
-                <!-- Espaço vazio para alinhamento -->
                 <div class="space-y-2"></div>
 
-                <!-- Data de Criação -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-500">Data de Cadastro</label>
                     <p class="text-sm text-gray-800 flex items-center">
@@ -83,7 +74,6 @@
                     </p>
                 </div>
 
-                <!-- Data de Atualização -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-500">Última Atualização</label>
                     <p class="text-sm text-gray-800 flex items-center">
@@ -98,7 +88,6 @@
             </div>
         </div>
 
-        <!-- Rodapé do Card -->
         <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-end">
             @can('destroy-permission')
                 <form action="{{ route('permissions.destroy', ['permission' => $permission->id]) }}" method="POST">
@@ -119,7 +108,6 @@
         </div>
     </div>
 
-    <!-- Card de Ações Rápidas -->
     <div class="bg-white rounded-xl shadow-sm overflow-hidden mt-6">
         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
             <h3 class="text-lg font-semibold text-gray-800">Ações Rápidas</h3>
