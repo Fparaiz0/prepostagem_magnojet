@@ -1,12 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
-    @php
-        // Contar pré-postagens com situação 2
-        $countSituacao1 = \App\Models\PrePostagem::where('situation', 2)->count();
-    @endphp
     <div class="content-wrapper">
-        <!-- Cabeçalho da Página -->
+        @php
+            $countSituacao1 = \App\Models\PrePostagem::where('situation', 2)->count();
+        @endphp
         <div class="content-header flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
                 <h2 class="text-2xl font-bold text-gray-800">Pré-Postagens Canceladas</h2>
@@ -19,10 +17,8 @@
             </nav>
         </div>
 
-        <!-- Filtros e Botões -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
             <div class="flex space-x-3">
-                <!-- Indicador de quantidade de pré-postagens com situação 2 -->
                 <div class="px-4 py-2 bg-red-100 text-red-700 rounded-lg flex items-center text-sm font-medium">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -55,12 +51,10 @@
             </div>
         </div>
 
-        <!-- Alert -->
         <div class="mt-4">
             <x-alert />
         </div>
 
-        <!-- Formulário de Pesquisa Simplificado -->
         <div class="bg-white rounded-xl shadow-sm border border-red-300 p-6 mb-6">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold text-gray-800">Pesquisar Pré-Postagens Canceladas</h3>
@@ -112,7 +106,6 @@
             </form>
         </div>
 
-        <!-- Lista de Pré-Postagens -->
         <div class="space-y-4">
             @forelse ($prepostagens as $prepostagem)
                 <div
@@ -187,7 +180,6 @@
             @endforelse
         </div>
 
-        <!-- Paginação Estilizada -->
         @if ($prepostagens->hasPages())
             <div
                 class="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 px-4 py-3 flex items-center justify-between">
@@ -205,7 +197,6 @@
                     </div>
                     <div>
                         <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                            <!-- Previous Page Link -->
                             @if ($prepostagens->onFirstPage())
                                 <span
                                     class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-400 cursor-not-allowed">
@@ -230,7 +221,6 @@
                                 </a>
                             @endif
 
-                            <!-- Pagination Elements -->
                             @foreach ($prepostagens->getUrlRange(max(1, $prepostagens->currentPage() - 2), min($prepostagens->lastPage(), $prepostagens->currentPage() + 2)) as $page => $url)
                                 @if ($page == $prepostagens->currentPage())
                                     <span aria-current="page"
@@ -245,7 +235,6 @@
                                 @endif
                             @endforeach
 
-                            <!-- Next Page Link -->
                             @if ($prepostagens->hasMorePages())
                                 <a href="{{ $prepostagens->nextPageUrl() }}"
                                     class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
