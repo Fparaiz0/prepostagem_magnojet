@@ -13,12 +13,10 @@
 
 <body class="min-h-screen bg-gray-100 text-gray-800 flex flex-col items-center justify-center p-6">
 
-    <!-- Link para login -->
     <div class="mb-4">
         <a href="{{ route('login') }}" class="text-blue-600 hover:underline font-semibold">Acessar Login</a>
     </div>
 
-    <!-- Conteúdo injetado pelas views -->
     <div class="w-full max-w-xl">
         @yield('content')
     </div>
