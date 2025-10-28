@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    <!-- Cabeçalho da Página -->
     <div class="content-header">
         <h2 class="content-title">Embalagens</h2>
         <div class="flex flex-wrap gap-3">
@@ -30,14 +29,11 @@
             @endcan
         </div>
     </div>
-    <!-- Alert -->
     <div class="mt-4">
         <x-alert />
     </div>
 
-    <!-- Main Content -->
     <div class="bg-white rounded-lg shadow-md border border-gray-200 mt-6 overflow-hidden">
-        <!-- Packaging Overview -->
         <div class="bg-indigo-50 px-6 py-4 border-b border-gray-200">
             <div class="flex items-center gap-4">
                 <div class="bg-white p-3 rounded-full shadow-sm">
@@ -60,9 +56,7 @@
             </div>
         </div>
 
-        <!-- Packaging Details -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-            <!-- Dimensions -->
             <div class="space-y-4">
                 <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
@@ -92,7 +86,6 @@
                 </div>
             </div>
 
-            <!-- Specifications -->
             <div class="space-y-4">
                 <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
@@ -114,7 +107,6 @@
                 </div>
             </div>
 
-            <!-- System Information -->
             <div class="space-y-4 md:col-span-2">
                 <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
@@ -137,7 +129,6 @@
             </div>
         </div>
 
-        <!-- Delete Action -->
         @can('destroy-packaging')
             <div class="px-6 py-4 border-t border-blue-200 border-gray-200 bg-gray-50 flex justify-end">
                 <form action="{{ route('packagings.destroy', $packaging->id) }}" method="POST">
