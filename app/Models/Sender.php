@@ -7,21 +7,19 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Sender extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
+  use \OwenIt\Auditing\Auditable;
 
-    // Indicar o nome da tabela
-    protected $table = 'senders';
+  protected $table = 'senders';
 
-    // Indicar quais colunas podem ser manipuladas
-    protected $fillable = [
-        'sender_id',
-        'name',
-        'cnpj',
-        'cep',
-        'public_place',
-        'number',
-        'neighborhood',
-        'city',
-        'uf',
-    ];
+  protected $fillable = [
+    'sender_id',
+    'name',
+    'cnpj',
+    'cep',
+    'public_place',
+    'number',
+    'neighborhood',
+    'city',
+    'uf',
+  ];
 }
