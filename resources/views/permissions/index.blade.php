@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    <!-- Cabeçalho da Página -->
     <div class="content-header flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
             <h2 class="content-title">Permissões do Sistema</h2>
@@ -24,9 +23,7 @@
         <x-alert />
     </div>
 
-    <!-- Listagem de Permissões -->
     <div class="bg-white rounded-2xl shadow-sm overflow-hidden mt-6 border border-blue-200">
-        <!-- Cabeçalho da Tabela -->
         <div class="px-6 py-4 border-b border-blue-200 bg-gray-50">
             <h3 class="text-lg font-semibold text-gray-800">Permissões Cadastradas</h3>
             <p class="text-sm text-gray-500 mt-1">{{ $permissions->total() }} permissões encontradas</p>
@@ -118,11 +115,9 @@
         @endforelse
     </div>
 
-    <!-- Pagination -->
     @if ($permissions->hasPages())
         <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-                <!-- Results Info -->
                 <div class="text-sm text-gray-600">
                     Mostrando
                     <span class="font-medium">{{ $permissions->firstItem() }}</span>
@@ -133,7 +128,6 @@
                     resultados
                 </div>
 
-                <!-- Navigation -->
                 <nav class="flex items-center space-x-1">
                     {{-- Previous Button --}}
                     @if ($permissions->onFirstPage())
