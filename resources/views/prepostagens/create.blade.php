@@ -14,7 +14,6 @@
     <div class="min-h-screen bg-gray-50 py-8">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <!-- Cabeçalho da Página -->
             <div class="mb-8">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <div class="mb-4 sm:mb-0">
@@ -24,17 +23,14 @@
                 </div>
             </div>
 
-            <!-- Alert -->
             <div class="mb-6">
                 <x-alert />
             </div>
 
-            <!-- Formulário -->
             <form action="{{ route('prepostagens.store') }}" method="POST" class="space-y-6">
                 @csrf
                 @method('POST')
 
-                <!-- Card Remetente -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                     <div class="bg-gradient-to-r from-blue-50 to-blue-100 px-6 py-4 border-b border-gray-200">
                         <div class="flex items-center">
@@ -117,7 +113,6 @@
                     </div>
                 </div>
 
-                <!-- Card Destinatário -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                     <div class="bg-gradient-to-r from-green-50 to-emerald-100 px-6 py-4 border-b border-gray-200">
                         <div class="flex items-center">
@@ -214,7 +209,6 @@
                     </div>
                 </div>
 
-                <!-- Card Embalagem -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                     <div class="bg-gradient-to-r from-orange-50 to-amber-100 px-6 py-4 border-b border-gray-200">
                         <div class="flex items-center">
@@ -288,7 +282,6 @@
                     </div>
                 </div>
 
-                <!-- Card Informações Adicionais -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                     <div class="bg-gradient-to-r from-purple-50 to-violet-100 px-6 py-4 border-b border-gray-200">
                         <div class="flex items-center">
@@ -354,7 +347,6 @@
                     </div>
                 </div>
 
-                <!-- Botão de Envio -->
                 <div class="flex justify-end">
                     <button type="submit"
                         class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer">
@@ -368,11 +360,9 @@
                 </div>
             </form>
 
-            <!-- Modal Seleção de Destinatário -->
             <div id="modalSelecionarDestinatario"
                 class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-opacity duration-300 ease-out">
                 <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl mx-4 animate-fade-in">
-                    <!-- Cabeçalho -->
                     <div
                         class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-green-50 to-emerald-100 rounded-t-2xl border-b">
                         <h2 class="text-lg font-semibold text-gray-900">Selecionar Destinatário</h2>
@@ -383,9 +373,7 @@
                         </button>
                     </div>
 
-                    <!-- Conteúdo dinâmico -->
                     <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4" id="listaDestinatarios">
-                        <!-- resultados aqui ... -->
                     </div>
                 </div>
             </div>
