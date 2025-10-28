@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-    <!-- Cabeçalho da Página -->
     <div class="content-header flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
             <h2 class="content-title">Cadastrar Permissão</h2>
@@ -25,14 +24,12 @@
         <x-alert />
     </div>
 
-    <!-- Formulário de Cadastro -->
     <div class="bg-white rounded-xl border border-blue-200 shadow-sm overflow-hidden mt-6">
         <form action="{{ route('permissions.store') }}" method="POST">
             @csrf
             @method('POST')
 
             <div class="p-6">
-                <!-- Cabeçalho do Formulário -->
                 <div class="pb-5 border-b border-blue-200">
                     <h3 class="text-lg font-semibold text-gray-800 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-6 text-blue-500" fill="none"
@@ -45,9 +42,7 @@
                     <p class="text-sm text-gray-500 mt-2">Preencha os dados da nova permissão</p>
                 </div>
 
-                <!-- Campos do Formulário -->
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Campo Título -->
                     <div class="space-y-2">
                         <label for="title" class="text-sm font-medium text-gray-700 flex items-center">
                             Título da Permissão
@@ -59,7 +54,6 @@
                         <p class="text-xs text-gray-500">Nome descritivo da permissão (visível para usuários)</p>
                     </div>
 
-                    <!-- Campo Nome -->
                     <div class="space-y-2">
                         <label for="name" class="text-sm font-medium text-gray-700 flex items-center">
                             Nome Interno
@@ -73,7 +67,6 @@
                 </div>
             </div>
 
-            <!-- Rodapé do Formulário -->
             <div class="px-6 py-4 border-t border-blue-200 bg-gray-50 flex justify-between">
                 <div class="text-sm text-gray-500">
                     Campos marcados com <span class="text-red-500">*</span> são obrigatórios
@@ -97,7 +90,6 @@
         </form>
     </div>
 
-    <!-- Informações Adicionais -->
     <div class="bg-white rounded-xl shadow-sm border border-blue-200 overflow-hidden mt-6">
         <div class="px-6 py-4 border-b border-blue-200 bg-gray-50">
             <h3 class="text-lg font-semibold text-gray-800 flex items-center">
