@@ -14,7 +14,6 @@
     <div class="min-h-screen bg-gray-50 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <!-- Cabeçalho da Página -->
             <div class="mb-8">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <div class="mb-4 sm:mb-0">
@@ -22,7 +21,6 @@
                         <p class="text-sm text-gray-600 mt-1">Códigos de rastreamento disponíveis</p>
                     </div>
 
-                    <!-- Breadcrumb -->
                     <nav class="flex items-center text-sm text-gray-500">
                         <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
                             Disponível
@@ -31,15 +29,12 @@
                 </div>
             </div>
 
-            <!-- Alert -->
             <div class="mb-6">
                 <x-alert />
             </div>
 
-            <!-- Main Content -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
 
-                <!-- Header do Card -->
                 <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                         <div class="flex items-center mb-4 sm:mb-0">
@@ -68,7 +63,6 @@
                     </div>
                 </div>
 
-                <!-- Ações Secundárias -->
                 <div class="px-6 py-4 bg-white border-b border-gray-200">
                     <div class="flex flex-wrap gap-3">
                         @can('show-range')
@@ -85,9 +79,7 @@
                     </div>
                 </div>
 
-                <!-- Lista de Etiquetas -->
                 <div class="p-6">
-                    <!-- Header da Lista -->
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-lg font-semibold text-gray-800">Etiquetas Disponíveis</h3>
                         <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
@@ -96,7 +88,6 @@
                     </div>
 
                     @if ($tracks->isEmpty())
-                        <!-- Estado Vazio -->
                         <div class="text-center py-12">
                             <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                 <svg class="h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
@@ -119,17 +110,14 @@
                             @endcan
                         </div>
                     @else
-                        <!-- Grid de Etiquetas -->
                         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                             @foreach ($tracks as $index => $range)
                                 <div class="relative group">
-                                    <!-- Número de Ordem -->
                                     <div
                                         class="absolute -top-2 -left-2 w-6 h-6 flex items-center justify-center bg-blue-500 text-white text-xs font-bold rounded-full shadow-sm z-10">
                                         {{ ($tracks->currentPage() - 1) * $tracks->perPage() + $index + 1 }}
                                     </div>
 
-                                    <!-- Card da Etiqueta -->
                                     <div class="track-code p-3 border-2 rounded-xl font-mono text-sm transition-all duration-200 cursor-pointer 
                                         {{ $range->selected
                                             ? 'text-red-800 bg-red-50 border-red-200 hover:bg-red-100 hover:border-red-300 shadow-sm'
@@ -137,12 +125,10 @@
                                         data-id="{{ $range->id }}"
                                         title="{{ $range->selected ? 'Clique para remover NF' : 'Clique para vincular NF' }}">
 
-                                        <!-- Código -->
                                         <div class="text-center font-semibold tracking-wide">
                                             {{ $range->object_code }}
                                         </div>
 
-                                        <!-- Nota Fiscal -->
                                         @if ($range->invoice)
                                             <div class="text-xs text-gray-600 mt-2 p-1 bg-white rounded border text-center">
                                                 NF: {{ $range->invoice }}
@@ -153,7 +139,6 @@
                                             </div>
                                         @endif
 
-                                        <!-- Status Indicator -->
                                         <div class="absolute bottom-1 right-1">
                                             @if ($range->selected)
                                                 <div class="w-2 h-2 bg-red-500 rounded-full"></div>
@@ -168,7 +153,6 @@
                     @endif
                 </div>
 
-                <!-- Paginação -->
                 @if ($tracks->hasPages())
                     <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
                         <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
@@ -247,7 +231,6 @@
         </div>
     </div>
 
-    <!-- Modal para Vincular NF -->
     <div id="invoiceModal" class="fixed inset-0 hidden items-center justify-center z-50 bg-black/40 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-xl w-96 mx-4 transform transition-all duration-300 scale-95 opacity-0"
             id="modalContent">
@@ -305,12 +288,10 @@
                     const id = el.getAttribute("data-id");
 
                     if (el.classList.contains("text-blue-800")) {
-                        // Abrir modal para digitar NF
                         selectedId = id;
                         input.value = "";
                         openModal();
                     } else {
-                        // Já estava selecionado → desmarcar
                         if (confirm("Tem certeza que deseja remover a NF desta etiqueta?")) {
                             toggleInvoice(id, null, el);
                         }
@@ -332,7 +313,6 @@
                 closeModal();
             });
 
-            // Fechar modal com ESC
             document.addEventListener("keydown", function(e) {
                 if (e.key === "Escape") {
                     closeModal();
