@@ -16,13 +16,13 @@ class PrePostagemController extends Controller
 {
   public function index(Request $request)
   {
-    // 1. Buscar o token
+
     $token = CorreiosToken::latest()->first();
 
     if (!$token) {
       Log::warning('Token dos Correios não encontrado ao abrir index.');
     } else {
-      // 2. Buscar todas pré-postagens com situation = 1 para verificar
+
       $prepostagensParaVerificar = Prepostagem::where('situation', 1)->get();
 
       foreach ($prepostagensParaVerificar as $prepostagem) {
@@ -65,7 +65,7 @@ class PrePostagemController extends Controller
     $query = Prepostagem::orderBy('id', 'DESC')
       ->where('situation', 1);
 
-    // Adicionar filtro de pesquisa se existir
+
     if ($request->has('search') && !empty($request->search)) {
       $searchTerm = $request->search;
       $query->where('name_recipient', 'like', '%' . $searchTerm . '%');
@@ -77,18 +77,18 @@ class PrePostagemController extends Controller
 
     return view('prepostagens.index', [
       'prepostagens' => $prepostagens,
-      'search' => $request->search, // Passar o termo de pesquisa para a view
+      'search' => $request->search,
     ]);
   }
 
-  // Listar as Pré-Postagem canceladas
+
   public function canceled(Request $request)
   {
-    // Recuperar os registros do banco dados
+
     $query = Prepostagem::orderBy('id', 'DESC')
       ->where('situation', 2);
 
-    // Adicionar filtro de pesquisa se existir
+
     if ($request->has('search') && !empty($request->search)) {
       $searchTerm = $request->search;
       $query->where('name_recipient', 'like', '%' . $searchTerm . '%');
@@ -96,24 +96,24 @@ class PrePostagemController extends Controller
 
     $prepostagens = $query->paginate(50);
 
-    // Salvar log
+
     Log::info('Listar as Pré-Postagem canceladas.', ['action_user_id' => Auth::id()]);
 
-    // Carregar a view
+
     return view('prepostagens.canceled', [
       'prepostagens' => $prepostagens,
       'search' => $request->search,
     ]);
   }
 
-  // Listar as Pré-Postagem postadas
+
   public function posted(Request $request)
   {
-    // Recuperar os registros do banco dados
+
     $query = Prepostagem::orderBy('id', 'DESC')
       ->where('situation', 3);
 
-    // Adicionar filtro de pesquisa se existir
+
     if ($request->has('search') && !empty($request->search)) {
       $searchTerm = $request->search;
       $query->where('name_recipient', 'like', '%' . $searchTerm . '%');
@@ -121,30 +121,28 @@ class PrePostagemController extends Controller
 
     $prepostagens = $query->paginate(50);
 
-    // Salvar log
     Log::info('Listar as Pré-Postagem postadas.', ['action_user_id' => Auth::id()]);
 
-    // Carregar a view
     return view('prepostagens.posted', [
       'prepostagens' => $prepostagens,
       'search' => $request->search,
     ]);
   }
 
-  // Visualizar os detalhes das Pré-Postagens
+
   public function show(Prepostagem $prepostagem)
   {
-    // Salvar log
+
     Log::info('Visualizar a Pré-Postagem.', ['prepostagem_id' => $prepostagem->id, 'action_user_id' => Auth::id()]);
 
-    // Carregar a view
+
     return view('prepostagens.show', ['prepostagem' => $prepostagem]);
   }
 
-  // Carregar o formulário cadastrar nova Pré-Postagem
+
   public function create()
   {
-    // Carregar a view
+
     return view('prepostagens.create');
   }
 
@@ -156,7 +154,7 @@ class PrePostagemController extends Controller
         throw new Exception('Token dos Correios não encontrado.');
       }
 
-      // Apenas verificar se a etiqueta está disponível
+
       $etiqueta = Range::where('object_code', $request->object_code)
         ->where('used', 0)
         ->first();
@@ -167,7 +165,6 @@ class PrePostagemController extends Controller
         return back()->withInput()->with('error', 'Etiqueta já utilizada ou não disponível no range.');
       }
 
-      // Montar o payload da pré-postagem
       $payload = [
         'remetente' => [
           'nome' => $request->name_sender,
@@ -216,7 +213,7 @@ class PrePostagemController extends Controller
         'observacao' => $request->observation ?? '',
       ];
 
-      // Chamar API dos Correios
+
       $response = Http::withToken($correiosToken->token)
         ->post('https://api.correios.com.br/prepostagem/v1/prepostagens', $payload);
 
@@ -234,7 +231,7 @@ class PrePostagemController extends Controller
         return back()->withInput()->with('error', "Erro ao enviar Pré-Postagem: $mensagemErro");
       }
 
-      // Salvar no banco de dados
+
       $prepostagem = Prepostagem::create([
         'name_sender' => $request->name_sender,
         'cnpj_sender' => $request->cnpj_sender,
@@ -294,7 +291,6 @@ class PrePostagemController extends Controller
         throw new Exception('Token dos Correios não encontrado.');
       }
 
-      // Enviar requisição de cancelamento para a API dos Correios
       $response = Http::withToken($correiosToken->token)
         ->delete("https://api.correios.com.br/prepostagem/v1/prepostagens/objeto/{$prepostagem->object_code}");
 
@@ -308,7 +304,6 @@ class PrePostagemController extends Controller
         return back()->with('error', 'Erro ao cancelar a pré-postagem na API dos Correios.');
       }
 
-      // Atualizar a situação no banco para 2 = cancelada
       $prepostagem->update(['situation' => 2]);
 
       Log::info('Pré-Postagem cancelada com sucesso na API e atualizada no banco.', [
@@ -324,9 +319,6 @@ class PrePostagemController extends Controller
     }
   }
 
-  /**
-   * Imprimir etiquetas selecionadas via API dos Correios
-   */
   public function imprimirSelecionados(Request $request)
   {
     try {
@@ -341,17 +333,14 @@ class PrePostagemController extends Controller
         ], 500);
       }
 
-      // Validar os dados recebidos
       $validated = $request->validate([
         'codigosObjeto' => 'required|array|min:1',
-        'codigosObjeto.*' => 'required|string|size:13', // Códigos de objeto têm 13 caracteres
-        'formato' => 'required|string|in:etiqueta,a4', // Campo obrigatório para formato
+        'codigosObjeto.*' => 'required|string|size:13',
+        'formato' => 'required|string|in:etiqueta,a4',
       ]);
 
-      // Determinar o layout de impressão baseado no formato
       $layoutImpressao = $this->getLayoutImpressao($validated['formato']);
 
-      // Montar o payload conforme especificado pela API dos Correios
       $payload = [
         'codigosObjeto' => $validated['codigosObjeto'],
         'idCorreios' => 'magno2016',
@@ -369,8 +358,7 @@ class PrePostagemController extends Controller
         'payload' => $payload,
       ]);
 
-      // Chamar API dos Correios para impressão de etiquetas
-      $response = Http::timeout(30) // Timeout de 30 segundos
+      $response = Http::timeout(30)
         ->withToken($correiosToken->token)
         ->withHeaders([
           'Content-Type' => 'application/json',
@@ -378,7 +366,6 @@ class PrePostagemController extends Controller
         ])
         ->post('https://api.correios.com.br/prepostagem/v1/prepostagens/rotulo/assincrono/pdf', $payload);
 
-      // Verificar se a requisição foi bem sucedida
       if (!$response->successful()) {
         $statusCode = $response->status();
         $errorBody = $response->body();
@@ -390,7 +377,6 @@ class PrePostagemController extends Controller
           'formato' => $validated['formato'],
         ]);
 
-        // Tentar extrair mensagens de erro da resposta
         $errorMessages = ['Erro ao processar a requisição dos Correios'];
         try {
           $errorData = json_decode($errorBody, true);
@@ -400,7 +386,7 @@ class PrePostagemController extends Controller
             $errorMessages = [$errorData['message']];
           }
         } catch (\Exception $e) {
-          // Manter a mensagem padrão se não conseguir decodificar JSON
+
         }
 
         return response()->json([
@@ -410,7 +396,6 @@ class PrePostagemController extends Controller
         ], $statusCode);
       }
 
-      // Processar resposta bem-sucedida
       $responseData = $response->json();
 
       Log::info('Resposta recebida da API dos Correios - Impressão de etiquetas selecionadas', [
@@ -419,7 +404,6 @@ class PrePostagemController extends Controller
         'formato' => $validated['formato'],
       ]);
 
-      // Verificar se a resposta contém o ID do recibo
       if (!isset($responseData['idRecibo'])) {
         Log::warning('Resposta da API dos Correios não contém ID do recibo', [
           'response_data' => $responseData,
@@ -433,7 +417,6 @@ class PrePostagemController extends Controller
 
       $idRecibo = $responseData['idRecibo'];
 
-      // TENTAR ATÉ 5 VEZES COM INTERVALO DE 2 SEGUNDOS
       $maxTentativas = 5;
       $tentativa = 1;
       $pdfContent = null;
@@ -446,7 +429,7 @@ class PrePostagemController extends Controller
         ]);
 
         try {
-          $pdfResponse = Http::timeout(30) // Timeout de 30 segundos por tentativa
+          $pdfResponse = Http::timeout(30)
             ->withToken($correiosToken->token)
             ->withHeaders([
               'Accept' => 'application/json',
@@ -454,12 +437,9 @@ class PrePostagemController extends Controller
             ->get("https://api.correios.com.br/prepostagem/v1/prepostagens/rotulo/download/assincrono/{$idRecibo}");
 
           if ($pdfResponse->successful()) {
-            // Processar resposta do PDF
             $pdfData = $pdfResponse->json();
 
-            // Verificar se a resposta contém os dados do PDF em base64
             if (isset($pdfData['dados'])) {
-              // Decodificar o PDF base64
               $pdfContent = base64_decode($pdfData['dados']);
               $fileName = $pdfData['nome'] ?? "etiquetas_selecionadas_{$idRecibo}.pdf";
 
@@ -471,12 +451,11 @@ class PrePostagemController extends Controller
                   'quantidade_etiquetas' => count($validated['codigosObjeto']),
                   'formato' => $validated['formato'],
                 ]);
-                break; // Sai do loop se conseguir obter o PDF
+                break;
               }
             }
           }
 
-          // Se não conseguiu na última tentativa, loga o erro
           if ($tentativa === $maxTentativas) {
             Log::error('Erro ao buscar PDF do rótulo após ' . $maxTentativas . ' tentativas', [
               'idRecibo' => $idRecibo,
@@ -493,7 +472,6 @@ class PrePostagemController extends Controller
           }
 
         } catch (\Exception $e) {
-          // Se for a última tentativa e ainda deu erro, lança a exceção
           if ($tentativa === $maxTentativas) {
             Log::error('Exceção ao buscar PDF do rótulo na tentativa ' . $tentativa, [
               'idRecibo' => $idRecibo,
@@ -508,13 +486,10 @@ class PrePostagemController extends Controller
           }
         }
 
-        // Aguarda 2 segundos antes da próxima tentativa
         sleep(2);
         $tentativa++;
       }
 
-      // Se chegou aqui, conseguiu obter o PDF com sucesso
-      // Retornar o PDF como resposta
       return response($pdfContent)
         ->header('Content-Type', 'application/pdf')
         ->header('Content-Disposition', "inline; filename=\"{$fileName}\"")
@@ -561,14 +536,12 @@ class PrePostagemController extends Controller
         ], 500);
       }
 
-      // Validar o formato
       $validated = $request->validate([
-        'formato' => 'required|string|in:etiqueta,a4', // Campo obrigatório para formato
+        'formato' => 'required|string|in:etiqueta,a4',
       ]);
 
       $formato = $validated['formato'];
 
-      // Buscar todas as pré-postagens com situation = 1
       $prepostagens = Prepostagem::where('situation', 1)->get();
 
       if ($prepostagens->isEmpty()) {
@@ -583,10 +556,8 @@ class PrePostagemController extends Controller
         ], 404);
       }
 
-      // Extrair os códigos de objeto
       $codigosObjeto = $prepostagens->pluck('object_code')->toArray();
 
-      // Determinar o layout de impressão baseado no formato
       $layoutImpressao = $this->getLayoutImpressao($formato);
 
       Log::info('Imprimindo todas as pré-postagens pendentes', [
@@ -596,7 +567,6 @@ class PrePostagemController extends Controller
         'layout_impressao' => $layoutImpressao,
       ]);
 
-      // Montar o payload 
       $payload = [
         'codigosObjeto' => $codigosObjeto,
         'idCorreios' => 'magno2016',
@@ -606,8 +576,7 @@ class PrePostagemController extends Controller
         'layoutImpressao' => $layoutImpressao,
       ];
 
-      // Chamar API dos Correios para impressão de etiquetas
-      $response = Http::timeout(30) // Timeout de 30 segundos
+      $response = Http::timeout(30)
         ->withToken($correiosToken->token)
         ->withHeaders([
           'Content-Type' => 'application/json',
@@ -615,7 +584,6 @@ class PrePostagemController extends Controller
         ])
         ->post('https://api.correios.com.br/prepostagem/v1/prepostagens/rotulo/assincrono/pdf', $payload);
 
-      // Verificar se a requisição foi bem sucedida
       if (!$response->successful()) {
         $statusCode = $response->status();
         $errorBody = $response->body();
@@ -627,7 +595,6 @@ class PrePostagemController extends Controller
           'formato' => $formato,
         ]);
 
-        // Tentar extrair mensagens de erro da resposta
         $errorMessages = ['Erro ao processar a requisição dos Correios'];
         try {
           $errorData = json_decode($errorBody, true);
@@ -637,7 +604,6 @@ class PrePostagemController extends Controller
             $errorMessages = [$errorData['message']];
           }
         } catch (\Exception $e) {
-          // Manter a mensagem padrão se não conseguir decodificar JSON
         }
 
         return response()->json([
@@ -647,7 +613,6 @@ class PrePostagemController extends Controller
         ], $statusCode);
       }
 
-      // Processar resposta bem-sucedida
       $responseData = $response->json();
 
       Log::info('Resposta recebida da API dos Correios - Impressão de todas as etiquetas', [
@@ -656,7 +621,6 @@ class PrePostagemController extends Controller
         'formato' => $formato,
       ]);
 
-      // Verificar se a resposta contém o ID do recibo
       if (!isset($responseData['idRecibo'])) {
         Log::warning('Resposta da API dos Correios não contém ID do recibo', [
           'response_data' => $responseData,
@@ -670,7 +634,6 @@ class PrePostagemController extends Controller
 
       $idRecibo = $responseData['idRecibo'];
 
-      // TENTAR ATÉ 5 VEZES COM INTERVALO DE 2 SEGUNDOS
       $maxTentativas = 5;
       $tentativa = 1;
       $pdfContent = null;
@@ -683,7 +646,7 @@ class PrePostagemController extends Controller
         ]);
 
         try {
-          $pdfResponse = Http::timeout(30) // Timeout de 30 segundos por tentativa
+          $pdfResponse = Http::timeout(30)
             ->withToken($correiosToken->token)
             ->withHeaders([
               'Accept' => 'application/json',
@@ -691,12 +654,9 @@ class PrePostagemController extends Controller
             ->get("https://api.correios.com.br/prepostagem/v1/prepostagens/rotulo/download/assincrono/{$idRecibo}");
 
           if ($pdfResponse->successful()) {
-            // Processar resposta do PDF
             $pdfData = $pdfResponse->json();
 
-            // Verificar se a resposta contém os dados do PDF em base64
             if (isset($pdfData['dados'])) {
-              // Decodificar o PDF base64
               $pdfContent = base64_decode($pdfData['dados']);
               $fileName = $pdfData['nome'] ?? "etiquetas_todas_{$idRecibo}.pdf";
 
@@ -708,12 +668,11 @@ class PrePostagemController extends Controller
                   'quantidade_etiquetas' => count($codigosObjeto),
                   'formato' => $formato,
                 ]);
-                break; // Sai do loop se conseguir obter o PDF
+                break;
               }
             }
           }
 
-          // Se não conseguiu na última tentativa, loga o erro
           if ($tentativa === $maxTentativas) {
             Log::error('Erro ao buscar PDF do rótulo após ' . $maxTentativas . ' tentativas', [
               'idRecibo' => $idRecibo,
@@ -730,7 +689,6 @@ class PrePostagemController extends Controller
           }
 
         } catch (\Exception $e) {
-          // Se for a última tentativa e ainda deu erro, lança a exceção
           if ($tentativa === $maxTentativas) {
             Log::error('Exceção ao buscar PDF do rótulo na tentativa ' . $tentativa, [
               'idRecibo' => $idRecibo,
@@ -745,13 +703,10 @@ class PrePostagemController extends Controller
           }
         }
 
-        // Aguarda 2 segundos antes da próxima tentativa
         sleep(2);
         $tentativa++;
       }
 
-      // Se chegou aqui, conseguiu obter o PDF com sucesso
-      // Retornar o PDF como resposta
       return response($pdfContent)
         ->header('Content-Type', 'application/pdf')
         ->header('Content-Disposition', "inline; filename=\"{$fileName}\"")
@@ -781,15 +736,12 @@ class PrePostagemController extends Controller
     }
   }
 
-  /**
-   * Determinar o layout de impressão baseado no formato selecionado
-   */
   private function getLayoutImpressao(string $formato): string
   {
     return match ($formato) {
       'a4' => 'PADRAO',
       'etiqueta' => 'LINEAR_100_150',
-      default => 'LINEAR_100_150', // Valor padrão
+      default => 'LINEAR_100_150',
     };
   }
 }
