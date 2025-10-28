@@ -21,20 +21,12 @@ class CorreiosTokenService
     $this->dr = config('services.correios.dr');
   }
 
-  /**
-   * Obtém o token válido dos Correios.
-   * Se não houver token válido, gera um novo e salva no banco.
-   *
-   * @return string|null Token válido ou null se falhar.
-   */
   public function obterToken(): ?string
   {
-    // Recupera o token mais recente válido do banco
     $tokenBanco = CorreiosToken::where('valid_until', '>', now())
       ->orderByDesc('created_at')
       ->first();
 
-    // Tenta obter novo token da API
     $response = Http::withBasicAuth($this->usuario, $this->senha)
       ->post('https://api.correios.com.br/token/v1/autentica/cartaopostagem', [
         'numero' => $this->cartao,
@@ -46,7 +38,6 @@ class CorreiosTokenService
       $validaToken = $response->json()['token'] ?? null;
 
       if ($validaToken) {
-        // Se for diferente do token salvo, cria novo registro
         if (!$tokenBanco || $tokenBanco->token !== $validaToken) {
 
           $novoToken = $validaToken;
@@ -69,7 +60,6 @@ class CorreiosTokenService
 
     Log::info("A requisição do token falhou:", ["response" => $response->json()]);
 
-    // Se falhou a requisição, usa o token salvo se ainda for válido
     return $tokenBanco->token ?? null;
   }
 }
