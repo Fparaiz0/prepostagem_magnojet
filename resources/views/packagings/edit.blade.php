@@ -1,18 +1,14 @@
 @extends('layouts.admin')
 
 @section('content')
-    <!-- Cabeçalho da Página -->
     <div class="content-header">
         <h2 class="content-title">Embalagens</h2>
 
-        <!-- Botões de Ação (visíveis de acordo com permissões do usuário) -->
         <div class="flex flex-wrap gap-3">
 
-            <!-- Botão: Voltar para a lista de embalagens -->
             @can('index-packaging')
                 <a href="{{ route('packagings.index') }}"
                     class="flex items-center px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                    <!-- Ícone -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -22,11 +18,9 @@
                 </a>
             @endcan
 
-            <!-- Botão: Visualizar embalagem atual -->
             @can('show-packaging')
                 <a href="{{ route('packagings.show', $packaging->id) }}"
                     class="flex items-center px-4 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg">
-                    <!-- Ícone -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -40,20 +34,16 @@
         </div>
     </div>
 
-    <!-- Alerta de Sucesso/Erro -->
     <div class="mt-4">
         <x-alert />
     </div>
 
-    <!-- Formulário de Edição da Embalagem -->
     <div class="bg-white rounded-lg shadow-md border border-gray-200 mt-6 overflow-hidden">
         <form action="{{ route('packagings.update', $packaging->id) }}" method="POST">
             @csrf
-            @method('PUT') <!-- Necessário para atualizar registros com método PUT -->
 
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <!-- Título da Seção -->
                 <div class="md:col-span-2">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" fill="none"
@@ -65,7 +55,6 @@
                     </h3>
                 </div>
 
-                <!-- Campo: Nome -->
                 <div class="space-y-2">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nome*</label>
                     <input type="text" name="name" id="name" value="{{ old('name', $packaging->name) }}"
@@ -73,7 +62,6 @@
                         placeholder="Nome da embalagem" required>
                 </div>
 
-                <!-- Campo: Status (Ativo/Inativo) -->
                 <div class="space-y-2">
                     <label for="active" class="block text-sm font-medium text-gray-700">Status*</label>
                     <select name="active" id="active"
@@ -85,7 +73,6 @@
                     </select>
                 </div>
 
-                <!-- Título da Seção: Dimensões -->
                 <div class="md:col-span-2">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none"
@@ -97,7 +84,6 @@
                     </h3>
                 </div>
 
-                <!-- Campo: Altura -->
                 <div class="space-y-2">
                     <label for="height" class="block text-sm font-medium text-gray-700">Altura*</label>
                     <input type="number" step="0.01" name="height" id="height"
@@ -106,7 +92,6 @@
                         placeholder="Altura em centímetros" required>
                 </div>
 
-                <!-- Campo: Largura -->
                 <div class="space-y-2">
                     <label for="width" class="block text-sm font-medium text-gray-700">Largura*</label>
                     <input type="number" step="0.01" name="width" id="width"
@@ -115,7 +100,6 @@
                         placeholder="Largura em centímetros" required>
                 </div>
 
-                <!-- Campo: Comprimento -->
                 <div class="space-y-2">
                     <label for="length" class="block text-sm font-medium text-gray-700">Comprimento*</label>
                     <input type="number" step="0.01" name="length" id="length"
@@ -124,7 +108,6 @@
                         placeholder="Comprimento em centímetros" required>
                 </div>
 
-                <!-- Campo: Diâmetro -->
                 <div class="space-y-2">
                     <label for="diameter" class="block text-sm font-medium text-gray-700">Diâmetro*</label>
                     <input type="number" step="0.01" name="diameter" id="diameter"
@@ -133,7 +116,6 @@
                         placeholder="Diâmetro em centímetros" required>
                 </div>
 
-                <!-- Campo: Peso -->
                 <div class="space-y-2">
                     <label for="weight" class="block text-sm font-medium text-gray-700">Peso (g)*</label>
                     <input type="number" step="0.01" name="weight" id="weight"
@@ -143,7 +125,6 @@
                 </div>
             </div>
 
-            <!-- Rodapé do Formulário: Botão de Enviar -->
             <div class="px-6 py-4 border-t border-blue-200 bg-gray-50 flex justify-end">
                 <button type="submit"
                     class="px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
