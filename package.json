@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite",
+    "dev": "concurrently -n vite,laravel -k \"vite\" \"php artisan serve --host magnojet.prepostagem --port 8000\"",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
     "test": "php artisan test",
