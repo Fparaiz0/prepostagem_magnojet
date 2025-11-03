@@ -405,6 +405,20 @@
                 }
             });
         });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const nameInput = document.getElementById("name");
+            const observationInput = document.getElementById("observation");
+
+            if (nameInput && observationInput) {
+                nameInput.addEventListener("blur", () => {
+                    const value = nameInput.value.trim();
+                    if (value) {
+                        observationInput.value = value;
+                    }
+                });
+            }
+        });
     </script>
 
     <script src="{{ asset('js/prepostagem.js') }}"></script>
