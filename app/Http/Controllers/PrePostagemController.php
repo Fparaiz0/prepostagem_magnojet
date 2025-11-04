@@ -17,54 +17,8 @@ class PrePostagemController extends Controller
   public function index(Request $request)
   {
 
-    $token = CorreiosToken::latest()->first();
-
-    if (!$token) {
-      Log::warning('Token dos Correios não encontrado ao abrir index.');
-    } else {
-
-      $prepostagensParaVerificar = Prepostagem::where('situation', 1)->get();
-
-      foreach ($prepostagensParaVerificar as $prepostagem) {
-        try {
-          $response = Http::withToken($token->token)
-            ->get('https://api.correios.com.br/prepostagem/v1/prepostagens/postada', [
-              'codigoObjeto' => $prepostagem->object_code,
-            ]);
-
-          if ($response->successful()) {
-            $data = $response->json();
-
-            if (isset($data['dataPostagem'])) {
-              $prepostagem->update(['situation' => 3]);
-
-              Log::info('Pré-postagem marcada como postada.', [
-                'object_code' => $prepostagem->object_code,
-                'prepostagem_id' => $prepostagem->id,
-                'dataPostagem' => $data['dataPostagem'],
-              ]);
-            }
-          } else {
-            Log::warning('Erro ao consultar postagem', [
-              'object_code' => $prepostagem->object_code,
-              'status' => $response->status(),
-              'body' => $response->body(),
-            ]);
-          }
-        } catch (\Exception $e) {
-          Log::error('Erro ao verificar pré-postagem.', [
-            'prepostagem_id' => $prepostagem->id,
-            'error' => $e->getMessage(),
-          ]);
-        }
-      }
-
-      Log::info('Verificação de pré-postagens concluída.');
-    }
-
     $query = Prepostagem::orderBy('id', 'DESC')
       ->where('situation', 1);
-
 
     if ($request->has('search') && !empty($request->search)) {
       $searchTerm = $request->search;
@@ -80,7 +34,6 @@ class PrePostagemController extends Controller
       'search' => $request->search,
     ]);
   }
-
 
   public function canceled(Request $request)
   {
