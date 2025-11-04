@@ -380,46 +380,5 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const invoiceInput = document.getElementById("invoice_number");
-            const objectCodeInput = document.getElementById("object_code");
-
-            invoiceInput.addEventListener("blur", async () => {
-                const invoice = invoiceInput.value.trim();
-                if (!invoice) return;
-
-                try {
-                    const response = await fetch(`/range/find-by-invoice/${invoice}`);
-                    const data = await response.json();
-
-                    if (response.ok && data.success) {
-                        objectCodeInput.value = data.object_code;
-                    } else {
-                        objectCodeInput.value = "";
-                        alert(data.message || "Nota Fiscal não encontrada.");
-                    }
-                } catch (error) {
-                    console.error("Erro ao buscar código de rastreamento:", error);
-                    alert("Erro ao buscar código de rastreamento. Tente novamente.");
-                }
-            });
-        });
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const nameInput = document.getElementById("name");
-            const observationInput = document.getElementById("observation");
-
-            if (nameInput && observationInput) {
-                nameInput.addEventListener("blur", () => {
-                    const value = nameInput.value.trim();
-                    if (value) {
-                        observationInput.value = value;
-                    }
-                });
-            }
-        });
-    </script>
-
     <script src="{{ asset('js/prepostagem.js') }}"></script>
 @endsection
