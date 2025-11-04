@@ -537,6 +537,7 @@
         window.laravelRoutes = {
             imprimirTodas: "{{ route('prepostagens.imprimir-todas') }}",
             imprimirSelecionados: "{{ route('prepostagens.imprimir-selecionados') }}",
+            destroyPrepostagem: "{{ route('prepostagens.destroy', ':id') }}",
         };
 
         window.csrfToken = "{{ csrf_token() }}";

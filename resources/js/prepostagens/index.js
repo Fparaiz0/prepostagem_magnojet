@@ -3,9 +3,9 @@ let currentReciboId = null;
 let allSelected = false;
 let selectedPrintFormat = null;
 
-function openCancelModal(id, recipient, objectCode) {
+window.openCancelModal = function (id, recipient, objectCode) {
   const form = document.getElementById("cancelForm");
-  form.action = "{{ route('prepostagens.destroy', ':id') }}".replace(":id", id);
+  form.action = window.laravelRoutes.destroyPrepostagem.replace(":id", id);
 
   document.getElementById("modalRecipient").textContent = recipient;
   document.getElementById("modalObjectCode").textContent = objectCode;
@@ -18,9 +18,9 @@ function openCancelModal(id, recipient, objectCode) {
     modalContent.classList.remove("scale-95", "opacity-0");
     modalContent.classList.add("scale-100", "opacity-100");
   }, 50);
-}
+};
 
-function closeCancelModal() {
+window.closeCancelModal = function () {
   const modal = document.getElementById("cancelModal");
   const modalContent = document.getElementById("modalContent");
 
@@ -30,7 +30,7 @@ function closeCancelModal() {
   setTimeout(() => {
     modal.classList.add("hidden");
   }, 200);
-}
+};
 
 function openPrintFormatModal() {
   const modal = document.getElementById("printFormatModal");
@@ -275,7 +275,7 @@ async function sendToCorreiosAPI(objectCodes, formato = "etiqueta") {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+        "X-CSRF-TOKEN": window.csrfToken,
         Accept: "application/json, application/pdf",
       },
       body: JSON.stringify(requestData),
@@ -291,8 +291,6 @@ async function sendToCorreiosAPI(objectCodes, formato = "etiqueta") {
       window.open(url, "_blank");
 
       setTimeout(() => window.URL.revokeObjectURL(url), 100);
-
-      alert("Etiquetas geradas com sucesso!");
 
       selectedObjects = [];
       document.querySelectorAll(".object-checkbox").forEach((checkbox) => {
