@@ -327,59 +327,7 @@
         </div>
     </div>
 
-    <script>
-        const toggleSidebar = document.getElementById('toggleSidebar');
-        const closeSidebar = document.getElementById('closeSidebar');
-        const mobileSidebar = document.getElementById('mobileSidebar');
-        const sidebarMobile = document.getElementById('sidebarMobile');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-        function openMobileSidebar() {
-            mobileSidebar.classList.remove('hidden');
-            setTimeout(() => {
-                sidebarMobile.classList.remove('-translate-x-full');
-            }, 10);
-        }
-
-        function closeMobileSidebar() {
-            sidebarMobile.classList.add('-translate-x-full');
-            setTimeout(() => {
-                mobileSidebar.classList.add('hidden');
-            }, 300);
-        }
-
-        if (toggleSidebar) {
-            toggleSidebar.addEventListener('click', openMobileSidebar);
-        }
-
-        if (closeSidebar) {
-            closeSidebar.addEventListener('click', closeMobileSidebar);
-        }
-
-        if (sidebarOverlay) {
-            sidebarOverlay.addEventListener('click', closeMobileSidebar);
-        }
-
-        const dropdownButton = document.getElementById('userDropdownButton');
-        const dropdownContent = document.getElementById('dropdownContent');
-
-        if (dropdownButton && dropdownContent) {
-            dropdownButton.addEventListener('click', function(e) {
-                e.stopPropagation();
-                dropdownContent.classList.toggle('hidden');
-            });
-
-            window.addEventListener('click', function() {
-                dropdownContent.classList.add('hidden');
-            });
-        }
-
-        window.addEventListener('resize', function() {
-            if (window.innerWidth >= 1024) {
-                closeMobileSidebar();
-            }
-        });
-    </script>
+    @vite(['resources/js/layouts/admin.js'])
 
     @yield('scripts')
 </body>

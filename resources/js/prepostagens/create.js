@@ -14,7 +14,7 @@ document
   .getElementById("fecharModalBtn")
   .addEventListener("click", fecharModal);
 
-function buscarRemetente() {
+window.buscarRemetente = function () {
   const cnpj = document.getElementById("cnpj_sender").value;
   const nome = document.getElementById("name_sender").value;
 
@@ -39,9 +39,9 @@ function buscarRemetente() {
       document.getElementById("uf_sender").value = data.uf;
     })
     .catch((error) => alert(error.message));
-}
+};
 
-function buscarDestinatario() {
+window.buscarDestinatario = function () {
   const cnpj = document.getElementById("cnpj_recipient").value;
   const nome = document.getElementById("name_recipient").value;
 
@@ -63,7 +63,7 @@ function buscarDestinatario() {
       }
     })
     .catch((error) => alert(error.message));
-}
+};
 
 function preencherCamposDestinatario(data) {
   document.getElementById("name_recipient").value = data.name;
@@ -102,7 +102,7 @@ function mostrarListaDestinatarios(lista) {
   abrirModal();
 }
 
-function buscarEmbalagem() {
+window.buscarEmbalagem = function () {
   const nome = document.getElementById("name").value;
 
   if (!nome) {
@@ -124,7 +124,7 @@ function buscarEmbalagem() {
       document.getElementById("weight_informed").value = data.peso;
     })
     .catch((error) => alert(error.message));
-}
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   const invoiceInput = document.getElementById("invoice_number");

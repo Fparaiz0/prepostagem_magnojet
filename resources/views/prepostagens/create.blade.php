@@ -380,5 +380,5 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/prepostagem.js') }}"></script>
+    @vite(['resources/js/prepostagens/create.js'])
 @endsection
