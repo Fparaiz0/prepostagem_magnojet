@@ -15,11 +15,11 @@ export default defineConfig({
     outDir: "public/build",
   },
   server: {
-    host: "10.1.1.50",
+    host: process.env.VITE_HMR_HOST,
     port: 8001,
     strictPort: true,
     hmr: {
-      host: "10.1.1.50",
+      host: process.env.VITE_HMR_HOST,
     },
   },
 });
