@@ -5,12 +5,17 @@ namespace App\Services;
 use App\Models\CorreiosToken;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Client\Response;
 
 class CorreiosTokenService
 {
   protected string $usuario;
-
   protected string $senha;
+  protected string $contrato;
+  protected string $cartao;
+  protected string $dr;
+
+  private const TOKEN_VALIDITY_HOURS = 23;
 
   public function __construct()
   {
@@ -27,39 +32,42 @@ class CorreiosTokenService
       ->orderByDesc('created_at')
       ->first();
 
-    $response = Http::withBasicAuth($this->usuario, $this->senha)
+    if ($tokenBanco) {
+      log::info('Token não criado, pois há um token válido no banco.');
+      return $tokenBanco->token;
+    }
+
+    $response = $this->requestNewToken();
+
+    if ($response->successful()) {
+      $novoToken = $response->json('token');
+
+      if ($novoToken) {
+        CorreiosToken::create([
+          'token' => $novoToken,
+          'valid_until' => now()->addHours(self::TOKEN_VALIDITY_HOURS),
+        ]);
+
+        Log::info('Um novo token foi gerado e salvo com sucesso!');
+        return $novoToken;
+      }
+    }
+
+    Log::error("A requisição do token falhou:", [
+      "status" => $response->status(),
+      "response" => $response->json(),
+    ]);
+
+    return null;
+  }
+
+  private function requestNewToken(): Response
+  {
+    return Http::withBasicAuth($this->usuario, $this->senha)
       ->post('https://api.correios.com.br/token/v1/autentica/cartaopostagem', [
         'numero' => $this->cartao,
         'contrato' => $this->contrato,
         'dr' => $this->dr,
       ]);
-
-    if ($response->successful()) {
-      $validaToken = $response->json()['token'] ?? null;
-
-      if ($validaToken) {
-        if (!$tokenBanco || $tokenBanco->token !== $validaToken) {
-
-          $novoToken = $validaToken;
-
-          CorreiosToken::create([
-            'token' => $novoToken,
-            'valid_until' => now()->addDay(),
-          ]);
-
-          log::info('Um novo token foi gerado com sucesso!');
-        }
-
-        $antigoToken = $validaToken;
-
-        log::info('Token não criado, pois há um token válido no banco.');
-
-        return $antigoToken;
-      }
-    }
-
-    Log::info("A requisição do token falhou:", ["response" => $response->json()]);
-
-    return $tokenBanco->token ?? null;
   }
 }
