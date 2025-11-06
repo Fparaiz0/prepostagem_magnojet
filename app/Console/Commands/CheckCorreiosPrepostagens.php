@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\CorreiosToken;
 use App\Models\Prepostagem;
+use Exception;
+use Carbon\Carbon;
 
 class CheckCorreiosPrepostagens extends Command
 {
@@ -29,24 +31,20 @@ class CheckCorreiosPrepostagens extends Command
    */
   public function handle()
   {
-    $this->info('Iniciando verificação de pré-postagens dos Correios...');
-
     $token = CorreiosToken::latest()->first();
+    $limiteExpiracao = Carbon::now()->subDay();
 
     if (!$token) {
-      Log::warning('Token dos Correios não encontrado ao tentar verificar pré-postagens.');
-      $this->error('Token dos Correios não encontrado.');
-      return Command::FAILURE;
+      Log::error('Erro Fatal: Token dos Correios não encontrado no banco de dados.');
+      throw new Exception('Token da API dos Correios é obrigatório para verificar pré-postagens.');
+    }
+
+    if ($token->created_at->lt($limiteExpiracao)) {
+      Log::error('Erro Fatal: Token dos Correios expirou. Deve ser renovado.');
+      throw new Exception('O token da API dos Correios excedeu o limite de 24 horas e deve ser atualizado.');
     }
 
     $prepostagensParaVerificar = Prepostagem::where('situation', 1)->get();
-
-    if ($prepostagensParaVerificar->isEmpty()) {
-      $this->info('Nenhuma pré-postagem pendente para verificar.');
-      return Command::SUCCESS;
-    }
-
-    $this->info("Encontradas {$prepostagensParaVerificar->count()} pré-postagens para verificar.");
 
     foreach ($prepostagensParaVerificar as $prepostagem) {
       try {
@@ -56,40 +54,34 @@ class CheckCorreiosPrepostagens extends Command
           ]);
 
         if ($response->successful()) {
+
           $data = $response->json();
 
-          if (isset($data['dataPostagem'])) {
+          if (isset($data['codigoObjeto']) && $prepostagem->object_code === $data['codigoObjeto']) {
             $prepostagem->update(['situation' => 3]);
 
-            Log::info('Pré-postagem marcada como postada.', [
-              'object_code' => $prepostagem->object_code,
+            Log::info('Pré-postagem marcada como postada com sucesso.', [
+              'status' => $response->status(),
+              'Código' => $prepostagem->object_code,
               'prepostagem_id' => $prepostagem->id,
-              'dataPostagem' => $data['dataPostagem'],
+              'dataPostagem' => $data['dataPostagem'] ?? 'N/A',
             ]);
-            $this->line(" [OK] Pré-postagem {$prepostagem->object_code} marcada como postada.");
-          } else {
-            // Não foi postada, mas a requisição foi bem-sucedida.
-            $this->line(" [ -- ] Pré-postagem {$prepostagem->object_code} ainda não postada.");
           }
         } else {
-          Log::warning('Erro ao consultar postagem', [
-            'object_code' => $prepostagem->object_code,
+          Log::warning('Erro ao consultar pré-postagem na API Correios.', [
             'status' => $response->status(),
+            'object_code' => $prepostagem->object_code,
             'body' => $response->body(),
           ]);
-          $this->warn(" [WARN] Erro ao consultar {$prepostagem->object_code}. Status: {$response->status()}");
         }
-      } catch (\Exception $e) {
-        Log::error('Erro ao verificar pré-postagem.', [
-          'prepostagem_id' => $prepostagem->id,
+      } catch (Exception $e) {
+        Log::error('Erro interno ao verificar pré-postagem.', [
           'error' => $e->getMessage(),
+          'object_code' => $prepostagem->object_code,
         ]);
-        $this->error(" [ERRO] Exceção ao verificar {$prepostagem->object_code}: {$e->getMessage()}");
       }
     }
 
     Log::info('Verificação de pré-postagens concluída.');
-    $this->info('Verificação de pré-postagens concluída.');
-    return Command::SUCCESS;
   }
 }
