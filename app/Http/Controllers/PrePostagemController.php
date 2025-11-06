@@ -35,6 +35,7 @@ class PrePostagemController extends Controller
     ]);
   }
 
+
   public function canceled(Request $request)
   {
 
@@ -338,7 +339,7 @@ class PrePostagemController extends Controller
           } elseif (isset($errorData['message'])) {
             $errorMessages = [$errorData['message']];
           }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
         }
 
@@ -424,7 +425,7 @@ class PrePostagemController extends Controller
             ], 500);
           }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
           if ($tentativa === $maxTentativas) {
             Log::error('Exceção ao buscar PDF do rótulo na tentativa ' . $tentativa, [
               'idRecibo' => $idRecibo,
@@ -459,7 +460,7 @@ class PrePostagemController extends Controller
         'errors' => $e->errors(),
       ], 422);
 
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       Log::error('Erro interno ao processar impressão de etiquetas selecionadas', [
         'error' => $e->getMessage(),
         'trace' => $e->getTraceAsString(),
@@ -556,7 +557,7 @@ class PrePostagemController extends Controller
           } elseif (isset($errorData['message'])) {
             $errorMessages = [$errorData['message']];
           }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         return response()->json([
@@ -641,7 +642,7 @@ class PrePostagemController extends Controller
             ], 500);
           }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
           if ($tentativa === $maxTentativas) {
             Log::error('Exceção ao buscar PDF do rótulo na tentativa ' . $tentativa, [
               'idRecibo' => $idRecibo,
@@ -676,7 +677,7 @@ class PrePostagemController extends Controller
         'errors' => $e->errors(),
       ], 422);
 
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       Log::error('Erro interno ao processar impressão de todas as etiquetas', [
         'error' => $e->getMessage(),
         'trace' => $e->getTraceAsString(),
