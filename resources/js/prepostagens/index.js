@@ -3,9 +3,9 @@ let currentReciboId = null;
 let allSelected = false;
 let selectedPrintFormat = null;
 
-window.openCancelModal = function (id, recipient, objectCode) {
+function openCancelModal(id, recipient, objectCode) {
   const form = document.getElementById("cancelForm");
-  form.action = window.laravelRoutes.destroyPrepostagem.replace(":id", id);
+  form.action = "{{ route('prepostagens.destroy', ':id') }}".replace(":id", id);
 
   document.getElementById("modalRecipient").textContent = recipient;
   document.getElementById("modalObjectCode").textContent = objectCode;
@@ -18,9 +18,9 @@ window.openCancelModal = function (id, recipient, objectCode) {
     modalContent.classList.remove("scale-95", "opacity-0");
     modalContent.classList.add("scale-100", "opacity-100");
   }, 50);
-};
+}
 
-window.closeCancelModal = function () {
+function closeCancelModal() {
   const modal = document.getElementById("cancelModal");
   const modalContent = document.getElementById("modalContent");
 
@@ -30,7 +30,7 @@ window.closeCancelModal = function () {
   setTimeout(() => {
     modal.classList.add("hidden");
   }, 200);
-};
+}
 
 function openPrintFormatModal() {
   const modal = document.getElementById("printFormatModal");
@@ -41,7 +41,33 @@ function openPrintFormatModal() {
     option.classList.remove("border-blue-500", "bg-blue-50");
     option.classList.add("border-gray-200");
   });
-  document.getElementById("confirmPrintBtn").classList.add("hidden");
+
+  const confirmBtn = document.getElementById("confirmPrintBtn");
+  confirmBtn.classList.add("hidden");
+  confirmBtn.textContent = "Imprimir Todas";
+  confirmBtn.onclick = confirmPrintAll;
+
+  modal.classList.remove("hidden");
+  setTimeout(() => {
+    modalContent.classList.remove("scale-95", "opacity-0");
+    modalContent.classList.add("scale-100", "opacity-100");
+  }, 50);
+}
+
+function openPrintFormatModalForSelected() {
+  const modal = document.getElementById("printFormatModal");
+  const modalContent = document.getElementById("printFormatModalContent");
+
+  selectedPrintFormat = null;
+  document.querySelectorAll(".print-format-option").forEach((option) => {
+    option.classList.remove("border-blue-500", "bg-blue-50");
+    option.classList.add("border-gray-200");
+  });
+
+  const confirmBtn = document.getElementById("confirmPrintBtn");
+  confirmBtn.classList.add("hidden");
+  confirmBtn.textContent = "Imprimir Selecionados";
+  confirmBtn.onclick = confirmPrintSelected;
 
   modal.classList.remove("hidden");
   setTimeout(() => {
@@ -78,7 +104,7 @@ window.selectPrintFormat = function (format) {
   document.getElementById("confirmPrintBtn").classList.remove("hidden");
 };
 
-window.confirmPrintAll = async function () {
+window.confirmPrintAll = function () {
   if (!selectedPrintFormat) {
     alert("Por favor, selecione um formato de impressão.");
     return;
@@ -87,6 +113,19 @@ window.confirmPrintAll = async function () {
   closePrintFormatModal();
   printAllPrepostagens(selectedPrintFormat);
 };
+
+function confirmPrintSelected() {
+  if (!selectedPrintFormat) {
+    alert("Por favor, selecione um formato de impressão.");
+    return;
+  }
+
+  closePrintFormatModal();
+
+  const objectCodes = selectedObjects.map((obj) => obj.code);
+
+  sendToCorreiosAPI(objectCodes, selectedPrintFormat);
+}
 
 function toggleLoadingModal(show) {
   const modal = document.getElementById("loadingModal");
@@ -110,6 +149,151 @@ function showLoadingError(message) {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
         `;
+  }
+}
+
+async function sendToCorreiosAPI(objectCodes, formato = "etiqueta") {
+  if (!objectCodes || objectCodes.length === 0) {
+    alert("Nenhum código de objeto selecionado para impressão.");
+    return;
+  }
+
+  toggleLoadingModal(true);
+
+  try {
+    const apiUrl = window.laravelRoutes.imprimirSelecionados;
+
+    const requestData = {
+      codigosObjeto: objectCodes,
+      formato: formato,
+    };
+
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": window.csrfToken,
+        Accept: "application/json, application/pdf",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    const contentType = response.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/pdf")) {
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      window.open(url, "_blank");
+
+      setTimeout(() => window.URL.revokeObjectURL(url), 100);
+
+      alert("Etiquetas geradas com sucesso!");
+
+      selectedObjects = [];
+      document.querySelectorAll(".object-checkbox").forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+      document.getElementById("printSelectedBtn").classList.add("hidden");
+
+      toggleLoadingModal(false);
+      return;
+    }
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 202 && data.idRecibo) {
+        currentReciboId = data.idRecibo;
+        if (
+          confirm(
+            "As etiquetas estão sendo processadas. Deseja tentar baixar novamente em alguns segundos?",
+          )
+        ) {
+          setTimeout(tryDownloadPDFAgain, 5000);
+        }
+      } else {
+        throw new Error(
+          data.message || data.error || `Erro: ${response.status}`,
+        );
+      }
+      return;
+    }
+
+    throw new Error("Resposta inesperada da API");
+  } catch (error) {
+    console.error("Erro ao enviar para API dos Correios:", error);
+    alert("Erro ao processar as etiquetas: " + error.message);
+  } finally {
+    toggleLoadingModal(false);
+  }
+}
+
+async function printAllPrepostagens(formato = "etiqueta") {
+  toggleLoadingModal(true);
+
+  try {
+    const apiUrl = window.laravelRoutes.imprimirTodas;
+
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": window.csrfToken,
+        Accept: "application/json, application/pdf",
+      },
+      body: JSON.stringify({
+        formato: formato,
+      }),
+    });
+
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/pdf")) {
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      window.open(url, "_blank");
+
+      setTimeout(() => window.URL.revokeObjectURL(url), 100);
+
+      alert("Todas as etiquetas foram geradas com sucesso!");
+
+      toggleLoadingModal(false);
+      return;
+    }
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 202 && data.idRecibo) {
+        currentReciboId = data.idRecibo;
+        if (
+          confirm(
+            "As etiquetas estão sendo processadas. Deseja tentar baixar novamente em alguns segundos?",
+          )
+        ) {
+          setTimeout(tryDownloadPDFAgain, 5000);
+        }
+      } else if (response.status === 404) {
+        alert(
+          data.message || "Nenhuma pré-postagem encontrada para impressão.",
+        );
+      } else {
+        throw new Error(
+          data.message || data.error || `Erro: ${response.status}`,
+        );
+      }
+      return;
+    }
+
+    throw new Error("Resposta inesperada da API");
+  } catch (error) {
+    console.error("Erro ao imprimir todas as pré-postagens:", error);
+    alert("Erro ao processar as etiquetas: " + error.message);
+  } finally {
+    toggleLoadingModal(false);
   }
 }
 
@@ -190,154 +374,13 @@ function checkInitialSelectionState() {
   }
 }
 
-async function printAllPrepostagens(formato = "etiqueta") {
-  toggleLoadingModal(true);
-
-  try {
-    const apiUrl = window.laravelRoutes.imprimirTodas;
-
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-TOKEN": window.csrfToken,
-        Accept: "application/json, application/pdf",
-      },
-      body: JSON.stringify({
-        formato: formato,
-      }),
-    });
-
-    const contentType = response.headers.get("content-type");
-    if (contentType && contentType.includes("application/pdf")) {
-      const blob = await response.blob();
-
-      const url = window.URL.createObjectURL(blob);
-
-      window.open(url, "_blank");
-
-      setTimeout(() => window.URL.revokeObjectURL(url), 100);
-
-      toggleLoadingModal(false);
-      return;
-    }
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      if (response.status === 202 && data.idRecibo) {
-        currentReciboId = data.idRecibo;
-        if (
-          confirm(
-            "As etiquetas estão sendo processadas. Deseja tentar baixar novamente em alguns segundos?",
-          )
-        ) {
-          setTimeout(tryDownloadPDFAgain, 5000);
-        }
-      } else if (response.status === 404) {
-        alert(
-          data.message || "Nenhuma pré-postagem encontrada para impressão.",
-        );
-      } else {
-        throw new Error(
-          data.message || data.error || `Erro: ${response.status}`,
-        );
-      }
-      return;
-    }
-
-    throw new Error("Resposta inesperada da API");
-  } catch (error) {
-    console.error("Erro ao imprimir todas as pré-postagens:", error);
-    alert("Erro ao processar as etiquetas: " + error.message);
-  } finally {
-    toggleLoadingModal(false);
-  }
-}
-
-async function sendToCorreiosAPI(objectCodes, formato = "etiqueta") {
-  if (!objectCodes || objectCodes.length === 0) {
-    alert("Nenhum código de objeto selecionado para impressão.");
-    return;
-  }
-
-  toggleLoadingModal(true);
-
-  try {
-    const apiUrl = window.laravelRoutes.imprimirSelecionados;
-
-    const requestData = {
-      codigosObjeto: objectCodes,
-      formato: formato,
-    };
-
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-TOKEN": window.csrfToken,
-        Accept: "application/json, application/pdf",
-      },
-      body: JSON.stringify(requestData),
-    });
-
-    const contentType = response.headers.get("content-type");
-
-    if (contentType && contentType.includes("application/pdf")) {
-      const blob = await response.blob();
-
-      const url = window.URL.createObjectURL(blob);
-
-      window.open(url, "_blank");
-
-      setTimeout(() => window.URL.revokeObjectURL(url), 100);
-
-      selectedObjects = [];
-      document.querySelectorAll(".object-checkbox").forEach((checkbox) => {
-        checkbox.checked = false;
-      });
-      document.getElementById("printSelectedBtn").classList.add("hidden");
-
-      toggleLoadingModal(false);
-      return;
-    }
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      if (response.status === 202 && data.idRecibo) {
-        currentReciboId = data.idRecibo;
-        if (
-          confirm(
-            "As etiquetas estão sendo processadas. Deseja tentar baixar novamente em alguns segundos?",
-          )
-        ) {
-          setTimeout(tryDownloadPDFAgain, 5000);
-        }
-      } else {
-        throw new Error(
-          data.message || data.error || `Erro: ${response.status}`,
-        );
-      }
-      return;
-    }
-
-    throw new Error("Resposta inesperada da API");
-  } catch (error) {
-    console.error("Erro ao enviar para API dos Correios:", error);
-    alert("Erro ao processar as etiquetas: " + error.message);
-  } finally {
-    toggleLoadingModal(false);
-  }
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   const checkboxes = document.querySelectorAll(".object-checkbox");
   const printSelectedBtn = document.getElementById("printSelectedBtn");
   const printAllBtn = document.getElementById("printAllBtn");
   const selectAllBtn = document.getElementById("selectAllBtn");
 
-  const apiToken = window.apiToken;
+  const apiToken = "{{ $apiToken }}";
 
   if (!apiToken) {
     console.warn(
@@ -491,37 +534,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
   checkInitialSelectionState();
 });
-
-function openPrintFormatModalForSelected() {
-  const modal = document.getElementById("printFormatModal");
-  const modalContent = document.getElementById("printFormatModalContent");
-
-  selectedPrintFormat = null;
-  document.querySelectorAll(".print-format-option").forEach((option) => {
-    option.classList.remove("border-blue-500", "bg-blue-50");
-    option.classList.add("border-gray-200");
-  });
-  document.getElementById("confirmPrintBtn").classList.add("hidden");
-
-  document.getElementById("confirmPrintBtn").textContent =
-    "Imprimir Selecionados";
-
-  modal.classList.remove("hidden");
-  setTimeout(() => {
-    modalContent.classList.remove("scale-95", "opacity-0");
-    modalContent.classList.add("scale-100", "opacity-100");
-  }, 50);
-}
-
-function confirmPrintSelected() {
-  if (!selectedPrintFormat) {
-    alert("Por favor, selecione um formato de impressão.");
-    return;
-  }
-
-  closePrintFormatModal();
-
-  const objectCodes = selectedObjects.map((obj) => obj.code);
-
-  sendToCorreiosAPI(objectCodes, selectedPrintFormat);
-}
