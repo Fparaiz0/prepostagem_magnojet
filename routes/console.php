@@ -5,7 +5,10 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('correios:check-prepostagens')
-  ->everyFiveMinutes()
+  ->weekdays()
+  ->everyTenMinutes()
+  ->timezone('America/Sao_Paulo')
+  ->between('8:00', '18:00')
   ->withoutOverlapping();
 
 Artisan::command('inspire', function () {
