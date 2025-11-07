@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\CorreiosToken;
 use App\Models\Prepostagem;
 use Exception;
-use Carbon\Carbon;
+use App\Services\CorreiosTokenService;
 
 class CheckCorreiosPrepostagens extends Command
 {
@@ -26,22 +26,28 @@ class CheckCorreiosPrepostagens extends Command
    */
   protected $description = 'Verifica na API dos Correios se as pré-postagens pendentes foram postadas.';
 
+  protected $TokenService;
+
+  public function __construct(CorreiosTokenService $TokenService)
+  {
+    parent::__construct();
+
+    $this->TokenService = $TokenService;
+  }
+
   /**
    * Execute the console command.
    */
   public function handle()
   {
-    $token = CorreiosToken::latest()->first();
-    $limiteExpiracao = Carbon::now()->subDay();
+    $token = CorreiosToken::where('valid_until', '>', now())
+      ->orderByDesc('created_at')
+      ->first();
 
     if (!$token) {
-      Log::error('Erro Fatal: Token dos Correios não encontrado no banco de dados.');
-      throw new Exception('Token da API dos Correios é obrigatório para verificar pré-postagens.');
-    }
+      Log::warning('Token não encontrado no banco de dados ou expirado. Gerando um novo.');
 
-    if ($token->created_at->lt($limiteExpiracao)) {
-      Log::error('Erro Fatal: Token dos Correios expirou. Deve ser renovado.');
-      throw new Exception('O token da API dos Correios excedeu o limite de 24 horas e deve ser atualizado.');
+      return $this->TokenService->obterToken();
     }
 
     $prepostagensParaVerificar = Prepostagem::where('situation', 1)->get();
@@ -77,11 +83,9 @@ class CheckCorreiosPrepostagens extends Command
       } catch (Exception $e) {
         Log::error('Erro interno ao verificar pré-postagem.', [
           'error' => $e->getMessage(),
-          'object_code' => $prepostagem->object_code,
         ]);
       }
     }
-
     Log::info('Verificação de pré-postagens concluída.');
   }
 }
