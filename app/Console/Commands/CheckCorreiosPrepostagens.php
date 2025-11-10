@@ -59,25 +59,24 @@ class CheckCorreiosPrepostagens extends Command
             'codigoObjeto' => $prepostagem->object_code,
           ]);
 
-        if ($response->successful()) {
+        $data = $response->json();
 
-          $data = $response->json();
+        if ($response->successful()) {
 
           if (isset($data['codigoObjeto']) && $prepostagem->object_code === $data['codigoObjeto']) {
             $prepostagem->update(['situation' => 3]);
 
             Log::info('Pré-postagem marcada como postada com sucesso.', [
               'status' => $response->status(),
-              'Código' => $prepostagem->object_code,
-              'prepostagem_id' => $prepostagem->id,
+              'codigo' => $prepostagem->object_code,
               'dataPostagem' => $data['dataPostagem'] ?? 'N/A',
             ]);
           }
         } else {
           Log::warning('Erro ao consultar pré-postagem na API Correios.', [
             'status' => $response->status(),
-            'object_code' => $prepostagem->object_code,
-            'body' => $response->body(),
+            'codigo' => $prepostagem->object_code,
+            'mensagem' => $data['msgs'],
           ]);
         }
       } catch (Exception $e) {
