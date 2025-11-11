@@ -189,8 +189,6 @@ async function sendToCorreiosAPI(objectCodes, formato = "etiqueta") {
 
       setTimeout(() => window.URL.revokeObjectURL(url), 100);
 
-      alert("Etiquetas geradas com sucesso!");
-
       selectedObjects = [];
       document.querySelectorAll(".object-checkbox").forEach((checkbox) => {
         checkbox.checked = false;
@@ -258,8 +256,6 @@ async function printAllPrepostagens(formato = "etiqueta") {
 
       setTimeout(() => window.URL.revokeObjectURL(url), 100);
 
-      alert("Todas as etiquetas foram geradas com sucesso!");
-
       toggleLoadingModal(false);
       return;
     }
@@ -319,7 +315,6 @@ async function tryDownloadPDFAgain() {
       const url = window.URL.createObjectURL(blob);
       window.open(url, "_blank");
       setTimeout(() => window.URL.revokeObjectURL(url), 100);
-      alert("PDF baixado com sucesso!");
       currentReciboId = null;
     } else {
       const data = await response.json();
