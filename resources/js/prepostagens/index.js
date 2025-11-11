@@ -3,9 +3,9 @@ let currentReciboId = null;
 let allSelected = false;
 let selectedPrintFormat = null;
 
-function openCancelModal(id, recipient, objectCode) {
+window.openCancelModal = function (id, recipient, objectCode) {
   const form = document.getElementById("cancelForm");
-  form.action = "{{ route('prepostagens.destroy', ':id') }}".replace(":id", id);
+  form.action = window.laravelRoutes.destroyPrepostagem.replace(":id", id);
 
   document.getElementById("modalRecipient").textContent = recipient;
   document.getElementById("modalObjectCode").textContent = objectCode;
@@ -18,9 +18,9 @@ function openCancelModal(id, recipient, objectCode) {
     modalContent.classList.remove("scale-95", "opacity-0");
     modalContent.classList.add("scale-100", "opacity-100");
   }, 50);
-}
+};
 
-function closeCancelModal() {
+window.closeCancelModal = function () {
   const modal = document.getElementById("cancelModal");
   const modalContent = document.getElementById("modalContent");
 
@@ -30,9 +30,9 @@ function closeCancelModal() {
   setTimeout(() => {
     modal.classList.add("hidden");
   }, 200);
-}
+};
 
-function openPrintFormatModal() {
+window.openPrintFormatModal = function () {
   const modal = document.getElementById("printFormatModal");
   const modalContent = document.getElementById("printFormatModalContent");
 
@@ -52,7 +52,7 @@ function openPrintFormatModal() {
     modalContent.classList.remove("scale-95", "opacity-0");
     modalContent.classList.add("scale-100", "opacity-100");
   }, 50);
-}
+};
 
 function openPrintFormatModalForSelected() {
   const modal = document.getElementById("printFormatModal");
