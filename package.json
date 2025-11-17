@@ -13,6 +13,8 @@
     "test:watch": "nodemon --exec ./vendor/bin/phpunit --ext php --watch tests --watch src"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@tailwindcss/postcss": "^4.1.12",
     "@tailwindcss/vite": "^4.1.12",
     "autoprefixer": "^10.4.21",
