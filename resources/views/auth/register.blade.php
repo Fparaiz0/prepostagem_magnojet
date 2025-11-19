@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <body class="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-blue-950 flex items-center justify-center p-4">
+    <body class="min-h-screen bg-linear-to-br from-blue-950 via-blue-900 to-blue-950 flex items-center justify-center p-4">
 
         <div class="w-full max-w-md">
 

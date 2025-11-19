@@ -102,7 +102,7 @@
             </div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-gray-200 mb-8 overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
+                <div class="bg-linear-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center">
                         <div class="p-2 bg-blue-100 rounded-lg mr-3">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
@@ -129,9 +129,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                         @foreach (['Gerenciar ranges de etiquetas de postagem', 'Cadastrar e organizar remetentes e destinatários', 'Registrar informações de embalagens', 'Controlar o fluxo de pré-postagens', 'Acompanhar usuários e permissões', 'Monitorar o processo logístico'] as $item)
                             <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-200">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-3 mt-0.5 shrink-0"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7" />
                                 </svg>
@@ -142,7 +141,7 @@
 
                     <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
                         <div class="flex">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                     fill="currentColor">
                                     <path fill-rule="evenodd"

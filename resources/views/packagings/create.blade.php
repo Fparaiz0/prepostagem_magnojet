@@ -43,7 +43,7 @@
                 <div class="space-y-2">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nome*</label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('name') border-red-500 @enderror"
+                        class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('name') border-red-500 @enderror"
                         placeholder="Nome da embalagem" required>
                     @error('name')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -53,7 +53,7 @@
                 <div class="space-y-2">
                     <label for="active" class="block text-sm font-medium text-gray-700">Status*</label>
                     <select name="active" id="active"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('active') border-red-500 @enderror"
+                        class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('active') border-red-500 @enderror"
                         required>
                         <option value="1" {{ old('active', '1') == '1' ? 'selected' : '' }}>Ativo</option>
                         <option value="0" {{ old('active') == '0' ? 'selected' : '' }}>Inativo</option>
@@ -77,7 +77,7 @@
                 <div class="space-y-2">
                     <label for="height" class="block text-sm font-medium text-gray-700">Altura*</label>
                     <input type="number" step="0.01" name="height" id="height" value="{{ old('height') }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('height') border-red-500 @enderror"
+                        class="w-full px-4 py-2 border  rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('height') border-red-500 @enderror"
                         placeholder="Altura em centímetros" required>
                     @error('height')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -87,7 +87,7 @@
                 <div class="space-y-2">
                     <label for="width" class="block text-sm font-medium text-gray-700">Largura*</label>
                     <input type="number" step="0.01" name="width" id="width" value="{{ old('width') }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('width') border-red-500 @enderror"
+                        class="w-full px-4 py-2 border  rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('width') border-red-500 @enderror"
                         placeholder="Largura em centímetros" required>
                     @error('width')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -97,7 +97,7 @@
                 <div class="space-y-2">
                     <label for="length" class="block text-sm font-medium text-gray-700">Comprimento*</label>
                     <input type="number" step="0.01" name="length" id="length" value="{{ old('length') }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('length') border-red-500 @enderror"
+                        class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('length') border-red-500 @enderror"
                         placeholder="Comprimento em centímetros" required>
                     @error('length')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -107,7 +107,7 @@
                 <div class="space-y-2">
                     <label for="diameter" class="block text-sm font-medium text-gray-700">Diâmetro*</label>
                     <input type="number" step="0.01" name="diameter" id="diameter" value="{{ old('diameter', 0) }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('diameter') border-red-500 @enderror"
+                        class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('diameter') border-red-500 @enderror"
                         placeholder="Diâmetro em centímetros" required>
                     @error('diameter')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -117,7 +117,7 @@
                 <div class="space-y-2">
                     <label for="weight" class="block text-sm font-medium text-gray-700">Peso (g)*</label>
                     <input type="number" step="0.01" name="weight" id="weight" value="{{ old('weight', 1) }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('weight') border-red-500 @enderror"
+                        class="w-full px-4 py-2 border  rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('weight') border-red-500 @enderror"
                         placeholder="Peso em gramas" required>
                     @error('weight')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

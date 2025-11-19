@@ -53,7 +53,7 @@
                 <div class="lg:col-span-2">
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
 
-                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
+                        <div class="bg-linear-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
                             <div class="flex items-center">
                                 <div class="p-2 bg-blue-100 rounded-lg mr-3">
                                     <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
@@ -128,7 +128,7 @@
 
                             <div class="flex justify-end pt-4 border-t border-gray-200">
                                 <button type="submit" id="submitButton"
-                                    class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-lg shadow-sm 
+                                    class="inline-flex items-center px-6 py-3 bg-linear-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-lg shadow-sm 
                                                hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 
                                                transform hover:scale-105 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,7 +157,7 @@
 
                         <div class="space-y-4 text-sm text-gray-600">
                             <div class="flex items-start">
-                                <svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="none"
+                                <svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 shrink-0" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7" />
@@ -166,7 +166,7 @@
                             </div>
 
                             <div class="flex items-start">
-                                <svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="none"
+                                <svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 shrink-0" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7" />
@@ -175,7 +175,7 @@
                             </div>
 
                             <div class="flex items-start">
-                                <svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="none"
+                                <svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 shrink-0" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7" />
@@ -184,7 +184,7 @@
                             </div>
 
                             <div class="flex items-start">
-                                <svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="none"
+                                <svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 shrink-0" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7" />

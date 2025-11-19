@@ -15,15 +15,15 @@
     <div class="bg-white rounded-lg shadow-sm overflow-hidden">
         @switch($prepostagem->situation)
             @case(1)
-                <div class="bg-gradient-to-r from-blue-100 to-gray-50 px-6 py-4 border-b">
+                <div class="bg-linear-to-r from-blue-100 to-gray-50 px-6 py-4 border-b">
                 @break
 
                 @case(2)
-                    <div class="bg-gradient-to-r from-red-100 to-gray-50 px-6 py-4 border-b">
+                    <div class="bg-linear-to-r from-red-100 to-gray-50 px-6 py-4 border-b">
                     @break
 
                     @case(3)
-                        <div class="bg-gradient-to-r from-green-100 to-gray-50 px-6 py-4 border-b">
+                        <div class="bg-linear-to-r from-green-100 to-gray-50 px-6 py-4 border-b">
                         @break
                     @endswitch
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between">

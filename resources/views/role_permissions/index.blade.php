@@ -65,7 +65,7 @@
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="flex-1">
                             <div class="flex items-center gap-3">
-                                <div class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500 shrink-0"></div>
                                 <div>
                                     <h4 class="text-lg font-medium text-gray-800">{{ $permission->title }}</h4>
                                     <div class="flex flex-wrap gap-4 mt-1">
@@ -82,7 +82,7 @@
                             </div>
                         </div>
 
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             @if (in_array($permission->id, $rolePermissions ?? []))
                                 <a href="{{ route('role-permissions.update', ['role' => $role->id, 'permission' => $permission->id]) }}"
                                     class="flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors group">

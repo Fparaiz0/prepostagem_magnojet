@@ -55,7 +55,7 @@
                 </div>
 
                 <form action="{{ route('tracks.show') }}" method="GET" class="flex flex-col sm:flex-row gap-4 items-end">
-                    <div class="flex-grow">
+                    <div class="grow">
                         <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Código da
                             Etiqueta</label>
                         <div class="relative">
@@ -115,7 +115,7 @@
             <!-- Lista de Códigos -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                 <!-- Header -->
-                <div class="bg-gradient-to-r from-red-50 to-orange-50 px-6 py-4 border-b border-gray-200">
+                <div class="bg-linear-to-r from-red-50 to-orange-50 px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
                             <div class="p-2 bg-red-100 rounded-lg mr-3">

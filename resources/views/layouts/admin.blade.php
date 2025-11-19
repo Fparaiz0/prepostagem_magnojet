@@ -30,7 +30,7 @@
 
 <body class="bg-gray-50">
     <div class="flex h-screen">
-        <aside class="hidden lg:flex lg:flex-shrink-0">
+        <aside class="hidden lg:flex lg:shrink-0">
             <div class="flex flex-col w-64 bg-white shadow-xl border-r border-gray-200">
                 <div class="flex items-center justify-center p-6 border-b border-gray-200">
                     <img src="/magnojetsidebar.png" alt="Logo MagnoJet" class="h-20 w-35">
@@ -235,7 +235,7 @@
                                 class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors">
                                 <div class="flex items-center space-x-2">
                                     <div
-                                        class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                                        class="w-8 h-8 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
                                         @auth
                                             {{ substr(Auth::user()->name, 0, 1) }}
                                         @endauth

@@ -72,7 +72,7 @@
 
                 <!-- Campo Nome -->
                 <div class="mt-6 space-y-2 max-w-md">
-                    <label for="name" class="block text-sm font-medium text-gray-700 flex items-center">
+                    <label for="name" class="block text-sm font-medium text-gray-700 items-center">
                         Nome do Status
                         <span class="text-red-500 ml-1">*</span>
                     </label>
