@@ -35,7 +35,7 @@
 
             <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
 
-                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
+                <div class="bg-linear-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                         <div class="flex items-center mb-4 sm:mb-0">
                             <div class="p-2 bg-blue-100 rounded-lg mr-3">

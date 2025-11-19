@@ -7,7 +7,7 @@
         <div class="flex space-x-3 mt-4 md:mt-0">
             @can('index-user')
                 <a href="{{ route('users.index') }}"
-                    class="flex items-center px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 hover:bg-indigo-50 transition-all shadow-xs hover:shadow-sm border-indigo-100 hover:border-indigo-200">
+                    class="flex items-center px-4 py-2.5 bg-white border rounded-xl text-gray-700 hover:bg-indigo-50 transition-all shadow-xs hover:shadow-sm border-indigo-100 hover:border-indigo-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="space-y-3">
-                    <label for="name" class="block text-sm font-medium text-gray-700 flex items-center">
+                    <label for="name" class="block text-sm font-medium text-gray-700 items-center">
                         Nome
                         <span class="text-red-500 ml-1">*</span>
                     </label>
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="space-y-3">
-                    <label for="email" class="block text-sm font-medium text-gray-700 flex items-center">
+                    <label for="email" class="block text-sm font-medium text-gray-700 items-center">
                         E-mail
                         <span class="text-red-500 ml-1">*</span>
                     </label>
@@ -121,7 +121,7 @@
                 </div>
 
                 <div class="space-y-3">
-                    <label for="password" class="block text-sm font-medium text-gray-700 flex items-center">
+                    <label for="password" class="block text-sm font-medium text-gray-700 items-center">
                         Senha
                         <span class="text-red-500 ml-1">*</span>
                     </label>
@@ -132,7 +132,7 @@
                 </div>
 
                 <div class="space-y-3">
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 flex items-center">
+                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 items-center">
                         Confirmar Senha
                         <span class="text-red-500 ml-1">*</span>
                     </label>

@@ -7,7 +7,7 @@
         <div class="flex flex-wrap gap-2">
             @can('index-user')
                 <a href="{{ route('users.index') }}"
-                    class="flex items-center px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 hover:bg-indigo-50 transition-all shadow-xs hover:shadow-sm border-indigo-100 hover:border-indigo-200">
+                    class="flex items-center px-4 py-2.5 bg-white border rounded-xl text-gray-700 hover:bg-indigo-50 transition-all shadow-xs hover:shadow-sm border-indigo-100 hover:border-indigo-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -88,7 +88,7 @@
 
                 <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded">
                     <div class="flex">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <i class="fas fa-info-circle text-blue-400"></i>
                         </div>
                         <div class="ml-3">

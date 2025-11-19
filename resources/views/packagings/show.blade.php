@@ -130,7 +130,7 @@
         </div>
 
         @can('destroy-packaging')
-            <div class="px-6 py-4 border-t border-blue-200 border-gray-200 bg-gray-50 flex justify-end">
+            <div class="px-6 py-4 border-t border-blue-200 bg-gray-50 flex justify-end">
                 <form action="{{ route('packagings.destroy', $packaging->id) }}" method="POST">
                     @csrf
                     @method('delete')

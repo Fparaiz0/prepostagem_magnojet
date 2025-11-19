@@ -31,7 +31,7 @@
                     <label for="current_password" class="block text-sm font-medium text-gray-700">Senha Atual*</label>
                     <div class="relative">
                         <input type="password" name="current_password" id="current_password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('current_password') border-red-500 @enderror"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('current_password') border-red-500 @enderror"
                             placeholder="Digite sua senha atual" required>
                         @error('current_password')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -43,7 +43,7 @@
                     <label for="password" class="block text-sm font-medium text-gray-700">Nova Senha*</label>
                     <div class="relative">
                         <input type="password" name="password" id="password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('password') border-red-500 @enderror"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('password') border-red-500 @enderror"
                             placeholder="Mínimo de 8 caracteres" required>
                         @error('password')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -65,7 +65,7 @@
                         Senha*</label>
                     <div class="relative">
                         <input type="password" name="password_confirmation" id="password_confirmation"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('password_confirmation') border-red-500 @enderror"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('password_confirmation') border-red-500 @enderror"
                             placeholder="Digite a nova senha novamente" required>
                     </div>
                 </div>

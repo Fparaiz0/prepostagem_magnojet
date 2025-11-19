@@ -46,7 +46,7 @@
                 <div class="space-y-2">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nome Completo*</label>
                     <input type="text" name="name" id="name"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('name') border-red-500 @enderror"
+                        class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('name') border-red-500 @enderror"
                         placeholder="Seu nome completo" value="{{ old('name', $user->name) }}" required>
                     @error('name')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -57,7 +57,7 @@
                 <div class="space-y-2">
                     <label for="email" class="block text-sm font-medium text-gray-700">Endereço de E-mail*</label>
                     <input type="email" name="email" id="email"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('email') border-red-500 @enderror"
+                        class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('email') border-red-500 @enderror"
                         placeholder="seu@email.com" value="{{ old('email', $user->email) }}" required>
                     @error('email')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

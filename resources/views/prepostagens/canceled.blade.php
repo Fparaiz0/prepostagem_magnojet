@@ -67,7 +67,7 @@
 
             <form action="{{ route('prepostagens.canceled') }}" method="GET"
                 class="flex flex-col sm:flex-row gap-4 items-end">
-                <div class="flex-grow">
+                <div class="grow">
                     <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Nome do Destinatário</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
