@@ -391,7 +391,8 @@
         @endif
     </div>
 
-    <div id="cancelModal" class="fixed inset-0 bg-gray-600/50 backdrop-blur-sm items-center justify-center hidden z-50">
+    <div id="cancelModal"
+        class="fixed inset-0 bg-gray-600/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0"
             id="modalContent">
             <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
@@ -447,7 +448,7 @@
     </div>
 
     <div id="printFormatModal"
-        class="fixed inset-0 bg-gray-600/50 backdrop-blur-sm items-center justify-center hidden z-50">
+        class="fixed inset-0 bg-gray-600/50 flex items-center justify-center backdrop-blur-sm hidden z-50">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0"
             id="printFormatModalContent">
             <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
@@ -521,7 +522,8 @@
         </div>
     </div>
 
-    <div id="loadingModal" class="fixed inset-0 bg-gray-600/50 backdrop-blur-sm items-center justify-center hidden z-50">
+    <div id="loadingModal"
+        class="fixed inset-0 bg-gray-600/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6 text-center">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <h3 class="text-lg font-medium text-gray-900 mb-2">Processando etiquetas</h3>
