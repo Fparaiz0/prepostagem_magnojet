@@ -258,7 +258,7 @@ class PrePostagemController extends Controller
         return back()->with('error', 'Erro ao cancelar a pré-postagem na API dos Correios.');
       }
 
-      $prepostagem->update(['situation' => 2]);
+      $prepostagem->update(['situation' => 2, 'updated_at' => now()]);
 
       Log::info('Pré-Postagem cancelada com sucesso na API e atualizada no banco.', [
         'prepostagem_id' => $prepostagem->id,
