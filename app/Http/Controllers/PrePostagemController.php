@@ -227,7 +227,7 @@ class PrePostagemController extends Controller
         'resposta_api' => $response->json(),
       ]);
 
-      return redirect()->route('prepostagens.show', ['prepostagem' => $prepostagem->id])
+      return redirect()->route('prepostagens.create')
         ->with('success', 'Pré-Postagem cadastrada com sucesso!');
     } catch (Exception $e) {
       Log::error('Erro ao cadastrar Pré-Postagem.', ['error' => $e->getMessage()]);
