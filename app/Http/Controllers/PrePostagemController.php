@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PrePostagemRequest;
 use App\Models\CorreiosToken;
-use App\Models\Prepostagem;
+use App\Models\PrePostagem;
 use App\Models\Range;
 use Exception;
 use Illuminate\Http\Request;

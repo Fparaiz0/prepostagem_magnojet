@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\CorreiosToken;
-use App\Models\Prepostagem;
+use App\Models\PrePostagem;
 use Exception;
 use App\Services\CorreiosTokenService;
 
