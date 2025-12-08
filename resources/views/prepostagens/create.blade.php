@@ -361,7 +361,7 @@
             </form>
 
             <div id="modalSelecionarDestinatario"
-                class="fixed inset-0 bg-black/60 backdrop-blur-sm  items-center justify-center z-50 hidden transition-opacity duration-300 ease-out">
+                class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-opacity duration-300 ease-out">
                 <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl mx-4 animate-fade-in">
                     <div
                         class="flex justify-between items-center px-6 py-4 bg-linear-to-r from-green-50 to-emerald-100 rounded-t-2xl border-b">
