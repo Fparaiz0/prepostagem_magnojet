@@ -8,8 +8,9 @@ Schedule::command('correios:check-prepostagens')
   ->weekdays()
   ->everyTenMinutes()
   ->timezone('America/Sao_Paulo')
-  ->between('8:00', '18:00')
-  ->withoutOverlapping();
+  ->between('7:50', '18:10')
+  ->withoutOverlapping()
+  ->timeout(300);
 
 Artisan::command('inspire', function () {
   $this->comment(Inspiring::quote());
