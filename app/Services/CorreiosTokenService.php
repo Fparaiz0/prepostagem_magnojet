@@ -15,8 +15,6 @@ class CorreiosTokenService
   protected string $cartao;
   protected string $dr;
 
-  private const TOKEN_VALIDITY_HOURS = 24;
-
   public function __construct()
   {
     $this->usuario = config('services.correios.usuario');
@@ -41,11 +39,12 @@ class CorreiosTokenService
 
     if ($response->successful()) {
       $novoToken = $response->json('token');
+      $dataValidade = $response->json('expiraEm'); 
 
       if ($novoToken) {
         CorreiosToken::create([
           'token' => $novoToken,
-          'valid_until' => now()->addHours(self::TOKEN_VALIDITY_HOURS),
+          'valid_until' => $dataValidade,
         ]);
 
         Log::info('Um novo token foi gerado e salvo com sucesso!');
