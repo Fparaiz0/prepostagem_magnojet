@@ -15,7 +15,7 @@ class CorreiosTokenService
   protected string $cartao;
   protected string $dr;
 
-  private const TOKEN_VALIDITY_HOURS = 23;
+  private const TOKEN_VALIDITY_HOURS = 24;
 
   public function __construct()
   {
