@@ -212,7 +212,7 @@
                             <p class="text-sm text-gray-500 mt-1">{{ $prepostagem->address_recipient }}</p>
                         </div>
                         <div>
-                            <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Data</p>
+                            <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Data de criação</p>
                             <p class="text-gray-800 font-semibold">
                                 {{ \Carbon\Carbon::parse($prepostagem->created_at)->format('d/m/Y H:i') }}</p>
                         </div>
