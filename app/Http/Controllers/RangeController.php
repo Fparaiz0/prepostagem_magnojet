@@ -110,7 +110,7 @@ class RangeController extends Controller
 
         return back()->with('error', 'Erro ao gerar etiquetas, chame o suporte.');
       }
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       Log::error('Erro ao enviar request para gerar etiquetas', [
         'message' => $e->getMessage()
       ]);
@@ -163,7 +163,7 @@ class RangeController extends Controller
           : 'Nota fiscal removida com sucesso.',
         'data' => $range
       ]);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       Log::error('Erro ao alternar invoice: ' . $e->getMessage());
 
       return response()->json([
