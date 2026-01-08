@@ -314,10 +314,10 @@
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors">
                             </div>
 
-                            <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700">Chave da NFe</label>
-                                <input type="text" name="nfe_key" id="nfe_key" value="{{ old('nfe_key') }}"
-                                    required
+                            <div class="space-y-2 md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Observação</label>
+                                <input type="text" name="observation" id="observation"
+                                    value="{{ old('observation') }}"
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors">
                             </div>
 
@@ -336,11 +336,10 @@
                                     </option>
                                 </select>
                             </div>
-
-                            <div class="space-y-2 md:col-span-2">
-                                <label class="block text-sm font-medium text-gray-700">Observação</label>
-                                <input type="text" name="observation" id="observation"
-                                    value="{{ old('observation') }}"
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">Chave da NFe</label>
+                                <input type="text" name="nfe_key" id="nfe_key" value="{{ old('nfe_key') }}"
+                                    required
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors">
                             </div>
                         </div>
