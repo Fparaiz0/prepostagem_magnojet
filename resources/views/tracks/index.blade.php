@@ -244,13 +244,13 @@
                     placeholder="Digite o número da nota fiscal">
 
                 <div class="flex justify-end space-x-3 mt-6">
-                    <button id="cancelInvoice"
-                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
-                        Cancelar
-                    </button>
                     <button id="saveInvoice"
                         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                         Salvar
+                    </button>
+                    <button id="cancelInvoice"
+                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancelar
                     </button>
                 </div>
             </div>
