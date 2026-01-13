@@ -205,7 +205,7 @@
                 <div class="p-4 border-t border-gray-200">
                     <div class="text-center text-xs text-gray-500">
                         <p>Versão 1.0.0</p>
-                        <p class="mt-1">&copy; {{ date('Y') }} MagnoJet</p>
+                        <p class="mt-1">&copy; 2025 - {{ date('Y') }} MagnoJet</p>
                     </div>
                 </div>
             </div>

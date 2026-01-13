@@ -58,7 +58,7 @@
 
                 <div class="bg-gray-50 px-8 py-4 border-t border-gray-100 text-center">
                     <p class="text-xs text-gray-500">
-                        &copy; {{ date('Y') }} MagnoJet
+                        &copy; 2025 - {{ date('Y') }} MagnoJet
                     </p>
                 </div>
             </div>
