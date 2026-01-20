@@ -17,9 +17,9 @@
   "devDependencies": {
     "@commitlint/cli": "20.1.0",
     "@commitlint/config-conventional": "20.0.0",
-    "@tailwindcss/postcss": "4.1.17",
-    "@tailwindcss/vite": "4.1.17",
-    "autoprefixer": "10.4.22",
+    "@tailwindcss/postcss": "4.1.18",
+    "@tailwindcss/vite": "4.1.18",
+    "autoprefixer": "10.4.23",
     "axios": "1.13.2",
     "commitizen": "^4.3.1",
     "concurrently": "9.2.1",
@@ -30,7 +30,7 @@
     "nodemon": "3.1.11",
     "postcss": "8.5.6",
     "prettier": "3.6.2",
-    "tailwindcss": "4.1.17",
+    "tailwindcss": "4.1.18",
     "vite": "7.2.2"
   },
   "config": {
