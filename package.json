@@ -40,5 +40,10 @@
     "dependencies": {
       "@tailwindcss/cli": "4.1.12"
     }
+  },
+  "_comment": "Resolução de vulnerabilidades em overrides por enquanto até atualização da dependência commitizen",
+  "overrides": {
+    "lodash": "4.17.23",
+    "tmp": "0.2.4"
   }
 }
